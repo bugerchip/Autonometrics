@@ -2,14 +2,27 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Protocol, runtime_checkable
 
 import numpy as np
 
-from autonometrics.metrics import compute_albantakis
+from autonometrics.metrics import compute_albantakis, compute_autopoietic_ratio
 from autonometrics.profile import AutonomyProfile
 
-SUPPORTED_METRICS: frozenset[str] = frozenset({"albantakis"})
+_MetricFn = Callable[[np.ndarray, np.ndarray], float]
+
+_METRIC_REGISTRY: dict[str, _MetricFn] = {
+    "albantakis": compute_albantakis,
+    "autopoietic": compute_autopoietic_ratio,
+}
+
+_PROFILE_FIELD: dict[str, str] = {
+    "albantakis": "ratio_endo_total",
+    "autopoietic": "autopoietic_ratio",
+}
+
+SUPPORTED_METRICS: frozenset[str] = frozenset(_METRIC_REGISTRY)
 
 
 @runtime_checkable
@@ -26,26 +39,55 @@ class AutonomySystem(Protocol):
 
 
 class Autonometer:
-    """Orchestrator that applies a metric to a system and returns a profile.
+    """Orchestrator that applies one or more metrics to a system.
 
     Parameters
     ----------
     metric:
-        Identifier of the metric to use. Currently only ``"albantakis"``
-        is accepted. Additional metrics (Gershenson autopoietic ratio,
-        SDT Relative Autonomy Index, Coherence-Based Alignment) will be
-        registered here.
+        Single-metric convenience argument, kept for backward
+        compatibility with ``v0.1.x``. Ignored when ``metrics`` is
+        provided.
+    metrics:
+        Preferred argument. A list of metric identifiers; each entry
+        must be in :data:`SUPPORTED_METRICS`. Defaults to
+        ``["albantakis"]`` when neither ``metric`` nor ``metrics`` is
+        given.
     """
 
-    def __init__(self, metric: str = "albantakis") -> None:
-        if metric not in SUPPORTED_METRICS:
-            raise ValueError(f"Unknown metric {metric!r}. Supported: {sorted(SUPPORTED_METRICS)}")
-        self.metric = metric
+    def __init__(
+        self,
+        metric: str | None = None,
+        metrics: list[str] | None = None,
+    ) -> None:
+        if metrics is not None:
+            resolved = list(metrics)
+        elif metric is not None:
+            resolved = [metric]
+        else:
+            resolved = ["albantakis"]
+
+        if not resolved:
+            raise ValueError("metrics must contain at least one metric identifier")
+
+        for name in resolved:
+            if name not in _METRIC_REGISTRY:
+                raise ValueError(f"Unknown metric {name!r}. Supported: {sorted(_METRIC_REGISTRY)}")
+
+        self.metrics: list[str] = resolved
+
+    @property
+    def metric(self) -> str:
+        """First metric in :attr:`metrics`; kept for backward compatibility."""
+        return self.metrics[0]
 
     def measure(self, system: AutonomySystem) -> AutonomyProfile:
         """Compute the autonomy profile of ``system``.
 
         The system must implement the :class:`AutonomySystem` protocol.
+        Every metric registered for this instance is evaluated and its
+        result written to the matching field of :class:`AutonomyProfile`.
+        Fields corresponding to metrics that were not requested stay
+        ``None``.
         """
         if not hasattr(system, "get_state_history") or not hasattr(system, "get_env_history"):
             raise TypeError(
@@ -56,15 +98,21 @@ class Autonometer:
         states = np.asarray(system.get_state_history())
         env = np.asarray(system.get_env_history())
 
-        if self.metric == "albantakis":
-            score = compute_albantakis(states, env)
-            return AutonomyProfile(
-                ratio_endo_total=score,
-                metadata={
-                    "metric": "albantakis",
-                    "n_timesteps": int(states.size),
-                    "adapter": type(system).__name__,
-                },
-            )
+        field_values: dict[str, float] = {}
+        for name in self.metrics:
+            fn = _METRIC_REGISTRY[name]
+            score = fn(states, env)
+            field_values[_PROFILE_FIELD[name]] = score
 
-        raise NotImplementedError(f"metric {self.metric!r} is not wired yet")
+        metadata = {
+            "metrics": list(self.metrics),
+            "metric": self.metrics[0],
+            "n_timesteps": int(states.size),
+            "adapter": type(system).__name__,
+        }
+
+        return AutonomyProfile(
+            ratio_endo_total=field_values.get("ratio_endo_total"),
+            autopoietic_ratio=field_values.get("autopoietic_ratio"),
+            metadata=metadata,
+        )
