@@ -27,25 +27,7 @@ from __future__ import annotations
 
 import numpy as np
 
-_EPS: float = 1e-12
-
-
-def _shannon_entropy_from_counts(counts: np.ndarray) -> float:
-    """Return the Shannon entropy (base 2) of an empirical count vector."""
-    total = counts.sum()
-    if total == 0:
-        return 0.0
-    probs = counts[counts > 0] / total
-    return float(-np.sum(probs * np.log2(probs)))
-
-
-def _joint_entropy(*variables: np.ndarray) -> float:
-    """Return the empirical Shannon entropy of a joint of 1D int arrays."""
-    if not variables:
-        return 0.0
-    stacked = np.column_stack(variables)
-    _, counts = np.unique(stacked, axis=0, return_counts=True)
-    return _shannon_entropy_from_counts(counts)
+from autonometrics.metrics._entropy import EPS, joint_entropy
 
 
 def compute_albantakis(states: np.ndarray, env: np.ndarray) -> float:
@@ -96,15 +78,15 @@ def compute_albantakis(states: np.ndarray, env: np.ndarray) -> float:
     next_state = states_int[1:]
     env_t = env_int[:-1]
 
-    h_z = _joint_entropy(env_t)
-    h_xz = _joint_entropy(prev_state, env_t)
-    h_yz = _joint_entropy(next_state, env_t)
-    h_xyz = _joint_entropy(prev_state, next_state, env_t)
+    h_z = joint_entropy(env_t)
+    h_xz = joint_entropy(prev_state, env_t)
+    h_yz = joint_entropy(next_state, env_t)
+    h_xyz = joint_entropy(prev_state, next_state, env_t)
 
     h_next_given_env = h_yz - h_z
     h_next_given_prev_and_env = h_xyz - h_xz
 
-    if h_next_given_env <= _EPS:
+    if h_next_given_env <= EPS:
         raise ValueError(
             "H(S_{t+1} | E_t) is zero: the next state has no conditional "
             "variability given the environment, so the normalised "
