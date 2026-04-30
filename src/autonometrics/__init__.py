@@ -13,7 +13,7 @@ from autonometrics.core import Autonometer, AutonomySystem
 from autonometrics.metrics import compute_albantakis, compute_autopoietic_ratio
 from autonometrics.profile import AutonomyProfile
 
-__version__ = "0.1.0a0"
+__version__ = "0.2.0a0"
 
 __all__ = [
     "Autonometer",
