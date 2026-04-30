@@ -7,19 +7,19 @@ from typing import Protocol, runtime_checkable
 
 import numpy as np
 
-from autonometrics.metrics import compute_albantakis, compute_autopoietic_ratio
+from autonometrics.metrics import compute_albantakis, compute_excess_entropy
 from autonometrics.profile import AutonomyProfile
 
 _MetricFn = Callable[[np.ndarray, np.ndarray], float]
 
 _METRIC_REGISTRY: dict[str, _MetricFn] = {
     "albantakis": compute_albantakis,
-    "autopoietic": compute_autopoietic_ratio,
+    "memory": compute_excess_entropy,
 }
 
 _PROFILE_FIELD: dict[str, str] = {
     "albantakis": "ratio_endo_total",
-    "autopoietic": "autopoietic_ratio",
+    "memory": "structural_memory",
 }
 
 SUPPORTED_METRICS: frozenset[str] = frozenset(_METRIC_REGISTRY)
@@ -113,6 +113,6 @@ class Autonometer:
 
         return AutonomyProfile(
             ratio_endo_total=field_values.get("ratio_endo_total"),
-            autopoietic_ratio=field_values.get("autopoietic_ratio"),
+            structural_memory=field_values.get("structural_memory"),
             metadata=metadata,
         )

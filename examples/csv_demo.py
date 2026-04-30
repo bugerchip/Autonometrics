@@ -36,7 +36,7 @@ def main() -> None:
 
         trajectory = CSVTrajectory.from_path(csv_path)
 
-        meter = Autonometer(metrics=["albantakis", "autopoietic"])
+        meter = Autonometer(metrics=["albantakis", "memory"])
         profile = meter.measure(trajectory)
 
     print(f"Autonometrics v{__version__}  CSV demo")
@@ -45,8 +45,8 @@ def main() -> None:
     print(f"Adapter: {profile.metadata['adapter']}")
     print(f"Metrics: {profile.metadata['metrics']}")
     print()
-    print(f"  ratio_endo_total : {profile.ratio_endo_total:.3f}")
-    print(f"  autopoietic_ratio: {profile.autopoietic_ratio:.3f}")
+    print(f"  ratio_endo_total  : {profile.ratio_endo_total:.3f}")
+    print(f"  structural_memory : {profile.structural_memory:.3f} bits")
 
 
 if __name__ == "__main__":

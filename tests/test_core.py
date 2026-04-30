@@ -32,9 +32,9 @@ def test_default_metric_is_albantakis() -> None:
 
 
 def test_explicit_single_metric_backward_compat() -> None:
-    meter = Autonometer(metric="autopoietic")
-    assert meter.metrics == ["autopoietic"]
-    assert meter.metric == "autopoietic"
+    meter = Autonometer(metric="memory")
+    assert meter.metrics == ["memory"]
+    assert meter.metric == "memory"
 
 
 def test_unknown_metric_raises() -> None:
@@ -65,25 +65,25 @@ def test_single_metric_populates_only_its_field() -> None:
     assert isinstance(profile, AutonomyProfile)
     assert profile.ratio_endo_total is not None
     assert 0.0 <= profile.ratio_endo_total <= 1.0
-    assert profile.autopoietic_ratio is None
+    assert profile.structural_memory is None
 
 
-def test_autopoietic_only_leaves_ratio_endo_total_none() -> None:
+def test_memory_only_leaves_ratio_endo_total_none() -> None:
     system = _make_system()
-    profile = Autonometer(metrics=["autopoietic"]).measure(system)
+    profile = Autonometer(metrics=["memory"]).measure(system)
 
     assert profile.ratio_endo_total is None
-    assert profile.autopoietic_ratio is not None
-    assert profile.autopoietic_ratio >= 0.0
+    assert profile.structural_memory is not None
+    assert profile.structural_memory >= 0.0
 
 
 def test_multi_metric_populates_both_fields() -> None:
     system = _make_system()
-    profile = Autonometer(metrics=["albantakis", "autopoietic"]).measure(system)
+    profile = Autonometer(metrics=["albantakis", "memory"]).measure(system)
 
     assert profile.ratio_endo_total is not None
-    assert profile.autopoietic_ratio is not None
-    assert profile.metadata["metrics"] == ["albantakis", "autopoietic"]
+    assert profile.structural_memory is not None
+    assert profile.metadata["metrics"] == ["albantakis", "memory"]
 
 
 def test_metadata_is_populated() -> None:

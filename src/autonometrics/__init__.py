@@ -10,7 +10,7 @@ Status: alpha, API unstable.
 
 from autonometrics.adapters import CSVTrajectory, SimpleAutomaton
 from autonometrics.core import Autonometer, AutonomySystem
-from autonometrics.metrics import compute_albantakis, compute_autopoietic_ratio
+from autonometrics.metrics import compute_albantakis, compute_excess_entropy
 from autonometrics.profile import AutonomyProfile
 
 __version__ = "0.2.0a0"
@@ -23,5 +23,5 @@ __all__ = [
     "SimpleAutomaton",
     "__version__",
     "compute_albantakis",
-    "compute_autopoietic_ratio",
+    "compute_excess_entropy",
 ]

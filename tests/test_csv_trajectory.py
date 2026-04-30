@@ -117,10 +117,10 @@ def test_roundtrip_through_csv_matches_direct_measurement(tmp_path: Path) -> Non
 
     traj = CSVTrajectory.from_path(csv_path)
 
-    meter = Autonometer(metrics=["albantakis", "autopoietic"])
+    meter = Autonometer(metrics=["albantakis", "memory"])
     profile_direct = meter.measure(auto)
     profile_csv = meter.measure(traj)
 
     assert profile_direct.ratio_endo_total == pytest.approx(profile_csv.ratio_endo_total)
-    assert profile_direct.autopoietic_ratio == pytest.approx(profile_csv.autopoietic_ratio)
+    assert profile_direct.structural_memory == pytest.approx(profile_csv.structural_memory)
     assert profile_csv.metadata["adapter"] == "CSVTrajectory"

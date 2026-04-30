@@ -18,6 +18,19 @@ class AutonomyProfile:
     computed — and makes the dataclass extensible without breaking
     older consumers.
 
+    The two current fields map to the two axes of the *autonomy plane*:
+
+    - ``ratio_endo_total`` captures **closure**: how much of the next
+      state is determined by the system's own previous state, once the
+      environment is controlled for.
+    - ``structural_memory`` captures **memory**: how many bits of the
+      trajectory's past are useful for predicting its future.
+
+    Together, a point in ``(closure, memory)`` space lets us tell
+    apart drift, clockwork regularity, turbulence and candidate
+    autopoietic organisation without tying the vocabulary to any
+    single theory.
+
     Attributes
     ----------
     ratio_endo_total:
@@ -25,12 +38,13 @@ class AutonomyProfile:
         Albantakis / Bertschinger. In ``[0.0, 1.0]`` when computed.
         ``1.0`` means the system's next state is (given the
         environment) fully determined by its own previous state.
-    autopoietic_ratio:
-        Fernandez-Gershenson autopoietic ratio,
-        ``C(system) / C(environment)`` with
-        ``C(x) = 4 * E(x) * (1 - E(x))`` on the normalised Shannon
-        entropy ``E``. Natural range is ``[0.0, +inf)``: values above
-        ``1.0`` mean the system is more complex than its environment.
+    structural_memory:
+        Crutchfield excess entropy of the state trajectory, in bits.
+        Zero for constant or i.i.d. noise sequences; ``log2(p)`` for a
+        deterministic period-``p`` cycle; positive in general for
+        sequences with non-trivial temporal structure. Replaces the
+        LMC-based autopoietic ratio used in ``v0.2.x``, which
+        collapsed to zero on ordered systems.
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -38,5 +52,5 @@ class AutonomyProfile:
     """
 
     ratio_endo_total: float | None = None
-    autopoietic_ratio: float | None = None
+    structural_memory: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
