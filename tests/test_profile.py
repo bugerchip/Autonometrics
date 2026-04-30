@@ -10,7 +10,24 @@ from autonometrics import AutonomyProfile
 def test_profile_has_expected_fields() -> None:
     profile = AutonomyProfile(ratio_endo_total=0.5)
     assert profile.ratio_endo_total == 0.5
+    assert profile.autopoietic_ratio is None
     assert profile.metadata == {}
+
+
+def test_profile_defaults_both_scores_to_none() -> None:
+    profile = AutonomyProfile()
+    assert profile.ratio_endo_total is None
+    assert profile.autopoietic_ratio is None
+    assert profile.metadata == {}
+
+
+def test_profile_accepts_both_scores() -> None:
+    profile = AutonomyProfile(
+        ratio_endo_total=0.42,
+        autopoietic_ratio=1.75,
+    )
+    assert profile.ratio_endo_total == 0.42
+    assert profile.autopoietic_ratio == 1.75
 
 
 def test_profile_accepts_metadata() -> None:
@@ -30,7 +47,8 @@ def test_profile_is_frozen() -> None:
 
 def test_profile_field_types() -> None:
     fields = {f.name: f.type for f in dataclasses.fields(AutonomyProfile)}
-    assert fields["ratio_endo_total"] == "float"
+    assert fields["ratio_endo_total"] == "float | None"
+    assert fields["autopoietic_ratio"] == "float | None"
     assert fields["metadata"] == "dict[str, Any]"
 
 

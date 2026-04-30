@@ -10,27 +10,33 @@ from typing import Any
 class AutonomyProfile:
     """A structural self-determination profile of a system.
 
-    Currently a single-dimension profile. The shape is intentionally
-    kept simple in v0.1: additional dimensions (drift, phase stability,
-    boundary hardness, temporal integral) will be added as more metrics
-    are implemented.
+    The profile is a small vector of named, substrate-independent
+    measurements. Every field is ``Optional[float]``: a given metric
+    only populates the field it is responsible for, and fields not
+    measured on this run stay ``None``. This keeps the profile
+    honest — a caller can tell at a glance what was and was not
+    computed — and makes the dataclass extensible without breaking
+    older consumers.
 
     Attributes
     ----------
     ratio_endo_total:
-        Proportion of the system's next-state determination that comes
-        from its own previous state versus the environment. Expected
-        to lie in ``[0.0, 1.0]``, where ``1.0`` means the system's
-        dynamics are fully self-determined (given the environment) and
-        ``0.0`` means the next state is entirely driven by the
-        environment. Range is not enforced at construction time; it is
-        the responsibility of the metric implementation to return a
-        valid value.
+        Normalised conditional mutual information score of
+        Albantakis / Bertschinger. In ``[0.0, 1.0]`` when computed.
+        ``1.0`` means the system's next state is (given the
+        environment) fully determined by its own previous state.
+    autopoietic_ratio:
+        Fernandez-Gershenson autopoietic ratio,
+        ``C(system) / C(environment)`` with
+        ``C(x) = 4 * E(x) * (1 - E(x))`` on the normalised Shannon
+        entropy ``E``. Natural range is ``[0.0, +inf)``: values above
+        ``1.0`` mean the system is more complex than its environment.
     metadata:
         Free-form dictionary with contextual information about the
-        measurement: which metric was used, which adapter produced the
-        inputs, sample sizes, seeds, timestamps, etc.
+        measurement: which metrics were used, which adapter produced
+        the inputs, sample sizes, seeds, timestamps, and similar.
     """
 
-    ratio_endo_total: float
+    ratio_endo_total: float | None = None
+    autopoietic_ratio: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
