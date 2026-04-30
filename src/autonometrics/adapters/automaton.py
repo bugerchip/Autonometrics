@@ -1,0 +1,143 @@
+"""Simple discrete-state automaton used to demonstrate autonomy measurements.
+
+Two factory constructors produce qualitatively different systems:
+
+- ``from_self_generated_rules`` builds an automaton whose transitions
+  depend only on its own previous state — the environment is observed
+  but ignored. Its autonomy score should be close to ``1``.
+- ``from_external_rules`` builds an automaton whose transitions are
+  driven by the environment input, with a small amount of hidden
+  noise so that ``H(S_{t+1} | E_t)`` remains positive (a necessary
+  condition for the Albantakis-style normalisation). Its autonomy
+  score should be close to ``0``.
+
+This class is intentionally minimal; it exists to make the
+cross-substrate measurement story tangible in a ``hello world`` demo.
+"""
+
+from __future__ import annotations
+
+import numpy as np
+
+_MODE_SELF = "self_generated"
+_MODE_EXTERNAL = "external"
+
+
+class SimpleAutomaton:
+    """Discrete-state automaton with self-generated or externally imposed rules."""
+
+    def __init__(
+        self,
+        *,
+        mode: str,
+        n_states: int,
+        env: np.ndarray,
+        seed: int = 0,
+        external_noise: float = 0.15,
+    ) -> None:
+        if mode not in (_MODE_SELF, _MODE_EXTERNAL):
+            raise ValueError(f"Unknown mode {mode!r}")
+        if n_states < 2:
+            raise ValueError("n_states must be at least 2")
+        if not 0.0 <= external_noise < 1.0:
+            raise ValueError("external_noise must lie in [0.0, 1.0)")
+
+        env_arr = np.asarray(env).ravel().astype(np.int64, copy=False)
+        if env_arr.size < 2:
+            raise ValueError("env must contain at least 2 timesteps")
+
+        self._mode = mode
+        self._n_states = n_states
+        self._env = env_arr
+        self._seed = int(seed)
+        self._external_noise = float(external_noise)
+        self._rng = np.random.default_rng(seed)
+
+        if mode == _MODE_SELF:
+            self._self_transition = self._build_self_transition(n_states)
+            self._env_transition: np.ndarray | None = None
+        else:
+            env_alphabet_size = int(env_arr.max()) + 1
+            self._env_transition = self._rng.integers(0, n_states, size=env_alphabet_size).astype(
+                np.int64
+            )
+            self._self_transition = None
+
+        self._state_history: np.ndarray | None = None
+
+    def _build_self_transition(self, n_states: int) -> np.ndarray:
+        """Build a single-cycle permutation, guaranteeing no fixed points."""
+        order = self._rng.permutation(n_states)
+        table = np.empty(n_states, dtype=np.int64)
+        for i in range(n_states):
+            table[order[i]] = order[(i + 1) % n_states]
+        return table
+
+    @classmethod
+    def from_self_generated_rules(
+        cls,
+        n_states: int,
+        env: np.ndarray,
+        seed: int = 0,
+    ) -> SimpleAutomaton:
+        """Build an automaton whose transitions depend only on its own state."""
+        return cls(mode=_MODE_SELF, n_states=n_states, env=env, seed=seed)
+
+    @classmethod
+    def from_external_rules(
+        cls,
+        n_states: int,
+        env: np.ndarray,
+        seed: int = 0,
+        noise: float = 0.15,
+    ) -> SimpleAutomaton:
+        """Build an automaton whose transitions are driven by the environment.
+
+        ``noise`` is the probability that a given transition is resolved
+        by a hidden random draw instead of the environment table. A
+        small positive value is required so the metric's denominator,
+        ``H(S_{t+1} | E_t)``, remains strictly positive.
+        """
+        return cls(
+            mode=_MODE_EXTERNAL,
+            n_states=n_states,
+            env=env,
+            seed=seed,
+            external_noise=noise,
+        )
+
+    def run(self) -> None:
+        """Execute the automaton over the full environment history and cache states."""
+        n = self._env.size
+        history = np.empty(n, dtype=np.int64)
+        history[0] = 0
+
+        if self._mode == _MODE_SELF:
+            assert self._self_transition is not None
+            table = self._self_transition
+            for i in range(1, n):
+                history[i] = int(table[history[i - 1]])
+        else:
+            assert self._env_transition is not None
+            table = self._env_transition
+            noise = self._external_noise
+            for i in range(1, n):
+                if self._rng.random() < noise:
+                    history[i] = int(self._rng.integers(0, self._n_states))
+                else:
+                    history[i] = int(table[int(self._env[i - 1])])
+
+        self._state_history = history
+
+    def get_state_history(self) -> np.ndarray:
+        if self._state_history is None:
+            self.run()
+        assert self._state_history is not None
+        return self._state_history.copy()
+
+    def get_env_history(self) -> np.ndarray:
+        return self._env.copy()
+
+    @property
+    def mode(self) -> str:
+        return self._mode

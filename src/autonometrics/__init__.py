@@ -8,6 +8,7 @@ information theory, self-determination theory, and related traditions.
 Status: alpha, API unstable.
 """
 
+from autonometrics.adapters import SimpleAutomaton
 from autonometrics.core import Autonometer, AutonomySystem
 from autonometrics.metrics import compute_albantakis
 from autonometrics.profile import AutonomyProfile
@@ -18,6 +19,7 @@ __all__ = [
     "Autonometer",
     "AutonomyProfile",
     "AutonomySystem",
+    "SimpleAutomaton",
     "__version__",
     "compute_albantakis",
 ]
