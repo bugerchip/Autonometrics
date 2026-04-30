@@ -2,11 +2,27 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Protocol, runtime_checkable
 
+import numpy as np
+
+from autonometrics.metrics import compute_albantakis
 from autonometrics.profile import AutonomyProfile
 
 SUPPORTED_METRICS: frozenset[str] = frozenset({"albantakis"})
+
+
+@runtime_checkable
+class AutonomySystem(Protocol):
+    """Minimal interface a system must expose to be measured.
+
+    Any object implementing ``get_state_history`` and
+    ``get_env_history`` (both returning 1D integer ``np.ndarray``) can
+    be passed to :meth:`Autonometer.measure`.
+    """
+
+    def get_state_history(self) -> np.ndarray: ...
+    def get_env_history(self) -> np.ndarray: ...
 
 
 class Autonometer:
@@ -26,14 +42,29 @@ class Autonometer:
             raise ValueError(f"Unknown metric {metric!r}. Supported: {sorted(SUPPORTED_METRICS)}")
         self.metric = metric
 
-    def measure(self, system: Any) -> AutonomyProfile:
+    def measure(self, system: AutonomySystem) -> AutonomyProfile:
         """Compute the autonomy profile of ``system``.
 
-        In v0.1.0a0 the measurement logic is not yet implemented;
-        calling this method raises ``NotImplementedError``. The metric
-        implementation lands in the next commit.
+        The system must implement the :class:`AutonomySystem` protocol.
         """
-        raise NotImplementedError(
-            "Autonometer.measure is not implemented yet. "
-            "The Albantakis metric will be wired in the next commit."
-        )
+        if not hasattr(system, "get_state_history") or not hasattr(system, "get_env_history"):
+            raise TypeError(
+                "system must implement the AutonomySystem protocol "
+                "(get_state_history, get_env_history)"
+            )
+
+        states = np.asarray(system.get_state_history())
+        env = np.asarray(system.get_env_history())
+
+        if self.metric == "albantakis":
+            score = compute_albantakis(states, env)
+            return AutonomyProfile(
+                ratio_endo_total=score,
+                metadata={
+                    "metric": "albantakis",
+                    "n_timesteps": int(states.size),
+                    "adapter": type(system).__name__,
+                },
+            )
+
+        raise NotImplementedError(f"metric {self.metric!r} is not wired yet")
