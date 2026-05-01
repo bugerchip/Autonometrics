@@ -7,6 +7,63 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.4.0a0] - 2026-04-30
+
+### Changed (breaking)
+
+- **Replaced absolute-bit `compute_excess_entropy` with the
+  ratio-shaped `compute_memory_endo_ratio`.** The previous metric
+  returned a magnitude in bits, which broke the package's unifying
+  argument that every integrated formalisation of structural
+  self-determination shares the form `internal / total`. The new
+  metric reuses Crutchfield's excess-entropy estimator internally
+  (now a private helper) and applies it to both the system and the
+  environment, returning the fraction of the joint structural memory
+  carried by the system: `E(states) / (E(states) + E(env))`. The
+  result is dimensionless and lives in `[0.0, 1.0]`, directly
+  comparable with the closure axis from `compute_albantakis`.
+- `AutonomyProfile.structural_memory` renamed to
+  `AutonomyProfile.memory_endo_ratio`.
+- The metric identifier `"memory"` now maps to
+  `compute_memory_endo_ratio` and writes to `memory_endo_ratio` in
+  the profile.
+
+### Added
+
+- `src/autonometrics/metrics/memory_ratio.py` — the new metric, with
+  the excess-entropy estimator and Grassberger-style block-length
+  cap kept as private helpers.
+- `tests/test_memory_ratio.py` — canonical cases covering constant
+  pairs, structured-vs-iid asymmetry, balanced structure, and the
+  validation paths.
+- README rewritten around the **Principio de Bordes Autodeterminados
+  (PBA)** as the explicit unifying argument: every metric in the
+  package shares the `internal / total` ratio shape, and the autonomy
+  plane is now explicitly framed as the canonical
+  `[0, 1] x [0, 1]` space. Roadmap reorganised around adding ratios
+  (RAI, CBA, GCD) rather than features.
+
+### Removed
+
+- `src/autonometrics/metrics/excess_entropy.py` — the public
+  absolute-bit entry point; the underlying estimator survives as a
+  private helper inside `memory_ratio.py`.
+- `tests/test_excess_entropy.py`.
+
+### Rationale
+
+The unifying argument of `autonometrics` is that the five classical
+formalisations of structural self-determination it integrates
+(Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan RAI,
+coherence-based alignment, Farnsworth's general constrained dynamics)
+all share a single mathematical shape: ratios of internal-to-total
+magnitudes. The temporary use of absolute-bit excess entropy in
+`v0.3.x` broke that pattern by introducing an inhomogeneous axis on
+the autonomy plane. `v0.4.0a0` restores the PBA *columna unificadora*
+as the explicit backbone of the package, ensuring all primary metrics
+are comparable ratios and the autonomy plane is canonical
+`[0, 1] x [0, 1]`.
+
 ## [0.3.0a0] - 2026-04-30
 
 ### Changed (breaking)
