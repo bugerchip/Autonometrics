@@ -11,6 +11,16 @@ measurements. It is a measurement tool, not a new theory: it packages
 established measures from information theory and dynamical-systems
 analysis behind a single, cross-substrate API.
 
+The unifying argument behind every metric in the package is the
+**Principio de Bordes Autodeterminados (PBA)**: a system's structural
+self-determination can be read as a *ratio of internal magnitude over
+total magnitude*. Five classical formalisations
+(Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan RAI,
+coherence-based alignment, Farnsworth's general constrained dynamics)
+share that common shape. `autonometrics` is the first tool to gather
+them under that common ratio convention so that points from different
+substrates land in the same comparable space.
+
 ## Installation
 
 This package is not yet published to PyPI. Install from source in
@@ -42,8 +52,8 @@ meter = Autonometer(metrics=["albantakis", "memory"])
 profile_a = meter.measure(system_a)
 profile_b = meter.measure(system_b)
 
-print(profile_a.ratio_endo_total, profile_a.structural_memory)
-print(profile_b.ratio_endo_total, profile_b.structural_memory)
+print(profile_a.ratio_endo_total, profile_a.memory_endo_ratio)
+print(profile_b.ratio_endo_total, profile_b.memory_endo_ratio)
 ```
 
 ### Measuring a CSV trajectory you already have
@@ -74,12 +84,14 @@ python examples/csv_demo.py         # round-trip through a CSV file
 
 ## Metrics
 
-Two metrics ship in the current alpha. Both are exposed as pure `numpy`
-functions and wired into `Autonometer`:
+Two metrics ship in the current alpha. Both follow the PBA *internal
+over total* shape, both live in `[0.0, 1.0]`, and both are exposed as
+pure `numpy` functions wired into `Autonometer`:
 
 ### `ratio_endo_total` — Albantakis / Bertschinger closure
 
-Normalised conditional mutual information:
+Normalised conditional mutual information of the system's next state
+on its own past, controlling for the environment:
 
 $$A \;=\; \frac{I(S_{t+1};\,S_t \mid E_t)}{H(S_{t+1} \mid E_t)}$$
 
@@ -88,54 +100,65 @@ $$A \;=\; \frac{I(S_{t+1};\,S_t \mid E_t)}{H(S_{t+1} \mid E_t)}$$
 - `A = 1`: the next state, given the environment, is fully determined
   by the system's own previous state (closed dynamics).
 
-### `structural_memory` — Crutchfield excess entropy
+### `memory_endo_ratio` — distributed structural memory
 
-Bits of past relevant to future, via block-entropy saturation:
+Fraction of the structural memory present in the joint
+`(system, environment)` trajectory that is carried by the system
+itself, computed via Crutchfield's excess entropy on each component
+and then normalised:
 
-$$E \;=\; H(L) - L \cdot h_\mu, \qquad h_\mu = H(L) - H(L-1)$$
+$$M \;=\; \frac{E(\text{states})}{E(\text{states}) + E(\text{env})}$$
 
-where `H(L)` is the empirical entropy of length-`L` blocks and `L` is
-capped by a Grassberger-style rule so every possible block gets about
-ten samples on average.
+with `E(.)` estimated via block-entropy saturation
+`E = H(L) - L · h_μ`, where `h_μ = H(L) - H(L-1)`. The working block
+length is capped by a Grassberger-style rule so every possible block
+gets about ten samples on average.
 
-- `E ≈ 0` for a constant sequence *and* for i.i.d. noise — both have
-  no useful memory, only different entropy rates.
-- `E ≈ log2(p)` for a deterministic period-`p` cycle.
-- `E` grows with non-trivial temporal structure.
+- `M = 0`: the joint memory lives entirely in the environment (or, by
+  convention, neither sequence carries memory at all).
+- `M = 1`: the joint memory lives entirely in the system.
+- `M ≈ 0.5`: memory is shared roughly equally between system and
+  environment.
 
-This replaces the LMC-based `autopoietic_ratio` shipped in `v0.2.x`,
-which Feldman & Crutchfield (2002) showed collapses to zero on exactly
-the ordered systems that motivated it.
+This replaces the absolute-bit `structural_memory` shipped in
+`v0.3.x`. Returning a magnitude in bits broke the unifying *ratio*
+shape of the package; `memory_endo_ratio` recovers PBA coherence by
+applying the same excess-entropy estimator to both components and
+returning the fraction carried by the system.
 
 Both scores are returned in a single `AutonomyProfile` with
 `Optional[float]` fields, so unrequested metrics stay `None`.
 
 ## The autonomy plane
 
-Thinking of the two metrics together, rather than reducing autonomy to
-a single number, gives a richer picture. Farnsworth (2018) argues that
-genuine autonomy requires at least two independent features: some form
-of organisational closure *and* some form of memory-bearing structure.
-Our plane puts one on each axis.
+Thinking of the two metrics together, rather than reducing autonomy
+to a single number, gives a richer picture. Both axes share the PBA
+ratio shape and live in `[0, 1]`, so `(closure, memory)` defines a
+**canonical autonomy plane** `[0, 1] × [0, 1]`. The four quadrants
+fall out of a single `0.5` threshold on each axis:
 
-| memory ↓ / closure → | **low closure**                 | **high closure**                |
+| memory ↓ / closure → | **low closure** (< 0.5)         | **high closure** (≥ 0.5)        |
 |----------------------|---------------------------------|---------------------------------|
-| **low memory**       | drift (noise-driven)            | clockwork regularity            |
-| **high memory**      | turbulence / chaos              | candidate autopoietic region    |
+| **low memory** (< 0.5) | drift (noise-driven)          | clockwork regularity            |
+| **high memory** (≥ 0.5)| turbulence / chaos            | candidate autopoietic region    |
 
 - **Drift** (low closure, low memory): the system tracks the
   environment and keeps nothing.
 - **Clockwork** (high closure, low memory): determined by its own
-  past, but with a trivial repetitive trajectory.
+  past, but the environment also carries comparable memory; the
+  system's contribution to joint memory is modest.
 - **Turbulence** (low closure, high memory): the environment shapes
-  the system, and the result is long-range but non-self-generated
-  structure.
+  the system, and the bulk of the joint memory still ends up
+  associated with the system's trajectory rather than the
+  environment's — long-range but non-self-generated structure.
 - **Autopoietic region** (high closure, high memory): closed dynamics
-  *and* non-trivial trajectory structure — the empirically interesting
-  corner of the plane for candidate living and agent-like systems.
+  *and* the joint memory is dominated by the system itself — the
+  empirically interesting corner of the plane for candidate living
+  and agent-like systems.
 
 The package does not claim to *prove* autopoiesis. It gives a
-two-coordinate reading and lets the interpreter argue.
+two-coordinate reading on a homogeneous plane and lets the
+interpreter argue.
 
 ## Adapters
 
@@ -144,7 +167,7 @@ two-coordinate reading and lets the interpreter argue.
   toy systems.
 - **`CSVTrajectory`** — loads a user-supplied two-column CSV with
   discrete integer `state` and `env` columns.
-- **LLM transcript** — planned for `v0.4.0-alpha`.
+- **LLM transcript** — planned for a later alpha.
 
 Any object implementing `get_state_history()` and `get_env_history()`
 (both returning 1D integer `np.ndarray`) satisfies the
@@ -152,46 +175,47 @@ Any object implementing `get_state_history()` and `get_env_history()`
 
 ## Theoretical grounding
 
-- Farnsworth, K. D. (2018). *How Organisms Gained Causal Independence
-  and How It Might Be Quantified*. Biology — motivates the
-  two-feature (closure + memory) view of autonomy.
+`autonometrics` does not introduce a new theory of autonomy. It
+operationalises the recurring *ratio of internal over total*
+structure that already runs through several classical
+formalisations of structural self-determination:
+
+- Bertschinger, N., Olbrich, E., Ay, N., & Jost, J. (2008).
+  *Autonomy: An Information-Theoretic Perspective*. BioSystems —
+  introduces the conditional-information core measured by the
+  closure axis.
+- Albantakis, L. (2021). *Quantifying the Autonomy of Structurally
+  Diverse Automata: A Comparison of Candidate Measures*. Entropy —
+  comparative review and the normalisation form used here.
 - Crutchfield, J. P., & Young, K. (1989). *Inferring statistical
-  complexity*. Physical Review Letters — introduces excess entropy
-  and statistical complexity.
+  complexity*. Physical Review Letters — introduces excess entropy,
+  the engine behind the memory axis.
 - Feldman, D. P., & Crutchfield, J. P. (2002). *Measures of
-  Statistical Complexity: Why?*. Physics Letters A — the formal
-  critique of LMC-style "balance" measures that drove the migration
-  done in `v0.3.0-alpha`.
-- Langton, C. G. (1990). *Computation at the edge of chaos*. Physica
-  D — the classic observation that interesting computation sits in a
-  narrow band between order and disorder, which the plane above is a
-  discrete stand-in for.
+  Statistical Complexity: Why?*. Physics Letters A — formal critique
+  of LMC-style "balance" measures that drove the migration done in
+  `v0.3.0-alpha`.
+- Farnsworth, K. D. (2018). *How Organisms Gained Causal Independence
+  and How It Might Be Quantified*. Biology — independent argument
+  that genuine autonomy needs at least two features (closure and
+  memory-bearing structure); a useful sanity check on the shape of
+  the plane chosen here.
 
 ## Roadmap
 
-- `v0.4.0-alpha`: LLM transcript adapter (bring-your-own labels).
-- `v0.5.0-alpha`: benchmarks against public datasets (boolean
+The roadmap is organised around the PBA argument: each future alpha
+adds one more `[0, 1]`-valued ratio drawn from one of the five
+classical formalisations.
+
+- `v0.5.0-alpha`: third axis — RAI-style relative autonomy ratio
+  (Deci & Ryan).
+- `v0.6.0-alpha`: fourth axis — coherence-based alignment ratio.
+- `v0.7.0-alpha`: fifth axis — general constrained dynamics
+  (Farnsworth-style).
+- `v0.8.0-alpha`: LLM transcript adapter (bring-your-own labels).
+- `v0.9.0-alpha`: benchmarks against public datasets (boolean
   networks, elementary cellular automata).
-- `v0.1.0` (without alpha marker): PyPI publication once two adapters,
-  two metrics, and baseline benchmarks are stable.
-
-## References
-
-- Bertschinger, N., Olbrich, E., Ay, N., & Jost, J. (2008).
-  *Autonomy: An Information-Theoretic Perspective*. BioSystems.
-- Albantakis, L. (2021). *Quantifying the Autonomy of Structurally
-  Diverse Automata: A Comparison of Candidate Measures*. Entropy.
-- Crutchfield, J. P., & Packard, N. H. (1983). *Symbolic dynamics of
-  noisy chaos*. Physica D.
-- Crutchfield, J. P., & Young, K. (1989). *Inferring statistical
-  complexity*. Physical Review Letters.
-- Feldman, D. P., & Crutchfield, J. P. (2002). *Measures of
-  Statistical Complexity: Why?*. Physics Letters A.
-- Farnsworth, K. D. (2018). *How Organisms Gained Causal Independence
-  and How It Might Be Quantified*. Biology.
-- Grassberger, P. (1988). *Finite sample corrections to entropy and
-  dimension estimates*. Physics Letters A.
-- Langton, C. G. (1990). *Computation at the edge of chaos*. Physica D.
+- `v0.1.0` (without alpha marker): PyPI publication once five ratios,
+  three adapters, and baseline benchmarks are stable.
 
 ## License
 

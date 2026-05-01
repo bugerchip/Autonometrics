@@ -1,23 +1,30 @@
-"""Place three toy systems on the (closure, memory) autonomy plane.
+"""Place three toy systems on the canonical [0, 1] x [0, 1] autonomy plane.
 
 Run from the repository root::
 
     python examples/automaton_demo.py
 
-All three systems observe the same environment trace.
+All three systems observe the same environment trace and are scored on
+two PBA-coherent ratios:
 
-- System A (self-ruled) derives every transition from its own previous
-  state. High closure, trivially periodic: high on the closure axis,
-  but memory is capped at ``log2(n_states)``.
-- System B (environment-driven) derives every transition from the
-  environment input plus a small amount of noise. Low closure, low
-  memory.
-- System C (mixed) is the same self-ruled table as A wrapped in a
-  decision that falls back to the environment with a small
-  probability. It sits between A and B.
+- ``closure`` (Albantakis): how much of the next state is determined
+  by the system's own past, controlling for the environment.
+- ``memory`` (memory_endo_ratio): of the structural memory in the
+  joint (system, environment) trajectory, how much is carried by the
+  system itself.
 
-Running the demo prints an ``AutonomyProfile`` for each system plus a
-one-line reading of where they land on the plane.
+Both axes live in ``[0, 1]`` and the four quadrants are split by the
+0.5 threshold on each axis:
+
+- System A (self-ruled): high closure, memory dominated by the
+  system itself (the environment is i.i.d. noise).
+- System B (environment-driven): low closure; the system's
+  contribution to joint memory drops as well.
+- System C (mixed): a self-rule with a stochastic environment
+  fallback; sits between A and B.
+
+The script prints an ``AutonomyProfile`` for each system plus a
+one-line reading of where it lands on the plane.
 """
 
 from __future__ import annotations
@@ -72,14 +79,14 @@ def _format_score(value: float | None) -> str:
 
 def _plane_reading(profile: AutonomyProfile) -> str:
     closure = profile.ratio_endo_total or 0.0
-    memory = profile.structural_memory or 0.0
+    memory = profile.memory_endo_ratio or 0.0
     closure_label = "high closure" if closure >= 0.5 else "low closure"
-    memory_label = "high memory" if memory >= 1.0 else "low memory"
-    if closure >= 0.5 and memory >= 1.0:
+    memory_label = "high memory" if memory >= 0.5 else "low memory"
+    if closure >= 0.5 and memory >= 0.5:
         zone = "candidate autopoietic corner"
     elif closure >= 0.5:
         zone = "clockwork"
-    elif memory >= 1.0:
+    elif memory >= 0.5:
         zone = "turbulence"
     else:
         zone = "drift"
@@ -104,7 +111,7 @@ def main() -> None:
     profile_b = meter.measure(system_b)
     profile_c = meter.measure(system_c)
 
-    print(f"Autonometrics v{__version__}  autonomy-plane demo")
+    print(f"Autonometrics v{__version__}  PBA-coherent autonomy plane demo")
     print()
     print(f"{'system':<32}{'closure':>10}{'memory':>10}   plane reading")
     print("-" * 80)
@@ -116,7 +123,7 @@ def main() -> None:
         print(
             f"{name:<32}"
             f"{_format_score(profile.ratio_endo_total):>10}"
-            f"{_format_score(profile.structural_memory):>10}"
+            f"{_format_score(profile.memory_endo_ratio):>10}"
             f"   {_plane_reading(profile)}"
         )
 

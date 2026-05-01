@@ -46,7 +46,7 @@ def main() -> None:
     print(f"Metrics: {profile.metadata['metrics']}")
     print()
     print(f"  ratio_endo_total  : {profile.ratio_endo_total:.3f}")
-    print(f"  structural_memory : {profile.structural_memory:.3f} bits")
+    print(f"  memory_endo_ratio : {profile.memory_endo_ratio:.3f}")
 
 
 if __name__ == "__main__":
