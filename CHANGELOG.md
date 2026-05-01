@@ -37,11 +37,11 @@ version may introduce breaking changes.
   pairs, structured-vs-iid asymmetry, balanced structure, and the
   validation paths.
 - README rewritten around the **Principio de Bordes Autodeterminados
-  (PBA)** as the explicit unifying argument: every metric in the
-  package shares the `internal / total` ratio shape, and the autonomy
-  plane is now explicitly framed as the canonical
-  `[0, 1] x [0, 1]` space. Roadmap reorganised around adding ratios
-  (RAI, CBA, GCD) rather than features.
+  (PBA)** convention: every metric in the package shares the
+  `internal / total` ratio shape, and the autonomy plane is now
+  explicitly framed as the canonical `[0, 1] x [0, 1]` space.
+  Roadmap reorganised around adding more ratios in the same shape
+  rather than around adding features.
 
 ### Removed
 
@@ -52,17 +52,15 @@ version may introduce breaking changes.
 
 ### Rationale
 
-The unifying argument of `autonometrics` is that the five classical
-formalisations of structural self-determination it integrates
-(Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan RAI,
-coherence-based alignment, Farnsworth's general constrained dynamics)
-all share a single mathematical shape: ratios of internal-to-total
-magnitudes. The temporary use of absolute-bit excess entropy in
-`v0.3.x` broke that pattern by introducing an inhomogeneous axis on
-the autonomy plane. `v0.4.0a0` restores the PBA *columna unificadora*
-as the explicit backbone of the package, ensuring all primary metrics
-are comparable ratios and the autonomy plane is canonical
-`[0, 1] x [0, 1]`.
+The package's unifying convention is that every shipped metric
+follows the same `internal / total` ratio shape, so points from
+different metrics live in the same comparable space. The
+absolute-bit excess entropy used in `v0.3.x` broke that convention
+by introducing an inhomogeneous axis on the autonomy plane.
+`v0.4.0a0` restores the convention so all primary metrics are
+ratios in `[0, 1]` and the autonomy plane is canonical
+`[0, 1] x [0, 1]`. The full statement of the convention as a
+falsifiable working hypothesis lives in `docs/PBA.md`.
 
 ## [0.3.0a0] - 2026-04-30
 

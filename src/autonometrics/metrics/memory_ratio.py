@@ -12,16 +12,14 @@ where ``E(.)`` is the Crutchfield excess entropy of a discrete
 sequence, estimated by block-entropy saturation.
 
 The ratio is dimensionless, lives in ``[0.0, 1.0]``, and shares the
-``internal / total`` shape used by every other metric in the package.
-This makes it directly comparable with the closure axis
-(``ratio_endo_total`` from :func:`compute_albantakis`) and with the
-ratios planned for the other classical formalisations of structural
-self-determination (Gershenson, RAI, CBA, GCD).
+``internal / total`` shape used by the rest of the package, so it is
+directly comparable with the closure axis from
+:func:`compute_albantakis`.
 
 It replaces the previous absolute-bit ``compute_excess_entropy``
-shipped in ``v0.3.x``: that function broke the unifying ratio shape of
-the package by returning a magnitude rather than a fraction. The
-underlying excess-entropy computation has been preserved as a private
+shipped in ``v0.3.x``: that function returned a magnitude rather
+than a fraction, so the two axes lived in incompatible spaces. The
+underlying excess-entropy computation is preserved as a private
 helper and is now applied to both the system and the environment
 before being normalised into a ratio.
 

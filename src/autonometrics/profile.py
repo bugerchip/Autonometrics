@@ -18,15 +18,11 @@ class AutonomyProfile:
     computed — and makes the dataclass extensible without breaking
     older consumers.
 
-    The package's unifying argument is that every classical
-    formalisation of structural self-determination it integrates
-    (Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan
-    RAI, coherence-based alignment, Farnsworth's general constrained
-    dynamics) shares a single mathematical shape: a *ratio of
-    internal magnitude over total magnitude*. Both fields below honour
-    that shape and live in ``[0.0, 1.0]``, so a point in
-    ``(closure, memory)`` lives in the canonical autonomy plane
-    ``[0, 1] × [0, 1]``.
+    Every field is a *ratio of internal magnitude over total
+    magnitude* and lives in ``[0.0, 1.0]``, so points in the profile
+    are directly comparable across measurements. The two fields
+    currently shipped span the canonical autonomy plane
+    ``[0, 1] × [0, 1]``:
 
     - ``ratio_endo_total`` captures **closure**: how much of the
       next state is determined by the system's own previous state,
@@ -35,9 +31,11 @@ class AutonomyProfile:
       memory present in the joint (system, environment) trajectory,
       what fraction is carried by the system itself.
 
-    Together, a point in ``(closure, memory)`` lets us tell apart
-    drift, clockwork regularity, turbulence and candidate autopoietic
-    organisation without tying the vocabulary to any single theory.
+    Together, a point in ``(closure, memory)`` lets a caller tell
+    apart drift, clockwork regularity, turbulence and candidate
+    autopoietic organisation without tying the vocabulary to any
+    single theory. The unifying argument behind the ratio shape is
+    documented in ``docs/PBA.md``.
 
     Attributes
     ----------

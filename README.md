@@ -4,22 +4,22 @@
 
 **Status:** `alpha` — work in progress, API unstable.
 
-`autonometrics` is a Python package that applies existing formalisations of
-autonomy and self-determination to any agentic system (automata, AI agents,
-humans via survey data, organisations) and returns comparable, normalised
-measurements. It is a measurement tool, not a new theory: it packages
-established measures from information theory and dynamical-systems
-analysis behind a single, cross-substrate API.
+`autonometrics` is a Python package that applies existing measures of
+autonomy and self-determination to discrete trajectories from
+automata, agent traces, simulations and similar systems, returning
+comparable normalised scores. It is a measurement tool, not a new
+theory: it packages established measures from information theory and
+dynamical-systems analysis behind a single, cross-substrate API.
 
-The unifying argument behind every metric in the package is the
-**Principio de Bordes Autodeterminados (PBA)**: a system's structural
+The unifying argument the package follows is the **Principio de
+Bordes Autodeterminados (PBA)**: a system's structural
 self-determination can be read as a *ratio of internal magnitude over
-total magnitude*. Five classical formalisations
-(Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan RAI,
-coherence-based alignment, Farnsworth's general constrained dynamics)
-share that common shape. `autonometrics` collects them under that
-common ratio convention so that points from different substrates land
-in the same comparable space.
+total magnitude*. Several traditions in the autonomy literature share
+that common shape, and `autonometrics` collects them under it so
+points from different substrates land in the same comparable space.
+PBA is treated as a falsifiable working hypothesis, not as an axiom
+— see [`docs/PBA.md`](docs/PBA.md) for the full statement and
+falsification criteria (Spanish version: [`docs/PBA.es.md`](docs/PBA.es.md)).
 
 ## Installation
 
@@ -151,10 +151,10 @@ fall out of a single `0.5` threshold on each axis:
   the system, and the bulk of the joint memory still ends up
   associated with the system's trajectory rather than the
   environment's — long-range but non-self-generated structure.
-- **Autopoietic region** (high closure, high memory): closed dynamics
-  *and* the joint memory is dominated by the system itself — the
-  empirically interesting corner of the plane for candidate living
-  and agent-like systems.
+- **Autopoietic region** (high closure, high memory): closed
+  dynamics *and* the joint memory is dominated by the system
+  itself — the empirically interesting corner for systems with
+  non-trivial self-organisation.
 
 The package does not claim to *prove* autopoiesis. It gives a
 two-coordinate reading on a homogeneous plane and lets the
@@ -176,9 +176,12 @@ Any object implementing `get_state_history()` and `get_env_history()`
 ## Theoretical grounding
 
 `autonometrics` does not introduce a new theory of autonomy. It
-operationalises the recurring *ratio of internal over total*
-structure that already runs through several classical
-formalisations of structural self-determination:
+operationalises a recurring *ratio of internal over total* shape
+that already runs through several traditions in the structural
+self-determination literature. The intended scope and the
+falsification criteria for that unifying claim are stated in
+[`docs/PBA.md`](docs/PBA.md); the references the current axes
+build on are:
 
 - Bertschinger, N., Olbrich, E., Ay, N., & Jost, J. (2008).
   *Autonomy: An Information-Theoretic Perspective*. BioSystems —
@@ -246,9 +249,9 @@ that ever happens, the heavy dependency will be opt-in via
 
 ## Roadmap
 
-The roadmap is organised around the PBA argument: each future alpha
-adds one more `[0, 1]`-valued ratio drawn from one of the five
-classical formalisations.
+Each future alpha adds one more `[0, 1]`-valued ratio drawn from
+the structural self-determination literature, keeping the same
+PBA convention so all axes remain comparable.
 
 - `v0.5.0-alpha`: third axis — RAI-style relative autonomy ratio
   (Deci & Ryan).

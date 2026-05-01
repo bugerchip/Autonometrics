@@ -5,7 +5,12 @@ __pycache__/
 
 # C extensions
 *.so
-/Docs/
+
+# Local-only notes (private). Use a name that does not collide with
+# the public `docs/` folder under case-insensitive filesystems
+# (Windows / NTFS, macOS default APFS).
+/notes/
+
 # Distribution / packaging
 .Python
 build/
