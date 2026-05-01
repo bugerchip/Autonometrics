@@ -200,6 +200,50 @@ formalisations of structural self-determination:
   memory-bearing structure); a useful sanity check on the shape of
   the plane chosen here.
 
+## Related work
+
+`autonometrics` overlaps with several adjacent toolkits. The
+relevant difference is *framing*, not the underlying mathematics:
+none of the tools below collects information-theoretic measures
+under a single internal-over-total ratio convention, and most are
+either deeper (and substrate-bound) or more general (and unframed).
+
+- [`Albantakis/autonomy`](https://github.com/Albantakis/autonomy) —
+  toolbox for comparing autonomy measures on small simulated agents
+  represented as transition probability matrices. Authored by the
+  same researcher whose 2021 review article this package builds on.
+  Requires PyPhi, runs on Linux and macOS only, and outputs a
+  multi-column DataFrame intended for cross-measure comparison
+  rather than a single normalised reading. `autonometrics` does not
+  depend on it: the closure-axis formula is reimplemented in pure
+  `numpy` so the package runs on Linux, macOS *and* Windows alike,
+  and so it accepts arbitrary discrete trajectories instead of
+  pre-built transition probability matrices.
+- [JIDT](https://github.com/jlizier/jidt) — Java toolkit for
+  information-theoretic measures (transfer entropy, active
+  information storage, predictive information / excess entropy,
+  mutual information). The numerical engine many adjacent papers
+  build on; cross-language but not a unified autonomy index.
+- [PyInform](https://github.com/ELIFE-ASU/PyInform) — Python wrapper
+  on the Inform C library. Provides `active_info`, `block_entropy`,
+  `entropy_rate`, `transfer_entropy` and related building blocks.
+- [PyPhi](https://github.com/wmayner/pyphi) — reference IIT
+  implementation (Φ, MIP) on transition probability matrices. A
+  different formalism from the closure axis used here; a possible
+  optional dependency for an IIT-based axis later in the roadmap.
+- [dit](https://github.com/dit/dit) — general discrete information
+  theory toolkit (PID, divergences, multivariate measures). A
+  candidate numerical dependency for future axes that need partial
+  information decomposition.
+
+The cross-platform, dependency-light stance is deliberate. The
+package targets researchers, students and applied users who want a
+working measurement on whatever machine they have, including
+Windows. Pure-`numpy` implementations are preferred over
+heavier dependencies until a future axis genuinely needs them; if
+that ever happens, the heavy dependency will be opt-in via
+`extras_require` rather than mandatory.
+
 ## Roadmap
 
 The roadmap is organised around the PBA argument: each future alpha
