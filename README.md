@@ -17,9 +17,9 @@ self-determination can be read as a *ratio of internal magnitude over
 total magnitude*. Five classical formalisations
 (Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan RAI,
 coherence-based alignment, Farnsworth's general constrained dynamics)
-share that common shape. `autonometrics` is the first tool to gather
-them under that common ratio convention so that points from different
-substrates land in the same comparable space.
+share that common shape. `autonometrics` collects them under that
+common ratio convention so that points from different substrates land
+in the same comparable space.
 
 ## Installation
 
