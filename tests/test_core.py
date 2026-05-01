@@ -65,7 +65,7 @@ def test_single_metric_populates_only_its_field() -> None:
     assert isinstance(profile, AutonomyProfile)
     assert profile.ratio_endo_total is not None
     assert 0.0 <= profile.ratio_endo_total <= 1.0
-    assert profile.structural_memory is None
+    assert profile.memory_endo_ratio is None
 
 
 def test_memory_only_leaves_ratio_endo_total_none() -> None:
@@ -73,8 +73,8 @@ def test_memory_only_leaves_ratio_endo_total_none() -> None:
     profile = Autonometer(metrics=["memory"]).measure(system)
 
     assert profile.ratio_endo_total is None
-    assert profile.structural_memory is not None
-    assert profile.structural_memory >= 0.0
+    assert profile.memory_endo_ratio is not None
+    assert 0.0 <= profile.memory_endo_ratio <= 1.0
 
 
 def test_multi_metric_populates_both_fields() -> None:
@@ -82,7 +82,7 @@ def test_multi_metric_populates_both_fields() -> None:
     profile = Autonometer(metrics=["albantakis", "memory"]).measure(system)
 
     assert profile.ratio_endo_total is not None
-    assert profile.structural_memory is not None
+    assert profile.memory_endo_ratio is not None
     assert profile.metadata["metrics"] == ["albantakis", "memory"]
 
 

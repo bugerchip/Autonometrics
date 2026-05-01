@@ -18,18 +18,26 @@ class AutonomyProfile:
     computed — and makes the dataclass extensible without breaking
     older consumers.
 
-    The two current fields map to the two axes of the *autonomy plane*:
+    The package's unifying argument is that every classical
+    formalisation of structural self-determination it integrates
+    (Bertschinger / Albantakis, Gershenson autopoiesis, Deci & Ryan
+    RAI, coherence-based alignment, Farnsworth's general constrained
+    dynamics) shares a single mathematical shape: a *ratio of
+    internal magnitude over total magnitude*. Both fields below honour
+    that shape and live in ``[0.0, 1.0]``, so a point in
+    ``(closure, memory)`` lives in the canonical autonomy plane
+    ``[0, 1] × [0, 1]``.
 
-    - ``ratio_endo_total`` captures **closure**: how much of the next
-      state is determined by the system's own previous state, once the
-      environment is controlled for.
-    - ``structural_memory`` captures **memory**: how many bits of the
-      trajectory's past are useful for predicting its future.
+    - ``ratio_endo_total`` captures **closure**: how much of the
+      next state is determined by the system's own previous state,
+      once the environment is controlled for.
+    - ``memory_endo_ratio`` captures **memory**: of the structural
+      memory present in the joint (system, environment) trajectory,
+      what fraction is carried by the system itself.
 
-    Together, a point in ``(closure, memory)`` space lets us tell
-    apart drift, clockwork regularity, turbulence and candidate
-    autopoietic organisation without tying the vocabulary to any
-    single theory.
+    Together, a point in ``(closure, memory)`` lets us tell apart
+    drift, clockwork regularity, turbulence and candidate autopoietic
+    organisation without tying the vocabulary to any single theory.
 
     Attributes
     ----------
@@ -38,13 +46,16 @@ class AutonomyProfile:
         Albantakis / Bertschinger. In ``[0.0, 1.0]`` when computed.
         ``1.0`` means the system's next state is (given the
         environment) fully determined by its own previous state.
-    structural_memory:
-        Crutchfield excess entropy of the state trajectory, in bits.
-        Zero for constant or i.i.d. noise sequences; ``log2(p)`` for a
-        deterministic period-``p`` cycle; positive in general for
-        sequences with non-trivial temporal structure. Replaces the
-        LMC-based autopoietic ratio used in ``v0.2.x``, which
-        collapsed to zero on ordered systems.
+    memory_endo_ratio:
+        Fraction of the joint structural memory carried by the
+        system, computed as ``E(states) / (E(states) + E(env))``
+        where ``E(.)`` is Crutchfield's excess entropy. In
+        ``[0.0, 1.0]`` when computed. ``0.0`` means the trajectory's
+        memory lives entirely in the environment (or, by convention,
+        neither sequence carries memory at all); ``1.0`` means it
+        lives entirely in the system. Replaces the absolute-bit
+        ``structural_memory`` shipped in ``v0.3.x`` so that both
+        primary axes share the ratio shape of the unifying argument.
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -52,5 +63,5 @@ class AutonomyProfile:
     """
 
     ratio_endo_total: float | None = None
-    structural_memory: float | None = None
+    memory_endo_ratio: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)

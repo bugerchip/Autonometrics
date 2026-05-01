@@ -122,5 +122,5 @@ def test_roundtrip_through_csv_matches_direct_measurement(tmp_path: Path) -> Non
     profile_csv = meter.measure(traj)
 
     assert profile_direct.ratio_endo_total == pytest.approx(profile_csv.ratio_endo_total)
-    assert profile_direct.structural_memory == pytest.approx(profile_csv.structural_memory)
+    assert profile_direct.memory_endo_ratio == pytest.approx(profile_csv.memory_endo_ratio)
     assert profile_csv.metadata["adapter"] == "CSVTrajectory"
