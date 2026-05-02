@@ -13,13 +13,21 @@ dynamical-systems analysis behind a single, cross-substrate API.
 
 The unifying argument the package follows is the **Principio de
 Bordes Autodeterminados (PBA)**: a system's structural
-self-determination can be read as a *ratio of internal magnitude over
-total magnitude*. Several traditions in the autonomy literature share
-that common shape, and `autonometrics` collects them under it so
-points from different substrates land in the same comparable space.
-PBA is treated as a falsifiable working hypothesis, not as an axiom
-— see [`docs/PBA.md`](docs/PBA.md) for the full statement and
-falsification criteria (Spanish version: [`docs/PBA.es.md`](docs/PBA.es.md)).
+self-determination is a multidimensional phenomenon, and several
+traditions in the autonomy literature each operationalise one of
+its coordinates as a *ratio of internal magnitude over total
+magnitude*. `autonometrics` collects those ratios under a shared
+`[0, 1]` normalisation so points from different substrates land
+in the same comparable space. The package therefore behaves as
+an **atlas of autonomy** — a small set of charts (metrics) that
+cover the same territory from different operational angles —
+not as a reduction of autonomy to a single underlying quantity.
+PBA is treated as a falsifiable working hypothesis at that
+multidimensional level, not as an axiom and not as an
+entropy-style extensional identity. See
+[`docs/PBA.md`](docs/PBA.md) for the full statement, the
+three-level taxonomy of unification, and the falsification
+criteria (Spanish version: [`docs/PBA.es.md`](docs/PBA.es.md)).
 
 ## Installation
 
@@ -86,9 +94,9 @@ python examples/csv_demo.py         # round-trip through a CSV file
 
 ## Metrics
 
-Two metrics ship in the current alpha. Both follow the PBA *internal
-over total* shape, both live in `[0.0, 1.0]`, and both are exposed as
-pure `numpy` functions wired into `Autonometer`:
+Three metrics ship in the current alpha. All three follow the PBA
+*internal over total* shape, all three live in `[0.0, 1.0]`, and all
+three are exposed as pure `numpy` functions wired into `Autonometer`:
 
 ### `ratio_endo_total` — Albantakis / Bertschinger closure
 
@@ -128,8 +136,43 @@ shape of the package; `memory_endo_ratio` recovers PBA coherence by
 applying the same excess-entropy estimator to both components and
 returning the fraction carried by the system.
 
-Both scores are returned in a single `AutonomyProfile` with
+### `constraint_closure` — Montévil & Mossio-style organisational closure
+
+Fraction of the system's update functions (constraints) that lie on
+at least one simple directed cycle of length 2 or 3 in the
+causal-dependency graph. The metric reads only the topology of the
+graph: it is **deliberately information-theory-free**, so any
+empirical correlation with the two axes above is structural rather
+than algebraic.
+
+$$C \;=\; \frac{|\\{i : \exists \text{ simple cycle of length } 2 \text{ or } 3 \text{ through } i\\}|}{n}$$
+
+with `n` the number of constraints in the system and the dependency
+matrix exposed by each adapter via `get_causal_graph()`.
+
+- `C = 0`: no constraint is sustained by another distinct
+  constraint of the same system through a short feedback loop.
+  Single-node systems (a periodic cycle, a `SimpleAutomaton`) and
+  pure feed-forward chains land here.
+- `C = 1`: every constraint is on at least one such loop.
+  Periodic-ring cellular automata land here because each cell is
+  read by both of its neighbours, which read it back.
+- Length-1 cycles (self-loops) and length ≥ 4 cycles do **not**
+  count: the metric targets the local "membrane ↔ metabolism" shape
+  Montévil & Mossio describe, and the short-cycle restriction
+  prevents systems that close only after a long detour from getting
+  free credit.
+
+Operationalisation choices, falsification predictions and the
+domain-of-applicability discussion live in
+[`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md).
+
+All three scores are returned in a single `AutonomyProfile` with
 `Optional[float]` fields, so unrequested metrics stay `None`.
+Adapters that cannot expose a causal graph (e.g.
+`CSVTrajectory`, where only trajectories are available) make the
+orchestrator record `None` for `constraint_closure` rather than
+abort the whole measurement.
 
 ## The autonomy plane
 
@@ -164,60 +207,77 @@ interpreter argue.
 
 ## Benchmark
 
-`v0.5.0a0` ships a first reference benchmark that sweeps four
-classes of discrete systems through `Autonometer` and reports where
-they land on the autonomy plane. The intent is not to score one
-system as "more autonomous" than another. It is to check whether
-the two axes carry distinct information for the systems we can
-generate today, before adding a third axis to PBA.
+`v0.5.0a0` shipped the first reference benchmark on two axes;
+`v0.6.0a0` extends it to the third axis (`constraint_closure`)
+without changing the system zoo, so the new readings are
+directly comparable with the v0.5 baseline. The intent is not to
+score one system as "more autonomous" than another. It is to
+check whether the three axes carry distinct information for the
+systems we can generate today, before adding a fourth axis to
+PBA.
 
 Reproducing the run:
 
 ```bash
 pip install -e ".[dev]"
-python examples/benchmark_demo.py        # writes docs/benchmarks/v0.5.0a0.csv
+python examples/benchmark_demo.py        # writes docs/benchmarks/v0.6.0a0.csv
 pip install -e ".[dev,viz]"
-python examples/benchmark_plot.py        # writes docs/benchmarks/v0.5.0a0.png
+python examples/benchmark_plot.py        # writes docs/benchmarks/v0.6.0a0.png
 ```
 
 Headline numbers from the snapshot shipped here
-(`docs/benchmarks/v0.5.0a0.csv`):
+(`docs/benchmarks/v0.6.0a0.csv`):
 
-| Quantity                       | Value     |
-|--------------------------------|-----------|
-| Configurations swept           | 69        |
-| Valid points                   | 48        |
-| Configurations dropped (n/a)   | 21        |
-| Pearson r(closure, memory)     | +0.32     |
-| Spearman r(closure, memory)    | +0.56     |
-| Falsification threshold        | `|r| < 0.7` |
-| Diagnosis                      | OK        |
+| Quantity                          | Value     |
+|-----------------------------------|-----------|
+| Configurations swept              | 69        |
+| Fully-valid points                | 48        |
+| Configurations dropped (n/a)      | 21        |
+| Pearson r(closure, memory)        | +0.32     |
+| Pearson r(closure, constraint)    | -0.04     |
+| Pearson r(memory, constraint)     | -0.57     |
+| Spearman r(closure, memory)       | +0.56     |
+| Spearman r(closure, constraint)   | -0.27     |
+| Spearman r(memory, constraint)    | -0.45     |
+| Falsification threshold           | `|r| < 0.7` |
+| Aggregate diagnosis               | OK        |
 
 The 21 dropped configurations correspond to systems whose focal
 trajectory collapses to a constant or to a value fully determined
 by the environment, in which case `H(S_{t+1} | E_t) = 0` and the
 closure ratio is undefined by construction. They are kept in the
-CSV with `n/a` in the metric columns so the dropout is visible
-rather than hidden.
+CSV with empty metric columns so the dropout is visible rather
+than hidden.
 
-Both correlations stay below the `|r| < 0.7` falsification threshold
-documented in [`docs/PBA.md`](docs/PBA.md), so on this zoo of
-systems the two axes carry distinct information and PBA's
-*"add more ratios in the same shape"* roadmap remains motivated.
-The Spearman value of `+0.56` is moderate, not low: it is partly
-inflated by a saturation cluster at `closure = 1.0`. Every elementary
-cellular automaton configuration with non-zero conditional
-variability lands on that vertical wall (the focal cell is fully
-determined by `(S_t, E_t)` by construction), and the periodic and
-self-generated systems collapse to roughly `(1, 0.97)`. That cluster
-is a property of the current adapter zoo, not of the metric pair,
-and motivates extending the zoo before extending the plane.
+All three pairwise Pearson correlations stay below the
+`|r| < 0.7` falsification threshold documented in
+[`docs/PBA.md`](docs/PBA.md), so on this zoo of systems the three
+axes carry distinct information and PBA's *"add more ratios in
+the same shape"* roadmap remains motivated. The aggregate flag is
+the worst of the three pairwise flags so a single overlap is
+enough to raise it.
 
-A scatter rendering of the same CSV is shipped at
-[`docs/benchmarks/v0.5.0a0.png`](docs/benchmarks/v0.5.0a0.png), and
-the captured stdout of the reference run lives at
-[`docs/benchmarks/v0.5.0a0.log.txt`](docs/benchmarks/v0.5.0a0.log.txt)
-for traceability.
+The third axis cleanly **breaks the closure-saturation wall**
+identified in `v0.5.0a0`: single-node periodic cycles and
+self-generated `SimpleAutomaton` systems, which previously sat
+indistinguishably from ECA rings on the vertical line
+`closure = 1.0`, now drop to `constraint = 0.0` while ECA rings
+stay at `constraint = 1.0`. The wall is therefore not resolved
+(closure still saturates by construction in fully-observed
+deterministic systems) but it is no longer the only readable
+signal.
+
+A scatter rendering of the same CSV — points placed on the
+`(closure, memory)` plane, with marker size proportional to the
+`constraint` axis — is shipped at
+[`docs/benchmarks/v0.6.0a0.png`](docs/benchmarks/v0.6.0a0.png),
+and the captured stdout of the reference run lives at
+[`docs/benchmarks/v0.6.0a0.log.txt`](docs/benchmarks/v0.6.0a0.log.txt)
+for traceability. The two-axis baseline from `v0.5.0a0` is kept
+under
+[`docs/benchmarks/v0.5.0a0.csv`](docs/benchmarks/v0.5.0a0.csv)
+and
+[`docs/benchmarks/v0.5.0a0.png`](docs/benchmarks/v0.5.0a0.png).
 
 ### Saturation diagnostic (`v0.5.1a0`)
 
@@ -326,8 +386,11 @@ build on are:
   closure of constraints*. Journal of Theoretical Biology — formal
   framework where biological organisation is read as mutual
   dependence among constraints (each both produced by and producing
-  the others). Reference for the constraint-closure axis planned
-  in the roadmap.
+  the others). Reference for the `constraint_closure` axis shipped
+  in `v0.6.0a0`; the operational mapping from the paper's
+  primitives to the package's discrete-graph implementation is
+  documented in
+  [`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md).
 
 ## Related work
 
@@ -380,25 +443,34 @@ the structural self-determination literature, keeping the same
 PBA convention so all axes remain comparable. The order below
 prioritises empirical validation of the existing axes before
 broadening them: the first benchmark run shipped in `v0.5.0a0`
-established that `closure` and `memory` carry distinct information
-on the current adapter zoo, which is what makes adding a third
-axis meaningful rather than redundant.
+established that `closure` and `memory` carry distinct
+information on the current adapter zoo, the `v0.5.1a0`
+diagnostic mapped the `closure = 1.0` saturation wall, and
+`v0.6.0a0` adds the third axis to break that wall while
+preserving pairwise independence.
 
-- `v0.5.0-alpha` *(current)*: benchmark suite + scatter plot.
-  Reference systems (`ECASystem`, `KauffmanNetwork`,
-  `PeriodicCycle`) wired into a sweep that measures `(closure,
-  memory)` over multiple seeds and reports correlation against the
-  PBA falsification threshold. Snapshot CSV, PNG and stdout log
-  shipped under `docs/benchmarks/`.
-- `v0.6.0-alpha`: third axis — RAI-style relative autonomy ratio
-  (Deci & Ryan).
-- `v0.7.0-alpha`: fourth axis — coherence-based alignment ratio.
-- `v0.8.0-alpha`: fifth axis — constraint-closure ratio
-  (Montévil & Mossio-style).
+- `v0.5.0-alpha`: benchmark suite + scatter plot. Reference
+  systems (`ECASystem`, `KauffmanNetwork`, `PeriodicCycle`) wired
+  into a sweep that measures `(closure, memory)` over multiple
+  seeds and reports correlation against the PBA falsification
+  threshold.
+- `v0.5.1-alpha`: saturation diagnostic. Bernoulli bit-flip
+  noise sweep on a saturating ECA, formal statement of the
+  closure-saturation theorem, and the "domain of applicability"
+  section in `docs/PBA.md`.
+- `v0.6.0-alpha` *(current)*: third axis —
+  `constraint_closure` (Montévil & Mossio-style). Per-adapter
+  causal-graph implementations, three-axis benchmark snapshot
+  with three pairwise correlations, and an
+  independence-by-design audit.
+- `v0.7.0-alpha`: fourth axis — RAI-style relative autonomy
+  ratio (Deci & Ryan).
+- `v0.8.0-alpha`: fifth axis — coherence-based alignment ratio.
 - `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
   and additional public-dataset benchmarks.
-- `v1.0.0` (without alpha marker): PyPI publication once five ratios,
-  three adapters, and the full benchmark battery are stable.
+- `v1.0.0` (without alpha marker): PyPI publication once five
+  ratios, three adapters, and the full benchmark battery are
+  stable.
 
 ## License
 

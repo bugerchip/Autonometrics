@@ -10,7 +10,7 @@ def test_package_imports() -> None:
 
 
 def test_version_is_pep440_alpha() -> None:
-    assert autonometrics.__version__ == "0.5.1a0"
+    assert autonometrics.__version__ == "0.6.0a0"
 
 
 def test_public_api_exported() -> None:

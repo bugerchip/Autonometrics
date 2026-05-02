@@ -7,6 +7,139 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.6.0a0] - 2026-05-01
+
+### Added
+
+- Third PBA axis: **constraint-closure** (Montévil & Mossio).
+  `src/autonometrics/metrics/constraint_closure.py` implements
+  `compute_constraint_closure(causal_graph)`, returning a ratio in
+  `[0, 1]`: the fraction of a system's update-function nodes that
+  lie on at least one simple directed cycle of length 2 or 3 in
+  the causal-dependency graph. Self-loops do not count, and cycles
+  of length 4 or longer are excluded by design so that systems on
+  globally-cyclic boundary conditions (e.g. periodic ECA rings)
+  are not awarded a free pass on closure they did not earn
+  organisationally.
+- `AutonomyProfile.constraint_closure: float | None` field.
+- `Autonometer` now dispatches three metric inputs: trajectories
+  for `albantakis` and `memory`, and a causal graph for
+  `constraint_closure`. Adapters that do not implement
+  `get_causal_graph()` (or that raise `NotImplementedError`) make
+  the orchestrator record `None` for that field rather than
+  abort the whole measurement, so the public API stays
+  backwards compatible for `CSVTrajectory`-style inputs.
+- `get_causal_graph()` implementations on every adapter shipped
+  with the package: `ECASystem` (periodic three-neighbour ring),
+  `KauffmanNetwork` (one row per node from `_inputs`),
+  `PeriodicCycle` (single self-loop), `SimpleAutomaton`
+  (single node, with or without a self-loop depending on
+  mode).
+- `docs/CONSTRAINT_CLOSURE.md` — detailed design document for
+  the new axis. Spells out the operationalisation choices
+  (constraint = update function, dependency = topological,
+  closure counted only on simple cycles of length 2 or 3),
+  per-adapter predictions with falsification thresholds, the
+  pre-implementation review that motivated the
+  short-cycle restriction, and an
+  independence-by-design guarantee against information-theoretic
+  imports.
+- `tests/test_constraint_closure.py` — 15 canonical-graph tests
+  pinning the metric on small graphs (single node, mutual pair,
+  triangle, chain, complete graph, partial closure, length-4
+  cycle alone, and the input-validation paths). Includes a
+  static audit that re-reads the metric module and asserts it
+  imports neither `_entropy` nor any of the existing metric
+  modules.
+- `tests/test_constraint_closure_adapters.py` — 19 adapter-level
+  tests checking that each adapter's `get_causal_graph()` agrees
+  with the design predictions, that the metric scores on each
+  adapter fall in the expected ranges (ECA = 1.0, Periodic and
+  SimpleAutomaton = 0.0, Kauffman K=1 low / K=3 high), and that
+  the orchestrator returns `None` instead of aborting on
+  graph-less adapters.
+- `examples/benchmark_demo.py` — extended to three axes and
+  three pairwise correlations
+  (`closure-memory`, `closure-constraint`,
+  `memory-constraint`). The aggregate diagnosis flag is now the
+  worst of the three pairwise flags so a single overlap raises
+  it.
+- `examples/benchmark_plot.py` — encodes the `constraint` axis
+  as marker size on the existing 2-D scatter. Falls back to a
+  uniform marker size when the input CSV has no
+  `constraint` column, so older snapshots keep rendering
+  unchanged.
+- `docs/benchmarks/v0.6.0a0.csv`,
+  `docs/benchmarks/v0.6.0a0.png`,
+  `docs/benchmarks/v0.6.0a0.log.txt` — snapshot of the
+  three-axis run shipped with this release.
+
+### Notes on the benchmark run
+
+For the systems and parameter sweeps shipped here:
+
+- Sample: 48 fully-valid `(closure, memory, constraint)` points
+  out of 69 configurations (21 degenerate to a constant focal
+  trajectory and are excluded).
+- Pairwise Pearson correlations:
+  `r(closure, memory) = +0.3193`,
+  `r(closure, constraint) = -0.0425`,
+  `r(memory, constraint) = -0.5675`.
+- Pairwise Spearman correlations:
+  `r(closure, memory) = +0.5589`,
+  `r(closure, constraint) = -0.2736`,
+  `r(memory, constraint) = -0.4458`.
+- All three Pearson values are below the `|r| < 0.7`
+  falsification threshold from `docs/PBA.md`. The aggregate
+  diagnostic flag is `OK`. The three axes therefore carry
+  distinct information on the current adapter zoo, and adding
+  the fourth axis remains motivated.
+- The third axis breaks the `closure = 1.0` saturation wall
+  identified in `v0.5.0a0` and characterised in `v0.5.1a0`.
+  Single-node periodic cycles and self-generated automata,
+  which previously sat indistinguishably with the ECA rings on
+  that wall, now drop cleanly to `constraint = 0.0` while ECA
+  rings stay at `constraint = 1.0`. The wall is therefore not
+  resolved (closure still saturates by construction in
+  fully-observed deterministic systems) but the wall is no
+  longer the only readable signal.
+
+### Changed
+
+- `_METRIC_REGISTRY` and `Autonometer.measure` now route metrics
+  by input kind (trajectory vs causal graph). The dispatch is
+  internal; user code that calls `Autonometer.measure(system)`
+  is unaffected.
+- `docs/PBA.md` and `docs/PBA.es.md`: new section "What kind of
+  unification PBA proposes" / "Qué tipo de unificación propone
+  PBA" formalising the multidimensional-atlas framing surfaced
+  by the v0.6 benchmark results. PBA is positioned as a
+  **Level 2** unification (shared structure with multiple
+  coordinates, like color, Big Five personality, or temperature
+  before the kinetic theory) rather than a **Level 1**
+  unification (extensional identity, entropy-style). The Level 1
+  reading is recorded as already-falsified by the observed
+  pairwise correlations of `+0.32`, `-0.04` and `-0.57`; the
+  Level 2 reading is what the package actually claims and what
+  the benchmarks test. The phrase "atlas of autonomy" is
+  introduced as the canonical one-line description.
+- `docs/PBA.md` and `docs/PBA.es.md`: "Domain of applicability"
+  now records that the third axis complements the wall rather
+  than replacing it (`closure = 1.0` saturation for
+  fully-observed deterministic systems is still a theorem of
+  the metric, but `constraint_closure` separates single-node
+  systems from networked ones inside that wall). "Current
+  evidence status" and "Next decision points" updated to
+  reflect three axes implemented and the v0.6 benchmark
+  results.
+- `README.md` opening paragraph reframes the PBA pitch around
+  the atlas-of-autonomy framing instead of suggesting an
+  entropy-style reduction.
+- `pyproject.toml` and `src/autonometrics/__init__.py` bumped
+  to `0.6.0a0`.
+- Public API re-export: `compute_constraint_closure` is now
+  available from the top-level `autonometrics` namespace.
+
 ## [0.5.1a0] - 2026-05-01
 
 ### Added
