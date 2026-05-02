@@ -1,20 +1,20 @@
-"""Mini-benchmark for ``autonometrics`` v0.6.0a0.
+"""Mini-benchmark for ``autonometrics`` v0.7.0a0.
 
 Sweeps a curated set of systems whose autonomy structure is
 independently understood (elementary cellular automata, random Boolean
 networks at varying focal coupling, period-``p`` cycles, and the
-package's existing ``SimpleAutomaton``), measures the three current
-PBA axes ``(closure, memory, constraint)`` for each, and reports:
+package's existing ``SimpleAutomaton``), measures the four current
+PBA axes ``(closure, memory, constraint, persistence)`` for each,
+and reports:
 
 - a per-system table on stdout,
-- a CSV snapshot at ``docs/benchmarks/v0.6.0a0.csv`` (overridable
+- a CSV snapshot at ``docs/benchmarks/v0.7.0a0.csv`` (overridable
   via ``--output``),
 - aggregate Pearson and Spearman correlations between every pair of
-  axes (``closure-memory``, ``closure-constraint``,
-  ``memory-constraint``),
+  the four axes (six pairs in total),
 - a quick-look diagnosis flag (``OK`` / ``WARN`` / ``FAIL``) keyed
   to the engineered-correlation thresholds spelt out in
-  ``docs/PBA.md``. The aggregate flag is the worst of the three
+  ``docs/PBA.md``. The aggregate flag is the worst of the six
   pairwise flags so a single overlap is enough to raise it.
 
 Usage::
@@ -46,7 +46,7 @@ from autonometrics.benchmarks import ECASystem, KauffmanNetwork, PeriodicCycle
 
 @dataclass
 class BenchmarkPoint:
-    """A single ``(closure, memory, constraint)`` measurement on one system."""
+    """One ``(closure, memory, constraint, persistence)`` measurement."""
 
     system_class: str
     params: str
@@ -54,6 +54,7 @@ class BenchmarkPoint:
     closure: float | None
     memory: float | None
     constraint: float | None
+    persistence: float | None
     quadrant: str
     notes: str
 
@@ -66,7 +67,10 @@ _N_STEPS = 2000
 _PAIRS: tuple[tuple[str, str], ...] = (
     ("closure", "memory"),
     ("closure", "constraint"),
+    ("closure", "persistence"),
     ("memory", "constraint"),
+    ("memory", "persistence"),
+    ("constraint", "persistence"),
 )
 
 
@@ -176,21 +180,23 @@ def quadrant_of(closure: float | None, memory: float | None) -> str:
 
 def measure_safe(
     meter: Autonometer, system: Any
-) -> tuple[float | None, float | None, float | None, str]:
+) -> tuple[float | None, float | None, float | None, float | None, str]:
     """Run ``meter.measure`` and turn ``ValueError`` into a recorded note.
 
     Degenerate trajectories (constant series, zero conditional entropy,
-    too-short sequences) are a known property of some benchmark
-    systems; the demo records them rather than aborting.
+    too-short sequences, near-constant focal marginals) are a known
+    property of some benchmark systems; the demo records them rather
+    than aborting.
     """
     try:
         profile = meter.measure(system)
     except ValueError as exc:
-        return None, None, None, _truncate(str(exc))
+        return None, None, None, None, _truncate(str(exc))
     return (
         profile.ratio_endo_total,
         profile.memory_endo_ratio,
         profile.constraint_closure,
+        profile.rai_proxy_persistence,
         "",
     )
 
@@ -244,10 +250,12 @@ def _aggregate_flag(flags: dict[str, str]) -> str:
 
 def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
     """Generate every system, measure it, and return the list of points."""
-    meter = Autonometer(metrics=["albantakis", "memory", "constraint_closure"])
+    meter = Autonometer(
+        metrics=["albantakis", "memory", "constraint_closure", "persistence"]
+    )
     points: list[BenchmarkPoint] = []
     for system_class, params, seed, system in iter_systems(quick=quick):
-        closure, memory, constraint, notes = measure_safe(meter, system)
+        closure, memory, constraint, persistence, notes = measure_safe(meter, system)
         points.append(
             BenchmarkPoint(
                 system_class=system_class,
@@ -256,6 +264,7 @@ def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
                 closure=closure,
                 memory=memory,
                 constraint=constraint,
+                persistence=persistence,
                 quadrant=quadrant_of(closure, memory),
                 notes=notes,
             )
@@ -265,10 +274,18 @@ def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
 
 def print_table(points: list[BenchmarkPoint]) -> None:
     """Pretty-print one row per benchmark point on stdout."""
-    fmt = "{:<18} {:<22} {:>4} {:>10} {:>10} {:>10} {:<14} {}"
+    fmt = "{:<18} {:<22} {:>4} {:>10} {:>10} {:>10} {:>11} {:<14} {}"
     print(
         fmt.format(
-            "class", "params", "seed", "closure", "memory", "constraint", "quadrant", "notes"
+            "class",
+            "params",
+            "seed",
+            "closure",
+            "memory",
+            "constraint",
+            "persistence",
+            "quadrant",
+            "notes",
         )
     )
     print(
@@ -279,6 +296,7 @@ def print_table(points: list[BenchmarkPoint]) -> None:
             "-" * 10,
             "-" * 10,
             "-" * 10,
+            "-" * 11,
             "-" * 14,
             "-" * 30,
         )
@@ -287,7 +305,12 @@ def print_table(points: list[BenchmarkPoint]) -> None:
         c = "n/a" if p.closure is None else f"{p.closure:.4f}"
         m = "n/a" if p.memory is None else f"{p.memory:.4f}"
         cc = "n/a" if p.constraint is None else f"{p.constraint:.4f}"
-        print(fmt.format(p.system_class, p.params, p.seed, c, m, cc, p.quadrant, p.notes))
+        pp = "n/a" if p.persistence is None else f"{p.persistence:.4f}"
+        print(
+            fmt.format(
+                p.system_class, p.params, p.seed, c, m, cc, pp, p.quadrant, p.notes
+            )
+        )
 
 
 _CSV_FIELDS = [
@@ -297,6 +320,7 @@ _CSV_FIELDS = [
     "closure",
     "memory",
     "constraint",
+    "persistence",
     "quadrant",
     "notes",
 ]
@@ -311,7 +335,7 @@ def write_csv(points: list[BenchmarkPoint], path: Path) -> None:
         for p in points:
             row = asdict(p)
             row["class"] = row.pop("system_class")
-            for key in ("closure", "memory", "constraint"):
+            for key in ("closure", "memory", "constraint", "persistence"):
                 row[key] = "" if row[key] is None else f"{row[key]:.6f}"
             writer.writerow(row)
 
@@ -342,7 +366,10 @@ def summarise(points: list[BenchmarkPoint]) -> dict[str, Any]:
     n_valid_full = sum(
         1
         for p in points
-        if p.closure is not None and p.memory is not None and p.constraint is not None
+        if p.closure is not None
+        and p.memory is not None
+        and p.constraint is not None
+        and p.persistence is not None
     )
 
     correlations: dict[str, dict[str, float | str | int]] = {}
@@ -427,7 +454,7 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.0a0.csv"
 )
 
 

@@ -207,10 +207,10 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
 
 
 _DEFAULT_CSV = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.0a0.csv"
 )
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.png"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.0a0.png"
 )
 
 

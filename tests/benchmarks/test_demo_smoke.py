@@ -52,6 +52,8 @@ def test_quick_run_points_have_valid_fields(demo: ModuleType) -> None:
             assert 0.0 <= p.memory <= 1.0
         if p.constraint is not None:
             assert 0.0 <= p.constraint <= 1.0
+        if p.persistence is not None:
+            assert 0.0 <= p.persistence <= 1.0
         assert p.quadrant in {"drift", "clockwork", "turbulence", "autopoietic", "n/a"}
 
 
@@ -70,6 +72,7 @@ def test_write_csv_produces_well_formed_file(demo: ModuleType, tmp_path: Path) -
         "closure",
         "memory",
         "constraint",
+        "persistence",
         "quadrant",
         "notes",
     ]
@@ -85,7 +88,10 @@ def test_summarise_returns_expected_keys(demo: ModuleType) -> None:
     assert set(pairs.keys()) == {
         "closure-memory",
         "closure-constraint",
+        "closure-persistence",
         "memory-constraint",
+        "memory-persistence",
+        "constraint-persistence",
     }
     for stats in pairs.values():
         assert {"n", "pearson", "spearman", "flag"} <= stats.keys()
