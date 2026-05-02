@@ -62,6 +62,7 @@ class ECASystem:
 
         self._state_history: np.ndarray | None = None
         self._env_history: np.ndarray | None = None
+        self._row_history: np.ndarray | None = None
 
     def _initial_row(self) -> np.ndarray:
         if self._init == _INIT_SINGLE:
@@ -77,20 +78,27 @@ class ECASystem:
         return ((self._rule >> pattern) & 1).astype(np.int64)
 
     def run(self) -> None:
-        """Evolve the grid and cache the focal-cell state and neighbour env."""
+        """Evolve the grid and cache the focal-cell state and neighbour env.
+
+        The full per-timestep row is also cached as ``_row_history`` to
+        support replay-based metrics (perturbation persistence).
+        """
         centre = self._width // 2
         row = self._initial_row()
 
         states = np.empty(self._n_steps, dtype=np.int64)
         envs = np.empty(self._n_steps, dtype=np.int64)
+        rows = np.empty((self._n_steps, self._width), dtype=np.int64)
 
         for t in range(self._n_steps):
+            rows[t] = row
             states[t] = int(row[centre])
             envs[t] = int(row[centre - 1] * 2 + row[(centre + 1) % self._width])
             row = self._step(row)
 
         self._state_history = states
         self._env_history = envs
+        self._row_history = rows
 
     def get_state_history(self) -> np.ndarray:
         if self._state_history is None:
@@ -103,6 +111,50 @@ class ECASystem:
             self.run()
         assert self._env_history is not None
         return self._env_history.copy()
+
+    def replay_from_perturbation(
+        self,
+        t_star: int,
+        n_steps: int,
+        rng: np.random.Generator | None = None,
+    ) -> np.ndarray:
+        """Return the focal trajectory after a single bit-flip at ``t_star``.
+
+        The full row at time ``t_star`` is taken from the cached
+        evolution, the centre cell is bit-flipped, and the rule is
+        applied for ``n_steps`` further steps. The focal-cell value at
+        each successor step ``t_star + 1, ..., t_star + n_steps`` is
+        returned. ``rng`` is accepted for protocol symmetry but is
+        unused: the elementary cellular automaton is fully
+        deterministic and the perturbation is single-bit at a fixed
+        location, so reproducibility is intrinsic.
+        """
+        del rng
+        if self._row_history is None:
+            self.run()
+        assert self._row_history is not None
+
+        if t_star < 0 or t_star >= self._n_steps - 1:
+            raise ValueError(
+                f"t_star must be in [0, {self._n_steps - 2}], got {t_star}"
+            )
+        if n_steps < 1:
+            raise ValueError(f"n_steps must be positive, got {n_steps}")
+        if t_star + n_steps >= self._n_steps:
+            raise ValueError(
+                f"t_star + n_steps must be < {self._n_steps}, got "
+                f"{t_star + n_steps}"
+            )
+
+        centre = self._width // 2
+        row = self._row_history[t_star].copy()
+        row[centre] = 1 - int(row[centre])
+
+        out = np.empty(n_steps, dtype=np.int64)
+        for k in range(n_steps):
+            row = self._step(row)
+            out[k] = int(row[centre])
+        return out
 
     def get_causal_graph(self) -> np.ndarray:
         """Return the causal-dependency graph among the system's cells.

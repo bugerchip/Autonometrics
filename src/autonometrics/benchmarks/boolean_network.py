@@ -71,6 +71,8 @@ class KauffmanNetwork:
 
         self._state_history: np.ndarray | None = None
         self._env_history: np.ndarray | None = None
+        self._full_state_history: np.ndarray | None = None
+        self._weights = (1 << np.arange(self._k - 1, -1, -1)).astype(np.int64)
 
     def _choose_env_node(self) -> int:
         candidates = [i for i in range(self._n_nodes) if i != self._focal]
@@ -98,26 +100,33 @@ class KauffmanNetwork:
 
         return inputs
 
+    def _step_full(self, state: np.ndarray) -> np.ndarray:
+        """Apply one synchronous update to the full network state."""
+        indexed_inputs = state[self._inputs]
+        patterns = indexed_inputs.dot(self._weights)
+        return self._truth_tables[np.arange(self._n_nodes), patterns].astype(np.int64)
+
     def run(self) -> None:
-        """Evolve the network and cache focal-state and env-node trajectories."""
+        """Evolve the network and cache focal-state and env-node trajectories.
+
+        The full network state is also cached as ``_full_state_history``
+        to support replay-based metrics (perturbation persistence).
+        """
         state = self._rng.integers(0, 2, size=self._n_nodes).astype(np.int64)
 
         states = np.empty(self._n_steps, dtype=np.int64)
         envs = np.empty(self._n_steps, dtype=np.int64)
-
-        weights = (1 << np.arange(self._k - 1, -1, -1)).astype(np.int64)
+        full = np.empty((self._n_steps, self._n_nodes), dtype=np.int64)
 
         for t in range(self._n_steps):
+            full[t] = state
             states[t] = int(state[self._focal])
             envs[t] = int(state[self._env_node])
-
-            indexed_inputs = state[self._inputs]
-            patterns = indexed_inputs.dot(weights)
-            new_state = self._truth_tables[np.arange(self._n_nodes), patterns]
-            state = new_state.astype(np.int64)
+            state = self._step_full(state)
 
         self._state_history = states
         self._env_history = envs
+        self._full_state_history = full
 
     def get_state_history(self) -> np.ndarray:
         if self._state_history is None:
@@ -130,6 +139,47 @@ class KauffmanNetwork:
             self.run()
         assert self._env_history is not None
         return self._env_history.copy()
+
+    def replay_from_perturbation(
+        self,
+        t_star: int,
+        n_steps: int,
+        rng: np.random.Generator | None = None,
+    ) -> np.ndarray:
+        """Return the focal trajectory after flipping the focal node at ``t_star``.
+
+        The full network state at time ``t_star`` is taken from the
+        cached evolution, the focal node's bit is flipped, and the
+        synchronous update is applied for ``n_steps`` further steps.
+        ``rng`` is accepted for protocol symmetry but unused: the
+        Kauffman network is fully deterministic given the seeded
+        truth tables and the (already-fixed) initial state.
+        """
+        del rng
+        if self._full_state_history is None:
+            self.run()
+        assert self._full_state_history is not None
+
+        if t_star < 0 or t_star >= self._n_steps - 1:
+            raise ValueError(
+                f"t_star must be in [0, {self._n_steps - 2}], got {t_star}"
+            )
+        if n_steps < 1:
+            raise ValueError(f"n_steps must be positive, got {n_steps}")
+        if t_star + n_steps >= self._n_steps:
+            raise ValueError(
+                f"t_star + n_steps must be < {self._n_steps}, got "
+                f"{t_star + n_steps}"
+            )
+
+        state = self._full_state_history[t_star].copy()
+        state[self._focal] = 1 - int(state[self._focal])
+
+        out = np.empty(n_steps, dtype=np.int64)
+        for k in range(n_steps):
+            state = self._step_full(state)
+            out[k] = int(state[self._focal])
+        return out
 
     def get_causal_graph(self) -> np.ndarray:
         """Return the causal-dependency graph among the network's nodes.

@@ -68,6 +68,39 @@ class PeriodicCycle:
         """
         return np.array([[True]], dtype=bool)
 
+    def replay_from_perturbation(
+        self,
+        t_star: int,
+        n_steps: int,
+        rng: np.random.Generator | None = None,
+    ) -> np.ndarray:
+        """Return the focal trajectory after a single phase shift at ``t_star``.
+
+        The unperturbed trajectory is ``state[t] = t mod period``. The
+        perturbation advances the state at ``t_star`` by one
+        (``(t_star + 1) mod period``), and the rule continues
+        incrementing modulo the period. The perturbed trajectory
+        therefore stays exactly one step ahead of the unperturbed
+        one for every subsequent timestep, so the focal mismatch
+        is structurally permanent — the metric's expected score is
+        ``0.0`` for this adapter, mirroring the closed-form
+        ``constraint_closure = 0`` prediction. ``rng`` is accepted
+        for protocol symmetry and is unused.
+        """
+        del rng
+        n = self._n_steps
+        if t_star < 0 or t_star >= n - 1:
+            raise ValueError(f"t_star must be in [0, {n - 2}], got {t_star}")
+        if n_steps < 1:
+            raise ValueError(f"n_steps must be positive, got {n_steps}")
+        if t_star + n_steps >= n:
+            raise ValueError(
+                f"t_star + n_steps must be < {n}, got {t_star + n_steps}"
+            )
+
+        offsets = np.arange(t_star + 1, t_star + 1 + n_steps, dtype=np.int64)
+        return ((offsets + 1) % self._period).astype(np.int64)
+
     @property
     def period(self) -> int:
         return self._period

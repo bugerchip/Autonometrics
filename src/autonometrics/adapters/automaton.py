@@ -64,6 +64,8 @@ class SimpleAutomaton:
             self._self_transition = None
 
         self._state_history: np.ndarray | None = None
+        self._noise_plan: np.ndarray | None = None
+        self._noise_values: np.ndarray | None = None
 
     def _build_self_transition(self, n_states: int) -> np.ndarray:
         """Build a single-cycle permutation, guaranteeing no fixed points."""
@@ -107,7 +109,13 @@ class SimpleAutomaton:
         )
 
     def run(self) -> None:
-        """Execute the automaton over the full environment history and cache states."""
+        """Execute the automaton over the full environment history and cache states.
+
+        For external mode, the per-step noise plan is also cached
+        (mask + replacement values) so that ``replay_from_perturbation``
+        can reuse the exact same noise stream and isolate the effect of
+        the injected perturbation.
+        """
         n = self._env.size
         history = np.empty(n, dtype=np.int64)
         history[0] = 0
@@ -117,15 +125,24 @@ class SimpleAutomaton:
             table = self._self_transition
             for i in range(1, n):
                 history[i] = int(table[history[i - 1]])
+            self._noise_plan = None
+            self._noise_values = None
         else:
             assert self._env_transition is not None
             table = self._env_transition
             noise = self._external_noise
+            plan = np.zeros(n, dtype=bool)
+            values = np.zeros(n, dtype=np.int64)
             for i in range(1, n):
                 if self._rng.random() < noise:
-                    history[i] = int(self._rng.integers(0, self._n_states))
+                    drawn = int(self._rng.integers(0, self._n_states))
+                    history[i] = drawn
+                    plan[i] = True
+                    values[i] = drawn
                 else:
                     history[i] = int(table[int(self._env[i - 1])])
+            self._noise_plan = plan
+            self._noise_values = values
 
         self._state_history = history
 
@@ -137,6 +154,65 @@ class SimpleAutomaton:
 
     def get_env_history(self) -> np.ndarray:
         return self._env.copy()
+
+    def replay_from_perturbation(
+        self,
+        t_star: int,
+        n_steps: int,
+        rng: np.random.Generator | None = None,
+    ) -> np.ndarray:
+        """Return the focal trajectory after advancing the state at ``t_star``.
+
+        For ``self_generated`` mode the perturbed value is the next
+        symbol in the state-cycle permutation; for ``external`` mode
+        it is ``(state + 1) % n_states``. Subsequent steps reuse the
+        original cached noise plan when present, so that the perturbed
+        and the unperturbed trajectories differ only because of the
+        injected perturbation. ``rng`` is accepted for protocol
+        symmetry and is unused.
+        """
+        del rng
+        if self._state_history is None:
+            self.run()
+        assert self._state_history is not None
+
+        n = self._env.size
+        if t_star < 0 or t_star >= n - 1:
+            raise ValueError(f"t_star must be in [0, {n - 2}], got {t_star}")
+        if n_steps < 1:
+            raise ValueError(f"n_steps must be positive, got {n_steps}")
+        if t_star + n_steps >= n:
+            raise ValueError(
+                f"t_star + n_steps must be < {n}, got {t_star + n_steps}"
+            )
+
+        baseline = int(self._state_history[t_star])
+        perturbed = (baseline + 1) % self._n_states
+        if perturbed == baseline:
+            perturbed = (baseline + 1) % self._n_states
+
+        out = np.empty(n_steps, dtype=np.int64)
+        cur = perturbed
+
+        if self._mode == _MODE_SELF:
+            assert self._self_transition is not None
+            table = self._self_transition
+            for k in range(n_steps):
+                cur = int(table[cur])
+                out[k] = cur
+        else:
+            assert self._env_transition is not None
+            assert self._noise_plan is not None
+            assert self._noise_values is not None
+            table = self._env_transition
+            for k in range(n_steps):
+                idx = t_star + 1 + k
+                if self._noise_plan[idx]:
+                    cur = int(self._noise_values[idx])
+                else:
+                    cur = int(table[int(self._env[idx - 1])])
+                out[k] = cur
+        return out
 
     def get_causal_graph(self) -> np.ndarray:
         """Return the single-node causal graph for this automaton.
