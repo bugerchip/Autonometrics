@@ -67,6 +67,21 @@ class AutonomyProfile:
         biological notion of organisational closure; details and
         falsification criteria live in
         ``docs/CONSTRAINT_CLOSURE.md``.
+    rai_proxy_persistence:
+        Lee & McShea-style perturbation-persistence proxy. In
+        ``[0.0, 1.0]`` when computed. Measures how strongly the
+        system returns to its own unperturbed trajectory after a
+        single-element perturbation, normalised against the chance
+        baseline of two independent random trajectories of the
+        same focal alphabet. ``1.0`` means perturbations are
+        absorbed perfectly; ``0.0`` means perturbations propagate
+        as much as random noise. Operationalises a structural
+        autonomous-motivation proxy from Self-Determination Theory
+        (Deci & Ryan); the design rationale and validation plan
+        live in ``docs/RAI.md``. The metric is a *structural
+        proxy* for the autonomous-vs-controlled motivation
+        distinction; strong validation against transcript-based
+        RAI scoring is deferred to ``v0.9.0``.
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -76,4 +91,5 @@ class AutonomyProfile:
     ratio_endo_total: float | None = None
     memory_endo_ratio: float | None = None
     constraint_closure: float | None = None
+    rai_proxy_persistence: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)

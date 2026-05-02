@@ -94,3 +94,43 @@ def test_metadata_is_populated() -> None:
     assert profile.metadata["metrics"] == ["albantakis"]
     assert profile.metadata["n_timesteps"] == 1500
     assert profile.metadata["adapter"] == "_StaticSystem"
+
+
+def test_persistence_returns_none_when_adapter_lacks_replay() -> None:
+    """``CSVTrajectory``-style replay-less adapters must score ``None``
+    on the persistence axis without aborting other axes.
+    """
+    system = _make_system(n=1500)
+    profile = Autonometer(metrics=["persistence"]).measure(system)
+    assert profile.rai_proxy_persistence is None
+    assert profile.ratio_endo_total is None
+    assert profile.memory_endo_ratio is None
+    assert profile.constraint_closure is None
+
+
+def test_persistence_runs_when_adapter_exposes_replay() -> None:
+    from autonometrics.benchmarks import ECASystem
+
+    eca = ECASystem(rule=110, n_steps=400, width=51, seed=0)
+    profile = Autonometer(metrics=["persistence"]).measure(eca)
+    assert profile.rai_proxy_persistence is not None
+    assert 0.0 <= profile.rai_proxy_persistence <= 1.0
+
+
+def test_four_axis_combo_populates_only_requested_fields() -> None:
+    from autonometrics.benchmarks import ECASystem
+
+    eca = ECASystem(rule=110, n_steps=600, width=51, seed=0)
+    profile = Autonometer(
+        metrics=["albantakis", "memory", "constraint_closure", "persistence"]
+    ).measure(eca)
+    assert profile.ratio_endo_total is not None
+    assert profile.memory_endo_ratio is not None
+    assert profile.constraint_closure is not None
+    assert profile.rai_proxy_persistence is not None
+    assert profile.metadata["metrics"] == [
+        "albantakis",
+        "memory",
+        "constraint_closure",
+        "persistence",
+    ]

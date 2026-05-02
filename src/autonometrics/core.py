@@ -11,6 +11,7 @@ from autonometrics.metrics import (
     compute_albantakis,
     compute_constraint_closure,
     compute_memory_endo_ratio,
+    compute_rai_proxy_persistence,
 )
 from autonometrics.profile import AutonomyProfile
 
@@ -20,23 +21,27 @@ _MetricFn = Callable[..., float]
 
 _INPUT_TRAJECTORY = "states_env"
 _INPUT_GRAPH = "causal_graph"
+_INPUT_REPLAY = "states_env_replay"
 
 _METRIC_REGISTRY: dict[str, _MetricFn] = {
     "albantakis": compute_albantakis,
     "memory": compute_memory_endo_ratio,
     "constraint_closure": compute_constraint_closure,
+    "persistence": compute_rai_proxy_persistence,
 }
 
 _METRIC_INPUT: dict[str, str] = {
     "albantakis": _INPUT_TRAJECTORY,
     "memory": _INPUT_TRAJECTORY,
     "constraint_closure": _INPUT_GRAPH,
+    "persistence": _INPUT_REPLAY,
 }
 
 _PROFILE_FIELD: dict[str, str] = {
     "albantakis": "ratio_endo_total",
     "memory": "memory_endo_ratio",
     "constraint_closure": "constraint_closure",
+    "persistence": "rai_proxy_persistence",
 }
 
 SUPPORTED_METRICS: frozenset[str] = frozenset(_METRIC_REGISTRY)
@@ -58,6 +63,18 @@ class AutonomySystem(Protocol):
     free to omit the method or to raise ``NotImplementedError``;
     the orchestrator records ``None`` for the corresponding metric
     field rather than aborting the whole measurement.
+
+    Adapters that want to be eligible for replay-based metrics (e.g.
+    ``persistence``) additionally expose
+    ``replay_from_perturbation(t_star, n_steps, rng=None)`` returning
+    a 1-D integer ``np.ndarray`` of length ``n_steps`` containing the
+    focal trajectory at times ``t_star + 1, ..., t_star + n_steps``
+    after a single-element perturbation has been applied to the
+    system's full internal state at time ``t_star``. Adapters that
+    cannot replay (e.g. CSV-only trajectories) omit the method and
+    the orchestrator records ``None`` for the corresponding metric
+    field. The same fail-loudly contract used for ``get_causal_graph``
+    applies here.
     """
 
     def get_state_history(self) -> np.ndarray: ...
@@ -139,6 +156,7 @@ class Autonometer:
             ratio_endo_total=field_values.get("ratio_endo_total"),
             memory_endo_ratio=field_values.get("memory_endo_ratio"),
             constraint_closure=field_values.get("constraint_closure"),
+            rai_proxy_persistence=field_values.get("rai_proxy_persistence"),
             metadata=metadata,
         )
 
@@ -163,4 +181,12 @@ class Autonometer:
             except NotImplementedError:
                 return None
             return float(fn(np.asarray(graph)))
+        if kind == _INPUT_REPLAY:
+            replay_fn = getattr(system, "replay_from_perturbation", None)
+            if replay_fn is None:
+                return None
+            try:
+                return float(fn(states, env, replay_fn))
+            except NotImplementedError:
+                return None
         raise RuntimeError(f"Unknown metric input kind for {name!r}: {kind!r}")

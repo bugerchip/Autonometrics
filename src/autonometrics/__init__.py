@@ -14,6 +14,7 @@ from autonometrics.metrics import (
     compute_albantakis,
     compute_constraint_closure,
     compute_memory_endo_ratio,
+    compute_rai_proxy_persistence,
 )
 from autonometrics.profile import AutonomyProfile
 
@@ -29,4 +30,5 @@ __all__ = [
     "compute_albantakis",
     "compute_constraint_closure",
     "compute_memory_endo_ratio",
+    "compute_rai_proxy_persistence",
 ]

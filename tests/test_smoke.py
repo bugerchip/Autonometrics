@@ -17,3 +17,10 @@ def test_public_api_exported() -> None:
     assert Autonometer is autonometrics.Autonometer
     assert AutonomyProfile is autonometrics.AutonomyProfile
     assert set(autonometrics.__all__) >= {"Autonometer", "AutonomyProfile", "__version__"}
+
+
+def test_persistence_is_exported() -> None:
+    from autonometrics import compute_rai_proxy_persistence
+
+    assert callable(compute_rai_proxy_persistence)
+    assert "compute_rai_proxy_persistence" in autonometrics.__all__

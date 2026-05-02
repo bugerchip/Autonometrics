@@ -49,7 +49,17 @@ def test_profile_field_types() -> None:
     fields = {f.name: f.type for f in dataclasses.fields(AutonomyProfile)}
     assert fields["ratio_endo_total"] == "float | None"
     assert fields["memory_endo_ratio"] == "float | None"
+    assert fields["constraint_closure"] == "float | None"
+    assert fields["rai_proxy_persistence"] == "float | None"
     assert fields["metadata"] == "dict[str, Any]"
+
+
+def test_profile_accepts_persistence_field() -> None:
+    profile = AutonomyProfile(rai_proxy_persistence=0.65)
+    assert profile.rai_proxy_persistence == 0.65
+    assert profile.ratio_endo_total is None
+    assert profile.memory_endo_ratio is None
+    assert profile.constraint_closure is None
 
 
 def test_profile_default_metadata_is_independent() -> None:
