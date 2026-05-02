@@ -437,6 +437,119 @@ This addendum supersedes the corresponding parts of section 3
 (closure counted) and section 5 (predictions). The other four
 decisions stay as originally documented.
 
+## Domain of applicability (added in v0.6.1a0)
+
+The `v0.6.0a0` release left two questions about the metric's
+boundaries open: when does `constraint_closure` get pinned to
+`0.0` by the shape of the input, and when is it pinned to `1.0`?
+These boundaries are the constraint-closure analogue of the
+**closure-saturation theorem** that v0.5.1a0 documented for the
+Albantakis closure axis. They are stated and verified here in
+the same spirit: **as theorems about how the metric reacts to a
+class of graphs**, not as empirical claims about any particular
+system.
+
+### Theorem A — single-constraint trivial-zero
+
+> **Statement.** If a system has exactly `n = 1` update function,
+> then `constraint_closure = 0.0`, regardless of whether the
+> single rule reads its own previous state, the environment, or
+> nothing.
+>
+> **Proof.** A simple directed cycle of length `≥ 2` requires at
+> least two distinct nodes by definition. With `n = 1` no such
+> cycle exists. Decision 3 (revised) restricts the count to
+> simple cycles of length exactly 2 or 3; the count is therefore
+> zero, and dividing by `n = 1` returns `0.0`. ∎
+
+This theorem covers `PeriodicCycle`, `SimpleAutomaton`
+(both `external` and `self_generated`), and any other adapter
+whose causal graph reduces to a single node. The score is a fact
+about the cardinality of the constraint set, not about the
+dynamics of the lone rule. Reading the score back as "this
+system lacks autonomy" is a category error; the metric is silent
+on single-rule systems by construction, exactly as Montévil &
+Mossio's framework predicts.
+
+### Theorem B — symmetric-neighbour saturation
+
+> **Statement.** If every node's update function reads at least
+> one node that reads it back (i.e. for every `i` there exists
+> `j ≠ i` with `i → j` and `j → i` both present in the causal
+> graph), then `constraint_closure = 1.0`.
+>
+> **Proof.** Each node `i` then sits on at least one length-2
+> cycle `i → j → i`, which is a simple directed cycle of length
+> 2. Decision 3 (revised) counts every node that lies on a
+> length-2 or length-3 cycle as closed. Every node qualifies,
+> so the closure count equals `n` and the metric returns
+> `n / n = 1.0`. ∎
+
+This theorem covers `ECASystem` on any non-trivial periodic ring
+(each cell is read by both neighbours, who are read back), and
+more generally any sufficiently dense-and-symmetric dependency
+graph. As with Theorem A, the saturation is a property of the
+**graph topology**, not of the dynamical content of the rules:
+the `v0.6.0a0` benchmark observes `constraint = 1.0` for ECA
+rule 30, rule 90, rule 110, rule 184 alike — chaos, fractal,
+universal-computation and traffic flow all return the same
+score because they share the same wiring.
+
+### Empirical verification: Kauffman density sweep
+
+The `examples/constraint_density_diagnostic.py` script verifies
+both theorems jointly by sweeping the connection density of a
+controllable system. For `n = 10` Kauffman networks with
+`K ∈ {1, 2, ..., 9}` and 10 random seeds per `K`, the script
+computes `constraint_closure` directly from the causal graph
+(no trajectory needed; the metric is purely topological).
+
+The `v0.6.1a0` snapshot at
+`docs/benchmarks/constraint_density_v0.6.1.csv` records the
+following mean ± std curve:
+
+```
+K=1   0.140 ± 0.120     ← lower boundary
+K=2   0.520 ± 0.236
+K=3   0.790 ± 0.138
+K=4   0.950 ± 0.067
+K=5   0.980 ± 0.060
+K=6   1.000 ± 0.000     ← upper boundary
+K=7   1.000 ± 0.000
+K=8   1.000 ± 0.000
+K=9   1.000 ± 0.000
+```
+
+The figure at `docs/benchmarks/constraint_density_v0.6.1.png`
+shows the corresponding sigmoid: monotone, low-`K` cluster sits
+near Theorem A's boundary, mid-`K` transition is roughly
+exponential, high-`K` cluster sits at Theorem B's saturation
+floor (`std = 0` because every seed at `K ≥ 6` gives `1.0`
+identically).
+
+Two practical consequences for downstream interpretation:
+
+1. **Single-node adapters are not measurement failures.** A
+   reading of `constraint_closure = 0.0` on `PeriodicCycle` or
+   `SimpleAutomaton` reflects Theorem A. Treat these systems as
+   **outside the metric's discriminative domain** rather than as
+   "low-autonomy".
+2. **Dense-and-symmetric adapters saturate identically.** A
+   reading of `constraint_closure = 1.0` on every ECA rule, or
+   on `KauffmanNetwork` for `K ≥ 6` at `n = 10`, reflects
+   Theorem B. To distinguish systems inside this saturated
+   region, the package relies on the other axes (`closure`,
+   `memory`, and the future RAI / CBA axes); constraint-closure
+   alone cannot tell rule 30 from rule 110.
+
+These are the constraint-closure equivalents of the warnings
+already attached to the closure axis in the saturation
+diagnostic. They make the **partial-coverage** posture of PBA
+explicit at the per-axis level: each axis has a domain of
+applicability, the atlas works because the domains overlap
+non-trivially, and the package documents both the maps **and
+their edges**.
+
 ## References
 
 - Montévil, M., & Mossio, M. (2015). *Biological organisation

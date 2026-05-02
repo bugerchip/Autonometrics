@@ -376,6 +376,29 @@ discussion:
    engineered-correlation safeguard in the previous section
    applies to each of them.
 
+The two saturating regions of the third axis are themselves
+formal theorems, documented and verified in
+[`docs/CONSTRAINT_CLOSURE.md` (Domain of applicability section)](CONSTRAINT_CLOSURE.md#domain-of-applicability-added-in-v061a0):
+
+- **Theorem A (single-constraint trivial-zero).** Any system
+  with `n = 1` update function returns `constraint = 0.0` by
+  construction (a simple cycle of length 2 or 3 requires at
+  least two distinct nodes).
+- **Theorem B (symmetric-neighbour saturation).** Any graph in
+  which every node reads at least one node that reads it back
+  returns `constraint = 1.0` by construction (every node sits
+  on a length-2 cycle).
+
+The `v0.6.1a0` diagnostic
+(`docs/benchmarks/constraint_density_v0.6.1.{csv,png,log.txt}`)
+verifies both jointly by sweeping connection density on a
+Kauffman zoo and observing the curve walk monotonically from
+`constraint ≈ 0.14` at `K = 1` (lower boundary, sparse) to
+`constraint = 1.00 ± 0.00` for `K ≥ 6` at `n = 10` (upper
+boundary, dense). Single-node adapters and dense periodic rings
+are correctly identified as **outside the metric's
+discriminative domain** rather than as low- or high-autonomy.
+
 The remaining two ratios (the motivational and the
 coherence-based axes planned for `v0.7.x`/`v0.8.x`) will receive
 analogous diagnostics as they ship: each metric's domain of

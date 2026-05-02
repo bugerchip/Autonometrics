@@ -336,6 +336,76 @@ The formal statement of the theorem and its consequences for PBA
 live in [`docs/PBA.md` § "Domain of applicability"](docs/PBA.md#domain-of-applicability)
 (Spanish: [`docs/PBA.es.md`](docs/PBA.es.md)).
 
+### Constraint-closure density diagnostic (`v0.6.1a0`)
+
+The constraint-closure axis introduced in `v0.6.0a0` carries
+its own pair of boundary regions, formalised as theorems and
+verified with the same diagnostic-grade rigour the closure axis
+got in `v0.5.1a0`:
+
+- **Theorem A — single-constraint trivial-zero.** Any system
+  with `n = 1` update function returns `constraint = 0.0` by
+  construction (a simple cycle of length 2 or 3 requires at
+  least two distinct nodes). Covers `PeriodicCycle` and
+  `SimpleAutomaton`.
+- **Theorem B — symmetric-neighbour saturation.** Any graph in
+  which every node reads at least one node that reads it back
+  returns `constraint = 1.0` by construction (every node sits
+  on a length-2 cycle). Covers `ECASystem` on any non-trivial
+  periodic ring.
+
+To verify both theorems jointly, the diagnostic sweeps the
+connection density of a controllable system. For each
+`K ∈ {1, …, n − 1}` it generates several Kauffman networks of
+size `n` and computes `constraint_closure` directly from the
+causal graph (no trajectory needed; the metric is purely
+topological).
+
+```bash
+pip install -e ".[dev]"
+python examples/constraint_density_diagnostic.py        # writes docs/benchmarks/constraint_density_v0.6.1.csv
+pip install -e ".[dev,viz]"
+python examples/constraint_density_plot.py              # writes docs/benchmarks/constraint_density_v0.6.1.png
+```
+
+Headline numbers from the snapshot shipped here
+(`docs/benchmarks/constraint_density_v0.6.1.csv`, 9 K values × 10
+seeds = 90 measurements at `n = 10`):
+
+| Input degree `K` | constraint (mean ± std) |
+|-----------------:|------------------------:|
+| 1                | 0.140 ± 0.120           |
+| 2                | 0.520 ± 0.236           |
+| 3                | 0.790 ± 0.138           |
+| 4                | 0.950 ± 0.067           |
+| 5                | 0.980 ± 0.060           |
+| 6                | 1.000 ± 0.000           |
+| 7                | 1.000 ± 0.000           |
+| 8                | 1.000 ± 0.000           |
+| 9                | 1.000 ± 0.000           |
+
+The full curve is rendered at
+[`docs/benchmarks/constraint_density_v0.6.1.png`](docs/benchmarks/constraint_density_v0.6.1.png).
+
+Two practical reads:
+
+- The metric is a **monotone sigmoid** in connection density.
+  At `K = 1` it sits near Theorem A's lower boundary; at
+  `K ≥ 6` (with `n = 10`) every seed identically saturates at
+  `1.0` (`std = 0`), reaching Theorem B's upper boundary.
+- A constraint-closure value of `0.0` does **not** mean "no
+  autonomy". On a single-constraint adapter the metric is
+  silent by Theorem A; the system simply sits outside its
+  discriminative domain. Symmetrically, `1.0` does not mean
+  "fully autonomous" — on a dense periodic ring it is forced
+  by Theorem B regardless of dynamical content.
+
+Both theorems and the diagnostic are documented in
+[`docs/CONSTRAINT_CLOSURE.md` § "Domain of applicability"](docs/CONSTRAINT_CLOSURE.md#domain-of-applicability-added-in-v061a0)
+and reflected in
+[`docs/PBA.md` § "Domain of applicability"](docs/PBA.md#domain-of-applicability)
+(Spanish: [`docs/PBA.es.md`](docs/PBA.es.md)).
+
 ## Adapters
 
 - **`SimpleAutomaton`** — two factory constructors
@@ -445,9 +515,11 @@ prioritises empirical validation of the existing axes before
 broadening them: the first benchmark run shipped in `v0.5.0a0`
 established that `closure` and `memory` carry distinct
 information on the current adapter zoo, the `v0.5.1a0`
-diagnostic mapped the `closure = 1.0` saturation wall, and
-`v0.6.0a0` adds the third axis to break that wall while
-preserving pairwise independence.
+diagnostic mapped the `closure = 1.0` saturation wall,
+`v0.6.0a0` added the third axis to break that wall while
+preserving pairwise independence, and `v0.6.1a0` mapped the
+two saturating regions of the new axis with the same
+diagnostic-grade rigour the closure axis already enjoyed.
 
 - `v0.5.0-alpha`: benchmark suite + scatter plot. Reference
   systems (`ECASystem`, `KauffmanNetwork`, `PeriodicCycle`) wired
@@ -458,13 +530,21 @@ preserving pairwise independence.
   noise sweep on a saturating ECA, formal statement of the
   closure-saturation theorem, and the "domain of applicability"
   section in `docs/PBA.md`.
-- `v0.6.0-alpha` *(current)*: third axis —
-  `constraint_closure` (Montévil & Mossio-style). Per-adapter
-  causal-graph implementations, three-axis benchmark snapshot
-  with three pairwise correlations, and an
-  independence-by-design audit.
+- `v0.6.0-alpha`: third axis — `constraint_closure` (Montévil &
+  Mossio-style). Per-adapter causal-graph implementations,
+  three-axis benchmark snapshot with three pairwise
+  correlations, and an independence-by-design audit.
+- `v0.6.1-alpha` *(current)*: domain-of-applicability
+  diagnostic for `constraint_closure`. Formal statement of the
+  single-constraint trivial-zero theorem and the
+  symmetric-neighbour saturation theorem; Kauffman density
+  sweep snapshot under `docs/benchmarks/constraint_density_v0.6.1.*`.
 - `v0.7.0-alpha`: fourth axis — RAI-style relative autonomy
-  ratio (Deci & Ryan).
+  ratio (Deci & Ryan). The next release is gated by a design
+  document analogous to `docs/CONSTRAINT_CLOSURE.md`, written
+  before any code, since the conceptual leap to motivational
+  psychology is large enough to deserve a written
+  operationalisation up front.
 - `v0.8.0-alpha`: fifth axis — coherence-based alignment ratio.
 - `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
   and additional public-dataset benchmarks.

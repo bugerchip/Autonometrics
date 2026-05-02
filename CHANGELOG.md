@@ -7,6 +7,96 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.6.1a0] - 2026-05-02
+
+### Added
+
+- **Domain-of-applicability diagnostic for the constraint-closure
+  axis.** Mirrors the closure-saturation diagnostic shipped in
+  `v0.5.1a0` and formalises the two boundary regions of
+  `compute_constraint_closure`:
+  - **Theorem A — single-constraint trivial-zero.** Any system
+    with `n = 1` update function returns `0.0` by construction
+    (a simple cycle of length 2 or 3 requires at least two
+    distinct nodes). Covers `PeriodicCycle` and
+    `SimpleAutomaton`.
+  - **Theorem B — symmetric-neighbour saturation.** Any graph
+    in which every node reads at least one node that reads it
+    back returns `1.0` by construction (every node sits on a
+    length-2 cycle). Covers `ECASystem` on any non-trivial
+    periodic ring.
+- `examples/constraint_density_diagnostic.py` — sweeps
+  `KauffmanNetwork` with `K ∈ {1, …, n−1}` over independent
+  seeds and computes `constraint_closure` directly from the
+  causal graph (no trajectory needed; the metric is purely
+  topological). Reports a per-row table, a CSV under
+  `docs/benchmarks/`, an aggregate `mean ± std` table, and a
+  diagnosis line that flags whether the curve walks
+  monotonically from the lower boundary to the upper one.
+  Supports `--quick` for CI smoke and `--n-nodes` /
+  `--n-seeds` for custom sweeps. Numpy-only.
+- `examples/constraint_density_plot.py` — optional matplotlib
+  renderer that turns the diagnostic CSV into a
+  `constraint_closure` vs `K` curve with `mean ± std` error
+  bars. Auto-titled with the first/last density points so a
+  glance at the figure conveys the curve shape. Behind the
+  `autonometrics[viz]` extra; the rest of the package stays
+  matplotlib-free.
+- `docs/benchmarks/constraint_density_v0.6.1.{csv,png,log.txt}`
+  snapshot from the full default sweep (n=10, 9 K values, 10
+  seeds, 90 measurements). The mean curve walks
+  `0.140 ± 0.120 → 0.520 ± 0.236 → 0.790 ± 0.138 → 0.950 ± 0.067 → 0.980 ± 0.060 → 1.000 ± 0.000`
+  (`K = 1, 2, 3, 4, 5, ≥6`), with `std = 0` from `K = 6`
+  upward (every seed identically saturates). Both boundary
+  theorems are recovered jointly.
+- New "Domain of applicability (added in v0.6.1a0)" section in
+  `docs/CONSTRAINT_CLOSURE.md`. States the two theorems with
+  their proofs, references the diagnostic snapshot, and spells
+  out the two practical consequences for downstream
+  interpretation: single-node adapters are not measurement
+  failures (they sit outside the metric's discriminative
+  domain), and dense-and-symmetric adapters saturate identically
+  (so distinguishing rule 30 from rule 110 has to come from
+  other axes).
+- `docs/PBA.md` and `docs/PBA.es.md` "Constraint-closure
+  complements the wall, not replaces it" subsection extended
+  with the formal Theorem A / Theorem B statements and a link
+  to the new diagnostic snapshot.
+- `tests/benchmarks/test_constraint_density_smoke.py` — 9
+  smoke tests covering the default and quick `K` schedules,
+  the lower-boundary cluster at `K = 1`, the upper-boundary
+  saturation at `K = n − 1`, the rise across the curve, the
+  CSV writer schema, the aggregate grouping, and the
+  diagnosis-line `[OK]` verdict on the full sweep.
+- `tests/benchmarks/test_constraint_density_plot_smoke.py` — 4
+  smoke tests behind `pytest.importorskip("matplotlib")`
+  covering CSV coercion, per-K aggregation, PNG rendering,
+  and the empty-CSV failure path.
+
+### Changed
+
+- Version bumped from `0.6.0a0` to `0.6.1a0` across
+  `pyproject.toml`, `src/autonometrics/__init__.py`, and
+  `tests/test_smoke.py`.
+
+### Why this release exists
+
+The `v0.6.0a0` benchmark introduced the third axis, broke the
+closure-saturation wall, and pushed PBA from "two-axis working
+hypothesis" to "three-axis working hypothesis with empirically
+distinguishable axes". It also surfaced a question it could not
+itself answer: where does the new axis become uninformative?
+The honest reading of `v0.6.0a0` is that single-node adapters
+land at `constraint = 0.0` and ECA rings land at
+`constraint = 1.0`, but those are observations on a fixed zoo,
+not theorems. `v0.6.1a0` upgrades them to theorems, verifies
+the joint shape on a controllable Kauffman sweep, and lifts the
+domain-of-applicability discussion to the same level of rigour
+that the closure axis already enjoys after `v0.5.1a0`. The
+release is intentionally small and is shipped before the next
+axis (RAI) so the PBA atlas grows with documented edges, not
+with implicit ones.
+
 ## [0.6.0a0] - 2026-05-01
 
 ### Added

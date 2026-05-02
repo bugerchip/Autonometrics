@@ -398,6 +398,31 @@ para la discusión sobre dominio de aplicabilidad:
    inducida por construcción de la sección anterior aplica a
    cada uno de ellos.
 
+Las dos regiones de saturación del tercer eje son a su vez
+teoremas formales, documentados y verificados en
+[`docs/CONSTRAINT_CLOSURE.md` (sección Domain of applicability)](CONSTRAINT_CLOSURE.md#domain-of-applicability-added-in-v061a0):
+
+- **Teorema A (cero trivial por restricción única).** Cualquier
+  sistema con `n = 1` función de actualización devuelve
+  `constraint = 0.0` por construcción (un ciclo simple de
+  longitud 2 o 3 requiere al menos dos nodos distintos).
+- **Teorema B (saturación por vecindad simétrica).** Cualquier
+  grafo en el que cada nodo lee al menos un nodo que lo lee de
+  vuelta devuelve `constraint = 1.0` por construcción (cada
+  nodo está sobre un ciclo de longitud 2).
+
+El diagnóstico de `v0.6.1a0`
+(`docs/benchmarks/constraint_density_v0.6.1.{csv,png,log.txt}`)
+verifica ambos en conjunto barriendo la densidad de conexión
+sobre un zoológico Kauffman y observando que la curva camina
+monotonamente desde `constraint ≈ 0.14` en `K = 1` (frontera
+inferior, dispersa) hasta `constraint = 1.00 ± 0.00` para
+`K ≥ 6` con `n = 10` (frontera superior, densa). Los adapters
+de un solo nodo y los anillos periódicos densos quedan
+correctamente identificados como **fuera del dominio
+discriminativo de la métrica**, no como sistemas de baja o alta
+autonomía.
+
 Las dos razones restantes (los ejes motivacional y basado en
 coherencia previstos para `v0.7.x`/`v0.8.x`) recibirán
 diagnósticos análogos a medida que se incorporen: el dominio de
