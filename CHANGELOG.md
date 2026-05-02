@@ -7,21 +7,62 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
-## [Unreleased]
+## [0.5.0a0] - 2026-05-01
 
 ### Added
 
 - `src/autonometrics/benchmarks/` subpackage with three reference
-  systems for the upcoming benchmark suite: `ECASystem` (elementary
-  cellular automaton), `KauffmanNetwork` (synchronous random Boolean
-  network with tunable focal coupling), and `PeriodicCycle`
-  (deterministic period-`p` control). All three implement the
-  existing `AutonomySystem` protocol and ship inside the installable
-  package; `pip install autonometrics` is enough to reproduce any
-  benchmark figure shipped with a future release.
+  systems: `ECASystem` (elementary cellular automaton),
+  `KauffmanNetwork` (synchronous random Boolean network with tunable
+  focal coupling), and `PeriodicCycle` (deterministic period-`p`
+  control). All three implement the existing `AutonomySystem`
+  protocol and ship inside the installable package, so
+  `pip install autonometrics` is enough to reproduce any benchmark
+  figure shipped with this release.
 - `tests/benchmarks/` with 37 unit tests covering shape, dtype,
   alphabet, reproducibility, and smoke integration with
   `Autonometer`.
+- `examples/benchmark_demo.py` — orchestrator that sweeps the three
+  benchmark systems plus `SimpleAutomaton` over multiple seeds,
+  measures `closure` and `memory` for each, prints the per-row table,
+  and writes a snapshot CSV. Reports Pearson and Spearman
+  correlation between the two axes and emits a `Diagnosis` line keyed
+  to the `|r| < 0.7` falsification threshold from `docs/PBA.md`.
+- `examples/benchmark_plot.py` — optional renderer (matplotlib) that
+  loads a benchmark CSV and produces a `(closure, memory)` scatter
+  plot with quadrant labels. Available via `pip install
+  autonometrics[viz]`; the package itself remains pure-`numpy`.
+- `docs/benchmarks/v0.5.0a0.csv` — snapshot of the benchmark run
+  shipped with this release: 69 configurations, 48 valid points
+  (the other 21 degenerate to `H(S_{t+1}|E_t) = 0` and are flagged
+  per row).
+- `docs/benchmarks/v0.5.0a0.png` — scatter rendering of the same
+  CSV.
+- `docs/benchmarks/v0.5.0a0.log.txt` — captured stdout of the
+  reference run, kept for traceability of the headline numbers.
+- `viz` extra in `pyproject.toml`: `matplotlib>=3.7`, only required
+  for the optional plotting script.
+
+### Notes on the benchmark run
+
+For the systems and parameter sweeps shipped here:
+
+- Sample: 48 valid `(closure, memory)` points out of 69 configurations
+  (21 degenerate to a constant focal trajectory and are excluded;
+  this is a property of the specific systems, not of the metrics).
+- Pearson r(closure, memory) = +0.3193.
+- Spearman r(closure, memory) = +0.5589.
+- Both values are below the `|r| < 0.7` falsification threshold from
+  `docs/PBA.md`, so on this zoo the two axes carry distinct
+  information and adding a third PBA-shaped axis remains motivated.
+- The Spearman value (≈ 0.56) is moderate, not low, and is partly
+  inflated by a saturation cluster at `closure = 1.0`: every ECA
+  configuration with non-zero conditional variability lands on that
+  vertical wall by construction (the focal cell is fully determined
+  by `(S_t, E_t)`), and the periodic / self-generated systems also
+  collapse to `(1, ≈0.97)`. This is a property of the current
+  adapter zoo, not of the metric pair, and is documented as a known
+  limitation rather than a finding about autonomy.
 
 ### Changed
 
@@ -41,6 +82,14 @@ version may introduce breaking changes.
   memory)` plane is *inspired by*, not a literal implementation of,
   the Farnsworth thesis: the memory ratio is a structural proxy for
   ongoing activity, not an objective-function measurement.
+- Roadmap reordered. The `v0.5.0-alpha` slot, previously announced
+  for the third (RAI) axis, is now occupied by the benchmark suite
+  shipped here. The third, fourth and fifth axes shift to
+  `v0.6.0-alpha`, `v0.7.0-alpha` and `v0.8.0-alpha` respectively.
+  The decision is documented inline: validating that the existing
+  two axes carry distinct information has to come before adding a
+  third one, otherwise PBA accumulates redundant axes without
+  evidence.
 
 ## [0.4.0a0] - 2026-04-30
 

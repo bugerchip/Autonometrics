@@ -32,7 +32,9 @@ cd Autonometrics
 pip install -e ".[dev]"
 ```
 
-Requires Python 3.10 or later.
+Requires Python 3.10 or later. The core package depends only on
+`numpy`. The optional `viz` extra (`pip install -e ".[dev,viz]"`)
+adds `matplotlib`, used by the optional benchmark plotting script.
 
 ## Quickstart
 
@@ -160,6 +162,63 @@ The package does not claim to *prove* autopoiesis. It gives a
 two-coordinate reading on a homogeneous plane and lets the
 interpreter argue.
 
+## Benchmark
+
+`v0.5.0a0` ships a first reference benchmark that sweeps four
+classes of discrete systems through `Autonometer` and reports where
+they land on the autonomy plane. The intent is not to score one
+system as "more autonomous" than another. It is to check whether
+the two axes carry distinct information for the systems we can
+generate today, before adding a third axis to PBA.
+
+Reproducing the run:
+
+```bash
+pip install -e ".[dev]"
+python examples/benchmark_demo.py        # writes docs/benchmarks/v0.5.0a0.csv
+pip install -e ".[dev,viz]"
+python examples/benchmark_plot.py        # writes docs/benchmarks/v0.5.0a0.png
+```
+
+Headline numbers from the snapshot shipped here
+(`docs/benchmarks/v0.5.0a0.csv`):
+
+| Quantity                       | Value     |
+|--------------------------------|-----------|
+| Configurations swept           | 69        |
+| Valid points                   | 48        |
+| Configurations dropped (n/a)   | 21        |
+| Pearson r(closure, memory)     | +0.32     |
+| Spearman r(closure, memory)    | +0.56     |
+| Falsification threshold        | `|r| < 0.7` |
+| Diagnosis                      | OK        |
+
+The 21 dropped configurations correspond to systems whose focal
+trajectory collapses to a constant or to a value fully determined
+by the environment, in which case `H(S_{t+1} | E_t) = 0` and the
+closure ratio is undefined by construction. They are kept in the
+CSV with `n/a` in the metric columns so the dropout is visible
+rather than hidden.
+
+Both correlations stay below the `|r| < 0.7` falsification threshold
+documented in [`docs/PBA.md`](docs/PBA.md), so on this zoo of
+systems the two axes carry distinct information and PBA's
+*"add more ratios in the same shape"* roadmap remains motivated.
+The Spearman value of `+0.56` is moderate, not low: it is partly
+inflated by a saturation cluster at `closure = 1.0`. Every elementary
+cellular automaton configuration with non-zero conditional
+variability lands on that vertical wall (the focal cell is fully
+determined by `(S_t, E_t)` by construction), and the periodic and
+self-generated systems collapse to roughly `(1, 0.97)`. That cluster
+is a property of the current adapter zoo, not of the metric pair,
+and motivates extending the zoo before extending the plane.
+
+A scatter rendering of the same CSV is shipped at
+[`docs/benchmarks/v0.5.0a0.png`](docs/benchmarks/v0.5.0a0.png), and
+the captured stdout of the reference run lives at
+[`docs/benchmarks/v0.5.0a0.log.txt`](docs/benchmarks/v0.5.0a0.log.txt)
+for traceability.
+
 ## Adapters
 
 - **`SimpleAutomaton`** — two factory constructors
@@ -261,18 +320,28 @@ that ever happens, the heavy dependency will be opt-in via
 
 Each future alpha adds one more `[0, 1]`-valued ratio drawn from
 the structural self-determination literature, keeping the same
-PBA convention so all axes remain comparable.
+PBA convention so all axes remain comparable. The order below
+prioritises empirical validation of the existing axes before
+broadening them: the first benchmark run shipped in `v0.5.0a0`
+established that `closure` and `memory` carry distinct information
+on the current adapter zoo, which is what makes adding a third
+axis meaningful rather than redundant.
 
-- `v0.5.0-alpha`: third axis — RAI-style relative autonomy ratio
+- `v0.5.0-alpha` *(current)*: benchmark suite + scatter plot.
+  Reference systems (`ECASystem`, `KauffmanNetwork`,
+  `PeriodicCycle`) wired into a sweep that measures `(closure,
+  memory)` over multiple seeds and reports correlation against the
+  PBA falsification threshold. Snapshot CSV, PNG and stdout log
+  shipped under `docs/benchmarks/`.
+- `v0.6.0-alpha`: third axis — RAI-style relative autonomy ratio
   (Deci & Ryan).
-- `v0.6.0-alpha`: fourth axis — coherence-based alignment ratio.
-- `v0.7.0-alpha`: fifth axis — constraint-closure ratio
+- `v0.7.0-alpha`: fourth axis — coherence-based alignment ratio.
+- `v0.8.0-alpha`: fifth axis — constraint-closure ratio
   (Montévil & Mossio-style).
-- `v0.8.0-alpha`: LLM transcript adapter (bring-your-own labels).
-- `v0.9.0-alpha`: benchmarks against public datasets (boolean
-  networks, elementary cellular automata).
-- `v0.1.0` (without alpha marker): PyPI publication once five ratios,
-  three adapters, and baseline benchmarks are stable.
+- `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
+  and additional public-dataset benchmarks.
+- `v1.0.0` (without alpha marker): PyPI publication once five ratios,
+  three adapters, and the full benchmark battery are stable.
 
 ## License
 
