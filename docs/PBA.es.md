@@ -28,7 +28,7 @@ autonomía y la autodeterminación
 autopoiesis de Gershenson (autoproducción de componentes),
 RAI de Deci & Ryan (regulación motivacional),
 alineamiento basado en coherencia (CBA) y
-dinámica generalmente restringida de Farnsworth (GCD) —
+cierre de restricciones de Montévil & Mossio —
 son **cinco caras de una misma forma estructural**, no cinco
 fenómenos no relacionados que casualmente se expresan como ratios.
 
@@ -176,9 +176,9 @@ del paquete se redactan en consecuencia.
   razón tomada de una tradición distinta (psicología de la
   motivación) co-discrimina con las dos razones informacionales
   sobre un mismo sistema.
-- `v0.6.0a0` y `v0.7.0a0` añaden CBA y GCD respectivamente;
-  completar las cinco permite por primera vez evaluar la
-  predicción anterior.
+- `v0.6.0a0` y `v0.7.0a0` añaden CBA y la razón de cierre de
+  restricciones de Montévil–Mossio respectivamente; completar las
+  cinco permite por primera vez evaluar la predicción anterior.
 - Una pista de benchmarks dedicada (provisionalmente `v0.9.0a0`
   en el roadmap del README) es el lugar formal para la prueba de
   falsación.

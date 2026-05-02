@@ -7,6 +7,41 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [Unreleased]
+
+### Added
+
+- `src/autonometrics/benchmarks/` subpackage with three reference
+  systems for the upcoming benchmark suite: `ECASystem` (elementary
+  cellular automaton), `KauffmanNetwork` (synchronous random Boolean
+  network with tunable focal coupling), and `PeriodicCycle`
+  (deterministic period-`p` control). All three implement the
+  existing `AutonomySystem` protocol and ship inside the installable
+  package; `pip install autonometrics` is enough to reproduce any
+  benchmark figure shipped with a future release.
+- `tests/benchmarks/` with 37 unit tests covering shape, dtype,
+  alphabet, reproducibility, and smoke integration with
+  `Autonometer`.
+
+### Changed
+
+- README, `docs/PBA.md`, `docs/PBA.es.md`: corrected the attribution
+  of the fifth roadmap axis. The "general constrained dynamics"
+  formalisation is from Montévil & Mossio (2015), *Biological
+  Organisation as Closure of Constraints* (J. Theor. Biol.), not
+  from Farnsworth. The roadmap entry now reads "constraint-closure
+  ratio (Montévil & Mossio-style)".
+- README "Theoretical grounding" entry for Farnsworth (2018) now
+  states the dual-feature thesis correctly: organisational closure
+  + an internalised objective-function (a 'goal'), with Integrated
+  Information Theory proposed as a possible quantification. The
+  previous entry mis-summarised it as "closure and memory-bearing
+  structure", which collapsed two distinct levels of Farnsworth's
+  scheme. The entry now also clarifies that the package's `(closure,
+  memory)` plane is *inspired by*, not a literal implementation of,
+  the Farnsworth thesis: the memory ratio is a structural proxy for
+  ongoing activity, not an objective-function measurement.
+
 ## [0.4.0a0] - 2026-04-30
 
 ### Changed (breaking)

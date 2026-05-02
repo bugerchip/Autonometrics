@@ -27,7 +27,7 @@ autonomy and self-determination
 Gershenson autopoiesis (self-production of components),
 Deci & Ryan RAI (motivational regulation),
 coherence-based alignment (CBA), and
-Farnsworth's general constrained dynamics (GCD) —
+Montévil & Mossio's closure of constraints —
 are **five faces of one structural shape**, not five unrelated
 phenomena that happen to use ratios.
 
@@ -170,9 +170,9 @@ it accordingly.
   ratio drawn from a different research tradition (psychology of
   motivation) co-discriminates with the two information-theoretic
   ratios on a shared system.
-- `v0.6.0a0` and `v0.7.0a0` add CBA and GCD respectively;
-  completing the five lets the prediction above be evaluated for
-  the first time.
+- `v0.6.0a0` and `v0.7.0a0` add CBA and the Montévil–Mossio
+  constraint-closure ratio respectively; completing the five lets
+  the prediction above be evaluated for the first time.
 - A dedicated benchmarks track (provisionally `v0.9.0a0` in the
   README roadmap) is the formal home of the falsification test.
 

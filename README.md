@@ -198,10 +198,20 @@ build on are:
   of LMC-style "balance" measures that drove the migration done in
   `v0.3.0-alpha`.
 - Farnsworth, K. D. (2018). *How Organisms Gained Causal Independence
-  and How It Might Be Quantified*. Biology — independent argument
-  that genuine autonomy needs at least two features (closure and
-  memory-bearing structure); a useful sanity check on the shape of
-  the plane chosen here.
+  and How It Might Be Quantified*. Biology — argues that autonomous
+  agency requires two jointly necessary features (organisational
+  closure and an internalised objective-function providing a 'goal'),
+  and proposes Integrated Information Theory as a possible
+  quantification. The two-axis shape of the plane here is *inspired
+  by* this dual-feature thesis, not a literal implementation of it:
+  the memory ratio is a structural proxy for ongoing activity, not
+  an objective-function measurement.
+- Montévil, M., & Mossio, M. (2015). *Biological organisation as
+  closure of constraints*. Journal of Theoretical Biology — formal
+  framework where biological organisation is read as mutual
+  dependence among constraints (each both produced by and producing
+  the others). Reference for the constraint-closure axis planned
+  in the roadmap.
 
 ## Related work
 
@@ -256,8 +266,8 @@ PBA convention so all axes remain comparable.
 - `v0.5.0-alpha`: third axis — RAI-style relative autonomy ratio
   (Deci & Ryan).
 - `v0.6.0-alpha`: fourth axis — coherence-based alignment ratio.
-- `v0.7.0-alpha`: fifth axis — general constrained dynamics
-  (Farnsworth-style).
+- `v0.7.0-alpha`: fifth axis — constraint-closure ratio
+  (Montévil & Mossio-style).
 - `v0.8.0-alpha`: LLM transcript adapter (bring-your-own labels).
 - `v0.9.0-alpha`: benchmarks against public datasets (boolean
   networks, elementary cellular automata).
