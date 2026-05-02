@@ -153,9 +153,80 @@ una decisión de diseño frágil. Atarla a la corrección de las
 métricas clásicas subyacentes — cada una publicada, citada y
 defendida de manera independiente — es bastante más sólido.
 
+## Dominio de aplicabilidad
+
+PBA es una afirmación sobre *bordes autodeterminados*; las
+métricas en las que se apoya tienen, por tanto, **regiones donde
+son matemáticamente triviales**, no porque la métrica esté rota
+sino porque en esas regiones el sistema mismo es degenerado desde
+el punto de vista de la métrica. Reconocer explícitamente esas
+regiones forma parte de la formulación honesta del principio.
+
+La primera de esas regiones se identificó empíricamente en
+`v0.5.0a0` y se caracterizó formalmente en `v0.5.1a0`:
+
+> **Teorema de saturación de clausura (informal).** Para un sistema
+> cuya dinámica es determinista y cuyo par observado `(S_t, E_t)`
+> contiene todas las variables de las que depende la regla de
+> transición, la clausura de Albantakis cumple `A = 1` por
+> construcción.
+>
+> *Esquema de demostración.* Bajo esas condiciones
+> `H(S_{t+1} | S_t, E_t) = 0`. Por la regla de la cadena,
+> `H(S_{t+1} | E_t) = I(S_{t+1}; S_t | E_t) + H(S_{t+1} | S_t, E_t)`.
+> El segundo término se anula, por lo que el numerador y el
+> denominador del cociente de clausura son iguales.
+
+El benchmark de `v0.5.0a0` hizo visible esta saturación: cada
+autómata celular elemental, cada ciclo de período `p` y cada
+`SimpleAutomaton` autogenerado del zoológico colapsó sobre la
+recta vertical `closure = 1.0`. El enunciado teórico anterior
+explica *por qué*. El diagnóstico que se incorpora en `v0.5.1a0`
+(`examples/saturation_diagnostic.py`,
+`docs/benchmarks/saturation_v0.5.1.csv`,
+`docs/benchmarks/saturation_v0.5.1.png`) lo verifica empíricamente:
+cuando se inyecta ruido tipo bit-flip en la trayectoria focal de un
+ECA saturante con probabilidad `p`, la clausura cae de manera
+monótona desde `1.000` en `p = 0` hasta `≈ 0.001` en `p = 0.5`,
+con una caída ya visible en `p = 0.01` (clausura ≈ 0.81). La pared
+es por tanto un **punto teórico frágil**, no un régimen robusto, y
+cualquier valor de clausura por debajo de 1.0 informa sobre
+observación parcial, dinámica estocástica o ruido de medición —
+exactamente los tres modos de fallo que la métrica está diseñada
+para detectar.
+
+Tres consecuencias prácticas para PBA:
+
+1. **Las métricas tienen regiones triviales, y está bien.**
+   Leer `closure = 1.0` como "máxima autonomía" es incorrecto; se
+   lee como "la métrica saturó porque el sistema es plenamente
+   determinista y plenamente observado". Un mecanismo de relojería
+   determinista cae en el mismo punto que un sistema con la mayor
+   autoorganización posible.
+
+2. **Dónde se corta "sistema" vs "entorno" mueve la métrica.**
+   El cociente de Albantakis es relativo al par elegido `(S, E)`.
+   Cambiar qué cuenta como sistema o qué cuenta como entorno puede
+   desplazar la clausura entre 0 y 1 sin cambiar el proceso físico
+   subyacente. El diseño del adaptador no es un acto neutro de
+   conexión: es parte de la medición.
+
+3. **PBA no puede prometer universalidad sobre regiones
+   degeneradas.** El principio es informativo *fuera* de las
+   regiones triviales de cada métrica. Cualquier afirmación sobre
+   correlación empírica entre las cinco razones es, por tanto,
+   una afirmación *condicionada* a evitar esas regiones en los
+   sistemas del benchmark utilizado para la prueba.
+
+Las razones restantes (`memory_endo_ratio` y los tres ejes
+planificados) recibirán diagnósticos análogos a medida que se
+incorporen: el dominio de aplicabilidad de cada métrica debe
+quedar enunciado antes de que esa métrica cuente como evidencia
+a favor o en contra de PBA.
+
 ## Estado actual de evidencia
 
-A fecha de `v0.4.0a0`:
+A fecha de `v0.5.1a0`:
 
 - Dos de las cinco razones están implementadas
   (`ratio_endo_total`, `memory_endo_ratio`).
@@ -163,25 +234,40 @@ A fecha de `v0.4.0a0`:
   comportan como la literatura predice en casos canónicos
   (series constantes, ruido i.i.d., ciclos deterministas,
   dinámicas mixtas regla-propia / impulsadas-por-entorno).
-- Aún no se ha corrido ninguna validación entre sistemas contra un
-  conjunto de prueba curado de manera independiente.
+- Se ejecutó un primer mini-benchmark entre sistemas en
+  `v0.5.0a0` (snapshot bajo
+  `docs/benchmarks/v0.5.0a0.{csv,png,log.txt}`). Sobre 48 puntos
+  válidos de 69 configuraciones,
+  `Pearson r(closure, memory) = +0.32` y
+  `Spearman r(closure, memory) = +0.56`, ambos por debajo del
+  umbral `|r| < 0.7` que este documento usa como señal de
+  falsación. Los dos ejes, por tanto, transportan información
+  distinta sobre el zoológico de adaptadores actual.
+- El diagnóstico de saturación de `v0.5.1a0` confirma que la
+  pared vertical en `closure = 1.0` observada en ese benchmark
+  es el teorema de saturación de clausura anterior, no un fallo
+  de la métrica: inyectar ruido bit-flip pulla la clausura fuera
+  de la pared de forma monótona.
 
 Por lo tanto, PBA está en la etapa de *hipótesis de trabajo
-plausible*, no de *afirmación empírica*. Los documentos y demos
+plausible con una limitación de grado diagnóstico explícitamente
+mapeada*, no de *afirmación empírica*. Los documentos y demos
 del paquete se redactan en consecuencia.
 
 ## Próximos puntos de decisión
 
-- `v0.5.0a0` añade RAI; primera oportunidad de comprobar si una
-  razón tomada de una tradición distinta (psicología de la
-  motivación) co-discrimina con las dos razones informacionales
-  sobre un mismo sistema.
-- `v0.6.0a0` y `v0.7.0a0` añaden CBA y la razón de cierre de
-  restricciones de Montévil–Mossio respectivamente; completar las
-  cinco permite por primera vez evaluar la predicción anterior.
+- `v0.6.0a0` incorpora la tercera razón — RAI-style de Deci &
+  Ryan; primera oportunidad de comprobar si una razón tomada de
+  una tradición distinta (psicología de la motivación)
+  co-discrimina con las dos razones informacionales sobre un
+  mismo sistema.
+- `v0.7.0a0` y `v0.8.0a0` añaden CBA y la razón de cierre de
+  restricciones de Montévil–Mossio respectivamente; completar
+  las cinco permite por primera vez evaluar la predicción
+  anterior.
 - Una pista de benchmarks dedicada (provisionalmente `v0.9.0a0`
-  en el roadmap del README) es el lugar formal para la prueba de
-  falsación.
+  en el roadmap del README) es el lugar formal para la prueba
+  de falsación, construida sobre la línea base de `v0.5.x`.
 
 Si en cualquiera de estos puntos de control la predicción empieza
 a fallar, este documento se actualiza con honestidad: el estatus

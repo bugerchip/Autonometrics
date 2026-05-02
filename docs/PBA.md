@@ -147,9 +147,76 @@ correctness of the underlying classical metrics — each of
 which is independently published, cited and defended — is
 much sturdier.
 
+## Domain of applicability
+
+PBA is a claim about *self-determined boundaries*; the metrics it
+relies on therefore have **regions where they are mathematically
+trivial**, not because the metric is broken but because in those
+regions the system itself is degenerate from the metric's point of
+view. Acknowledging those regions explicitly is part of the
+honest formulation of the principle.
+
+The first such region was identified empirically in `v0.5.0a0` and
+characterised formally in `v0.5.1a0`:
+
+> **Closure saturation theorem (informal).** For a system whose
+> dynamics is deterministic and whose observed pair `(S_t, E_t)`
+> contains all the variables the transition rule depends on,
+> Albantakis closure satisfies `A = 1` by construction.
+>
+> *Proof sketch.* Under those conditions
+> `H(S_{t+1} | S_t, E_t) = 0`. By the chain rule,
+> `H(S_{t+1} | E_t) = I(S_{t+1}; S_t | E_t) + H(S_{t+1} | S_t, E_t)`.
+> The second term vanishes, so the numerator and the denominator
+> of the closure ratio are equal.
+
+The `v0.5.0a0` benchmark made this saturation visible: every
+elementary cellular automaton, every period-`p` cycle and every
+self-generated `SimpleAutomaton` in the zoo collapsed onto the
+vertical line `closure = 1.0`. The theoretical statement above
+explains *why*. The diagnostic shipped in `v0.5.1a0`
+(`examples/saturation_diagnostic.py`,
+`docs/benchmarks/saturation_v0.5.1.csv`,
+`docs/benchmarks/saturation_v0.5.1.png`) verifies it empirically:
+when bit-flip noise is injected into the focal trajectory of a
+saturating ECA at probability `p`, the closure score falls
+monotonically from `1.000` at `p = 0` to `≈ 0.001` at `p = 0.5`,
+with a sharp drop already visible at `p = 0.01` (closure ≈ 0.81).
+The wall is therefore a **fragile theoretical point**, not a
+robust regime, and any closure value below 1.0 is informative
+about partial observation, stochastic dynamics, or measurement
+noise — exactly the three failure modes the metric is designed
+to detect.
+
+Three practical consequences for PBA:
+
+1. **The metrics have trivial regions, and that is fine.**
+   Reading `closure = 1.0` as "maximally autonomous" is wrong; it
+   reads as "the metric saturated because the system is fully
+   determined and fully observed". A determinist clockwork hits
+   the same point as a maximally self-organising system.
+
+2. **Where you cut "system" vs "environment" moves the metric.**
+   The Albantakis ratio is relative to the chosen pair
+   `(S, E)`. Changing what counts as the system or what counts
+   as the environment can shift closure between 0 and 1 without
+   changing the underlying physical process. Adapter design is
+   not a neutral act of plumbing; it is part of the measurement.
+
+3. **PBA cannot promise universality across degenerate regions.**
+   The principle is informative *outside* the trivial regions of
+   each metric. Any claim about empirical correlation among the
+   five ratios is therefore a claim *conditional on* avoiding
+   those regions in the benchmark systems used for the test.
+
+The remaining ratios (`memory_endo_ratio` and the three planned
+axes) will receive analogous diagnostics as they ship: each
+metric's domain of applicability has to be stated before that
+metric counts as evidence for or against PBA.
+
 ## Current evidence status
 
-As of `v0.4.0a0`:
+As of `v0.5.1a0`:
 
 - Two of the five ratios are implemented (`ratio_endo_total`,
   `memory_endo_ratio`).
@@ -157,24 +224,38 @@ As of `v0.4.0a0`:
   literature predicts on canonical cases (constant series,
   i.i.d. noise, deterministic cycles, mixed self-rule plus
   environment-driven dynamics).
-- No cross-system validation against an independently-curated
-  benchmark has been run yet.
+- A first cross-system mini-benchmark was run in `v0.5.0a0`
+  (snapshot under `docs/benchmarks/v0.5.0a0.{csv,png,log.txt}`).
+  On 48 valid points out of 69 configurations,
+  `Pearson r(closure, memory) = +0.32` and
+  `Spearman r(closure, memory) = +0.56`, both below the
+  `|r| < 0.7` threshold this document uses as a falsification
+  cue. The two axes therefore carry distinct information on the
+  current adapter zoo.
+- The `v0.5.1a0` saturation diagnostic confirms that the
+  vertical wall at `closure = 1.0` observed in that benchmark is
+  the closure-saturation theorem above, not a flaw of the metric:
+  injecting Bernoulli bit-flip noise pulls closure off the wall
+  monotonically.
 
-PBA is therefore at the stage of *plausible working hypothesis*,
-not *empirical claim*. Documents and demos in the package phrase
-it accordingly.
+PBA is therefore at the stage of *plausible working hypothesis
+with one diagnostic-grade limitation explicitly mapped*, not
+*empirical claim*. Documents and demos in the package phrase it
+accordingly.
 
 ## Next decision points
 
-- `v0.5.0a0` adds RAI; first opportunity to check whether a
-  ratio drawn from a different research tradition (psychology of
-  motivation) co-discriminates with the two information-theoretic
-  ratios on a shared system.
-- `v0.6.0a0` and `v0.7.0a0` add CBA and the Montévil–Mossio
-  constraint-closure ratio respectively; completing the five lets
-  the prediction above be evaluated for the first time.
+- `v0.6.0a0` ships the third axis — RAI-style relative autonomy
+  ratio (Deci & Ryan); first opportunity to check whether a
+  ratio drawn from a different research tradition (psychology
+  of motivation) co-discriminates with the two
+  information-theoretic ratios on a shared system.
+- `v0.7.0a0` and `v0.8.0a0` add CBA and the Montévil–Mossio
+  constraint-closure ratio respectively; completing the five
+  lets the prediction above be evaluated for the first time.
 - A dedicated benchmarks track (provisionally `v0.9.0a0` in the
-  README roadmap) is the formal home of the falsification test.
+  README roadmap) is the formal home of the falsification
+  test, building on the `v0.5.x` baseline.
 
 If at any of these checkpoints the prediction starts failing,
 this document is updated honestly: PBA's status is downgraded

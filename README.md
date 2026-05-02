@@ -219,6 +219,63 @@ the captured stdout of the reference run lives at
 [`docs/benchmarks/v0.5.0a0.log.txt`](docs/benchmarks/v0.5.0a0.log.txt)
 for traceability.
 
+### Saturation diagnostic (`v0.5.1a0`)
+
+The most visible feature of the scatter above is the vertical wall
+of points at `closure = 1.0`. The `v0.5.1a0` diagnostic shows that
+this wall is a **theorem about the metric**, not a flaw: any
+deterministic system whose observed `(S, E)` pair already covers
+every variable the transition rule depends on satisfies
+`H(S_{t+1} | S_t, E_t) = 0`, which forces
+`I(S_{t+1}; S_t | E_t) = H(S_{t+1} | E_t)`, which forces
+`closure = 1.0`. Three of the four adapter classes in the benchmark
+(ECA, PeriodicCycle, self-generated `SimpleAutomaton`) satisfy
+those preconditions; the fourth (KauffmanNetwork) breaks them on
+purpose, which is why it is the only adapter whose closure values
+vary continuously across the unit interval.
+
+To verify the theorem empirically, the diagnostic injects
+Bernoulli bit-flip noise into the focal trajectory of a saturating
+ECA (rule 110) at probabilities `p ∈ {0, 0.01, …, 0.50}` and
+re-measures closure. The expected behaviour is a smooth, monotonic
+fall off the wall.
+
+```bash
+pip install -e ".[dev]"
+python examples/saturation_diagnostic.py        # writes docs/benchmarks/saturation_v0.5.1.csv
+pip install -e ".[dev,viz]"
+python examples/saturation_plot.py              # writes docs/benchmarks/saturation_v0.5.1.png
+```
+
+Headline numbers from the snapshot shipped here
+(`docs/benchmarks/saturation_v0.5.1.csv`, 10 noise levels × 5 seeds
+= 50 valid points):
+
+| Noise probability `p` | closure (mean ± std) | memory (mean ± std) |
+|----------------------:|---------------------:|--------------------:|
+| 0.00                  | 1.000 ± 0.000        | 0.569 ± 0.033       |
+| 0.01                  | 0.810 ± 0.051        | 0.536 ± 0.021       |
+| 0.05                  | 0.434 ± 0.055        | 0.405 ± 0.016       |
+| 0.10                  | 0.234 ± 0.032        | 0.284 ± 0.045       |
+| 0.20                  | 0.059 ± 0.010        | 0.121 ± 0.030       |
+| 0.50                  | 0.001 ± 0.001        | 0.070 ± 0.010       |
+
+The full curve is rendered at
+[`docs/benchmarks/saturation_v0.5.1.png`](docs/benchmarks/saturation_v0.5.1.png).
+Two practical reads:
+
+- The wall at `closure = 1.0` is **fragile**, not robust. A 1 %
+  per-step bit-flip rate already drops closure to `0.81`, and
+  closure converges to zero by `p ≈ 0.3`.
+- A closure value strictly below 1.0 is therefore informative.
+  In practice it signals partial observation, stochastic dynamics
+  or measurement noise — exactly the three failure modes the
+  metric is designed to detect.
+
+The formal statement of the theorem and its consequences for PBA
+live in [`docs/PBA.md` § "Domain of applicability"](docs/PBA.md#domain-of-applicability)
+(Spanish: [`docs/PBA.es.md`](docs/PBA.es.md)).
+
 ## Adapters
 
 - **`SimpleAutomaton`** — two factory constructors

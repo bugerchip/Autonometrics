@@ -7,6 +7,69 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.5.1a0] - 2026-05-01
+
+### Added
+
+- `examples/saturation_diagnostic.py` — controlled experiment that
+  injects Bernoulli bit-flip noise into the focal trajectory of a
+  saturating elementary cellular automaton (rule 110 by default),
+  sweeps the noise probability `p ∈ {0, 0.01, 0.02, 0.05, 0.10,
+  0.15, 0.20, 0.30, 0.40, 0.50}`, runs five independent seeds per
+  level, and reports closure / memory mean ± std per level. Adds a
+  diagnosis line that flags whether the curve drops monotonically
+  off the saturation wall as the closure-saturation theorem
+  predicts.
+- `examples/saturation_plot.py` — optional matplotlib renderer
+  that loads the diagnostic CSV and writes a closure-vs-noise
+  curve PNG with error bars. Available via the existing `viz`
+  extra (`pip install autonometrics[viz]`).
+- `tests/benchmarks/test_saturation_smoke.py` — 8 smoke tests
+  covering the noise wrapper (zero-noise reproduces the base ECA
+  exactly, non-zero noise diverges in the focal trajectory but
+  preserves the environment, parameter validation), and the sweep
+  helpers (quick-mode shape, zero-noise saturation recovery, high-
+  noise drop, CSV well-formedness, aggregation grouping).
+- `tests/benchmarks/test_saturation_plot_smoke.py` — 4 smoke
+  tests skipped when matplotlib is absent, covering CSV coercion,
+  per-noise aggregation, PNG rendering, and the empty-CSV failure
+  path.
+- `docs/benchmarks/saturation_v0.5.1.csv` — snapshot of the full
+  diagnostic run (10 noise levels × 5 seeds = 50 valid points).
+- `docs/benchmarks/saturation_v0.5.1.png` — closure-vs-noise curve
+  rendered from the CSV above. Closure drops from 1.000 ± 0.000 at
+  `p = 0` to 0.001 ± 0.001 at `p = 0.5`, monotonically. Memory
+  declines more gradually and plateaus around 0.07.
+- `docs/benchmarks/saturation_v0.5.1.log.txt` — captured stdout
+  of the reference run, including the diagnosis line.
+- New section "Domain of applicability" in `docs/PBA.md` and
+  `docs/PBA.es.md`. Formalises the closure-saturation theorem
+  (`A = 1` by construction for any deterministic system whose
+  observed `(S, E)` covers the transition rule's inputs), records
+  the empirical confirmation from the diagnostic, and spells out
+  three consequences for the PBA hypothesis: trivial regions are
+  expected, the system / environment cut shifts the metric, and
+  PBA's predictions are conditional on benchmark systems staying
+  outside those regions.
+
+### Findings
+
+- The closure-saturation observed in the `v0.5.0a0` benchmark is a
+  theorem about the metric on deterministic, fully-observed
+  systems — not a flaw of the metric and not specific to ECA.
+  Three of the four adapter classes (ECA, PeriodicCycle,
+  SimpleAutomaton.self_generated) satisfy the theorem's
+  preconditions; KauffmanNetwork breaks them because the focal
+  node's `K` neighbours can lie outside the observed `(S, E)`
+  pair, which is exactly why Kauffman closures vary continuously
+  in the benchmark snapshot.
+- The saturation wall is **fragile**, not robust. Adding `p = 0.01`
+  bit-flip noise (one flipped bit per hundred timesteps) drops
+  closure from `1.000` to `0.81 ± 0.05`. The wall is therefore an
+  isolated theoretical point, and any closure value below 1.0 in
+  practice is informative about partial observation, stochastic
+  dynamics or measurement noise.
+
 ## [0.5.0a0] - 2026-05-01
 
 ### Added
