@@ -10,7 +10,11 @@ Status: alpha, API unstable.
 
 from autonometrics.adapters import CSVTrajectory, SimpleAutomaton
 from autonometrics.core import Autonometer, AutonomySystem
-from autonometrics.metrics import compute_albantakis, compute_memory_endo_ratio
+from autonometrics.metrics import (
+    compute_albantakis,
+    compute_constraint_closure,
+    compute_memory_endo_ratio,
+)
 from autonometrics.profile import AutonomyProfile
 
 __version__ = "0.5.1a0"
@@ -23,5 +27,6 @@ __all__ = [
     "SimpleAutomaton",
     "__version__",
     "compute_albantakis",
+    "compute_constraint_closure",
     "compute_memory_endo_ratio",
 ]

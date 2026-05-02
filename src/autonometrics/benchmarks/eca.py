@@ -104,6 +104,25 @@ class ECASystem:
         assert self._env_history is not None
         return self._env_history.copy()
 
+    def get_causal_graph(self) -> np.ndarray:
+        """Return the causal-dependency graph among the system's cells.
+
+        The system has one constraint per cell on the periodic
+        ring of length ``width``. Each cell at position ``p``
+        reads cells ``(p - 1) % width``, ``p`` and
+        ``(p + 1) % width`` in the previous timestep, so the
+        returned matrix has, for each row ``p``, exactly three
+        ``True`` entries (one of which is ``[p, p]`` itself, the
+        self-loop). The boundary is periodic.
+        """
+        n = self._width
+        graph = np.zeros((n, n), dtype=bool)
+        for p in range(n):
+            graph[p, (p - 1) % n] = True
+            graph[p, p] = True
+            graph[p, (p + 1) % n] = True
+        return graph
+
     @property
     def rule(self) -> int:
         return self._rule

@@ -131,6 +131,24 @@ class KauffmanNetwork:
         assert self._env_history is not None
         return self._env_history.copy()
 
+    def get_causal_graph(self) -> np.ndarray:
+        """Return the causal-dependency graph among the network's nodes.
+
+        The network has one constraint per node. Node ``i``'s
+        update function reads the nodes listed in
+        ``self._inputs[i]``, so the returned matrix has, for each
+        row ``i``, ``True`` at the unique input columns. Repeated
+        inputs (which can occur for the focal node when
+        ``coupling`` produces multiple self-references) are
+        deduplicated by the boolean encoding.
+        """
+        n = self._n_nodes
+        graph = np.zeros((n, n), dtype=bool)
+        for node in range(n):
+            for src in self._inputs[node]:
+                graph[node, int(src)] = True
+        return graph
+
     @property
     def coupling(self) -> float:
         return self._coupling

@@ -53,6 +53,21 @@ class PeriodicCycle:
     def get_env_history(self) -> np.ndarray:
         return self._env_history.copy()
 
+    def get_causal_graph(self) -> np.ndarray:
+        """Return the single-node causal graph: one self-loop, no cycles.
+
+        The cycle has one constraint (the increment-and-modulo
+        rule), which depends on its own previous state. The
+        graph is therefore the ``1 x 1`` matrix ``[[True]]``: a
+        self-loop. Under the package's constraint-closure
+        operationalisation self-loops do not count as closure
+        (only cycles of length 2 or 3 do), so this adapter
+        scores ``0.0`` on ``constraint_closure``, exactly as the
+        Montévil & Mossio framework predicts for a system
+        composed of a single constraint.
+        """
+        return np.array([[True]], dtype=bool)
+
     @property
     def period(self) -> int:
         return self._period

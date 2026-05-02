@@ -54,6 +54,19 @@ class AutonomyProfile:
         lives entirely in the system. Replaces the absolute-bit
         ``structural_memory`` shipped in ``v0.3.x`` so that both
         primary axes share the ratio shape of the unifying argument.
+    constraint_closure:
+        Montévil & Mossio-style constraint-closure ratio. In
+        ``[0.0, 1.0]`` when computed. The fraction of the
+        system's update functions (constraints) that lie on at
+        least one simple directed cycle of length 2 or 3 in the
+        causal dependency graph. ``0.0`` means no constraints
+        sustain each other through short feedback loops (e.g. a
+        single-node system, or a pure feed-forward dependency
+        chain); ``1.0`` means every constraint is part of such a
+        loop. Operationalises a topological proxy for the
+        biological notion of organisational closure; details and
+        falsification criteria live in
+        ``docs/CONSTRAINT_CLOSURE.md``.
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -62,4 +75,5 @@ class AutonomyProfile:
 
     ratio_endo_total: float | None = None
     memory_endo_ratio: float | None = None
+    constraint_closure: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)

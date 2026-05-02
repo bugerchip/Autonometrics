@@ -138,6 +138,23 @@ class SimpleAutomaton:
     def get_env_history(self) -> np.ndarray:
         return self._env.copy()
 
+    def get_causal_graph(self) -> np.ndarray:
+        """Return the single-node causal graph for this automaton.
+
+        ``SimpleAutomaton`` always exposes one constraint: the
+        update function of its single state variable. Whether the
+        update reads its own previous value (``self_generated``)
+        or the environment plus a hidden draw (``external``), the
+        intra-system dependency graph is ``1 x 1``. In the
+        self-generated mode the diagonal carries a self-loop; in
+        the external mode it does not. Either way the node is
+        alone, so under the package's constraint-closure
+        operationalisation (cycles of length 2 or 3 only) the
+        score is ``0.0``.
+        """
+        loops = self._mode == _MODE_SELF
+        return np.array([[loops]], dtype=bool)
+
     @property
     def mode(self) -> str:
         return self._mode
