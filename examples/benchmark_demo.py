@@ -1,18 +1,21 @@
-"""Mini-benchmark for ``autonometrics`` v0.5.0a0.
+"""Mini-benchmark for ``autonometrics`` v0.6.0a0.
 
 Sweeps a curated set of systems whose autonomy structure is
 independently understood (elementary cellular automata, random Boolean
 networks at varying focal coupling, period-``p`` cycles, and the
-package's existing ``SimpleAutomaton``), measures
-``(closure, memory)`` for each, and reports:
+package's existing ``SimpleAutomaton``), measures the three current
+PBA axes ``(closure, memory, constraint)`` for each, and reports:
 
 - a per-system table on stdout,
-- a CSV snapshot at ``docs/benchmarks/v0.5.0a0.csv`` (overridable
+- a CSV snapshot at ``docs/benchmarks/v0.6.0a0.csv`` (overridable
   via ``--output``),
-- aggregate Pearson and Spearman correlations between the two axes,
+- aggregate Pearson and Spearman correlations between every pair of
+  axes (``closure-memory``, ``closure-constraint``,
+  ``memory-constraint``),
 - a quick-look diagnosis flag (``OK`` / ``WARN`` / ``FAIL``) keyed
   to the engineered-correlation thresholds spelt out in
-  ``docs/PBA.md``.
+  ``docs/PBA.md``. The aggregate flag is the worst of the three
+  pairwise flags so a single overlap is enough to raise it.
 
 Usage::
 
@@ -43,13 +46,14 @@ from autonometrics.benchmarks import ECASystem, KauffmanNetwork, PeriodicCycle
 
 @dataclass
 class BenchmarkPoint:
-    """A single ``(closure, memory)`` measurement on one system."""
+    """A single ``(closure, memory, constraint)`` measurement on one system."""
 
     system_class: str
     params: str
     seed: int
     closure: float | None
     memory: float | None
+    constraint: float | None
     quadrant: str
     notes: str
 
@@ -58,6 +62,12 @@ _ECA_RULES = (30, 90, 110, 184, 250)
 _KAUFFMAN_COUPLINGS = (0.0, 0.33, 0.5, 0.67, 1.0)
 _PERIODIC_PERIODS = (2, 4, 8)
 _N_STEPS = 2000
+
+_PAIRS: tuple[tuple[str, str], ...] = (
+    ("closure", "memory"),
+    ("closure", "constraint"),
+    ("memory", "constraint"),
+)
 
 
 def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
@@ -144,7 +154,13 @@ def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
 
 
 def quadrant_of(closure: float | None, memory: float | None) -> str:
-    """Map a ``(closure, memory)`` pair to one of four named quadrants."""
+    """Map a ``(closure, memory)`` pair to one of four named quadrants.
+
+    The quadrant naming is preserved from v0.5.x for backwards
+    compatibility with the existing scatter plot. The third axis
+    (``constraint``) is reported alongside the quadrant but does not
+    enter the categorisation.
+    """
     if closure is None or memory is None:
         return "n/a"
     c_high = closure >= 0.5
@@ -158,7 +174,9 @@ def quadrant_of(closure: float | None, memory: float | None) -> str:
     return "drift"
 
 
-def measure_safe(meter: Autonometer, system: Any) -> tuple[float | None, float | None, str]:
+def measure_safe(
+    meter: Autonometer, system: Any
+) -> tuple[float | None, float | None, float | None, str]:
     """Run ``meter.measure`` and turn ``ValueError`` into a recorded note.
 
     Degenerate trajectories (constant series, zero conditional entropy,
@@ -168,8 +186,13 @@ def measure_safe(meter: Autonometer, system: Any) -> tuple[float | None, float |
     try:
         profile = meter.measure(system)
     except ValueError as exc:
-        return None, None, _truncate(str(exc))
-    return profile.ratio_endo_total, profile.memory_endo_ratio, ""
+        return None, None, None, _truncate(str(exc))
+    return (
+        profile.ratio_endo_total,
+        profile.memory_endo_ratio,
+        profile.constraint_closure,
+        "",
+    )
 
 
 def _truncate(text: str, length: int = 80) -> str:
@@ -208,12 +231,23 @@ def diagnosis_flag(abs_r: float) -> str:
     return "FAIL"
 
 
+def _aggregate_flag(flags: dict[str, str]) -> str:
+    """Worst of three pairwise diagnosis flags."""
+    rank = {"OK": 0, "WARN": 1, "FAIL": 2, "N/A": -1}
+    if not flags:
+        return "N/A"
+    valid = [(rank[v], v) for v in flags.values() if v != "N/A"]
+    if not valid:
+        return "N/A"
+    return max(valid)[1]
+
+
 def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
     """Generate every system, measure it, and return the list of points."""
-    meter = Autonometer(metrics=["albantakis", "memory"])
+    meter = Autonometer(metrics=["albantakis", "memory", "constraint_closure"])
     points: list[BenchmarkPoint] = []
     for system_class, params, seed, system in iter_systems(quick=quick):
-        closure, memory, notes = measure_safe(meter, system)
+        closure, memory, constraint, notes = measure_safe(meter, system)
         points.append(
             BenchmarkPoint(
                 system_class=system_class,
@@ -221,6 +255,7 @@ def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
                 seed=seed,
                 closure=closure,
                 memory=memory,
+                constraint=constraint,
                 quadrant=quadrant_of(closure, memory),
                 notes=notes,
             )
@@ -230,16 +265,41 @@ def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
 
 def print_table(points: list[BenchmarkPoint]) -> None:
     """Pretty-print one row per benchmark point on stdout."""
-    fmt = "{:<18} {:<22} {:>4} {:>10} {:>10} {:<14} {}"
-    print(fmt.format("class", "params", "seed", "closure", "memory", "quadrant", "notes"))
-    print(fmt.format("-" * 18, "-" * 22, "----", "-" * 10, "-" * 10, "-" * 14, "-" * 30))
+    fmt = "{:<18} {:<22} {:>4} {:>10} {:>10} {:>10} {:<14} {}"
+    print(
+        fmt.format(
+            "class", "params", "seed", "closure", "memory", "constraint", "quadrant", "notes"
+        )
+    )
+    print(
+        fmt.format(
+            "-" * 18,
+            "-" * 22,
+            "----",
+            "-" * 10,
+            "-" * 10,
+            "-" * 10,
+            "-" * 14,
+            "-" * 30,
+        )
+    )
     for p in points:
         c = "n/a" if p.closure is None else f"{p.closure:.4f}"
         m = "n/a" if p.memory is None else f"{p.memory:.4f}"
-        print(fmt.format(p.system_class, p.params, p.seed, c, m, p.quadrant, p.notes))
+        cc = "n/a" if p.constraint is None else f"{p.constraint:.4f}"
+        print(fmt.format(p.system_class, p.params, p.seed, c, m, cc, p.quadrant, p.notes))
 
 
-_CSV_FIELDS = ["class", "params", "seed", "closure", "memory", "quadrant", "notes"]
+_CSV_FIELDS = [
+    "class",
+    "params",
+    "seed",
+    "closure",
+    "memory",
+    "constraint",
+    "quadrant",
+    "notes",
+]
 
 
 def write_csv(points: list[BenchmarkPoint], path: Path) -> None:
@@ -251,25 +311,60 @@ def write_csv(points: list[BenchmarkPoint], path: Path) -> None:
         for p in points:
             row = asdict(p)
             row["class"] = row.pop("system_class")
-            row["closure"] = "" if row["closure"] is None else f"{row['closure']:.6f}"
-            row["memory"] = "" if row["memory"] is None else f"{row['memory']:.6f}"
+            for key in ("closure", "memory", "constraint"):
+                row[key] = "" if row[key] is None else f"{row[key]:.6f}"
             writer.writerow(row)
+
+
+def _column(points: list[BenchmarkPoint], name: str) -> list[float | None]:
+    return [getattr(p, name) for p in points]
+
+
+def _pair_array(
+    points: list[BenchmarkPoint], a: str, b: str
+) -> tuple[np.ndarray, np.ndarray]:
+    """Return paired arrays of axis ``a`` and ``b`` for points where both are not ``None``."""
+    xs: list[float] = []
+    ys: list[float] = []
+    for p in points:
+        ax = getattr(p, a)
+        bx = getattr(p, b)
+        if ax is None or bx is None:
+            continue
+        xs.append(float(ax))
+        ys.append(float(bx))
+    return np.asarray(xs, dtype=float), np.asarray(ys, dtype=float)
 
 
 def summarise(points: list[BenchmarkPoint]) -> dict[str, Any]:
     """Compute aggregate stats over the (valid) measurements."""
-    valid = [p for p in points if p.closure is not None and p.memory is not None]
-    n_valid = len(valid)
     n_total = len(points)
+    n_valid_full = sum(
+        1
+        for p in points
+        if p.closure is not None and p.memory is not None and p.constraint is not None
+    )
 
-    if n_valid >= 2:
-        closures = np.array([p.closure for p in valid], dtype=float)
-        memories = np.array([p.memory for p in valid], dtype=float)
-        r_p = pearson(closures, memories)
-        r_s = spearman(closures, memories)
-    else:
-        r_p = float("nan")
-        r_s = float("nan")
+    correlations: dict[str, dict[str, float | str | int]] = {}
+    for a, b in _PAIRS:
+        x, y = _pair_array(points, a, b)
+        n = int(x.size)
+        if n >= 2:
+            r_p = pearson(x, y)
+            r_s = spearman(x, y)
+        else:
+            r_p = float("nan")
+            r_s = float("nan")
+        flag = diagnosis_flag(abs(r_p)) if not np.isnan(r_p) else "N/A"
+        correlations[f"{a}-{b}"] = {
+            "n": n,
+            "pearson": r_p,
+            "spearman": r_s,
+            "flag": flag,
+        }
+
+    flags = {k: str(v["flag"]) for k, v in correlations.items()}
+    aggregate = _aggregate_flag(flags)
 
     counts: dict[str, int] = {}
     for p in points:
@@ -277,11 +372,10 @@ def summarise(points: list[BenchmarkPoint]) -> dict[str, Any]:
 
     return {
         "n_total": n_total,
-        "n_valid": n_valid,
-        "n_dropped": n_total - n_valid,
-        "pearson": r_p,
-        "spearman": r_s,
-        "flag": diagnosis_flag(abs(r_p)) if not np.isnan(r_p) else "N/A",
+        "n_valid": n_valid_full,
+        "n_dropped": n_total - n_valid_full,
+        "correlations": correlations,
+        "flag": aggregate,
         "quadrants": counts,
     }
 
@@ -290,39 +384,50 @@ def print_summary(summary: dict[str, Any]) -> None:
     """Pretty-print the aggregate stats and the diagnosis line."""
     print()
     print(
-        f"Sample size: {summary['n_valid']}/{summary['n_total']} valid points "
+        f"Sample size: {summary['n_valid']}/{summary['n_total']} fully-valid points "
         f"(dropped: {summary['n_dropped']})"
     )
-    print(f"Pearson r  : {summary['pearson']:+.4f}")
-    print(f"Spearman r : {summary['spearman']:+.4f}")
-    print(f"Diagnosis  : {summary['flag']}")
     print()
-    print("Quadrant distribution:")
+    print("Pairwise correlations:")
+    print(f"  {'pair':<22} {'n':>4} {'pearson':>10} {'spearman':>10} {'flag':<6}")
+    print(f"  {'-' * 22} {'-' * 4} {'-' * 10} {'-' * 10} {'-' * 6}")
+    for name, stats in summary["correlations"].items():
+        r_p = stats["pearson"]
+        r_s = stats["spearman"]
+        n = stats["n"]
+        flag = stats["flag"]
+        rp_str = "  n/a" if isinstance(r_p, float) and np.isnan(r_p) else f"{r_p:+.4f}"
+        rs_str = "  n/a" if isinstance(r_s, float) and np.isnan(r_s) else f"{r_s:+.4f}"
+        print(f"  {name:<22} {n:>4} {rp_str:>10} {rs_str:>10} {flag:<6}")
+    print()
+    print(f"Aggregate diagnosis: {summary['flag']}")
+    print()
+    print("Quadrant distribution (closure x memory only):")
     for q in ("drift", "clockwork", "turbulence", "autopoietic", "n/a"):
         print(f"  {q:<14} {summary['quadrants'].get(q, 0):>3}")
     print()
     flag = summary["flag"]
     if flag == "OK":
         print(
-            "[OK] |r| < 0.7 - closure and memory carry distinct information; "
-            "safe to extend the roadmap to v0.6+."
+            "[OK] All pairwise |r| < 0.7 - the three axes carry distinct "
+            "information; safe to extend the roadmap."
         )
     elif flag == "WARN":
         print(
-            "[WARN] 0.7 <= |r| < 0.9 - review whether the two metrics overlap "
-            "structurally before adding more axes."
+            "[WARN] At least one pair sits in 0.7 <= |r| < 0.9 - review whether "
+            "those axes overlap structurally before adding more."
         )
     elif flag == "FAIL":
         print(
-            "[FAIL] |r| >= 0.9 - engineered correlation suspected; pause and "
-            "audit before adding more axes (see docs/PBA.md)."
+            "[FAIL] At least one pair has |r| >= 0.9 - engineered correlation "
+            "suspected; pause and audit before adding more axes (see docs/PBA.md)."
         )
     else:
-        print("[N/A] Not enough valid points to compute a correlation.")
+        print("[N/A] Not enough valid points to compute correlations.")
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.5.0a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.csv"
 )
 
 

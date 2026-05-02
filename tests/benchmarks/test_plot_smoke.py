@@ -44,13 +44,46 @@ def plot() -> ModuleType:
 def mini_csv(tmp_path: Path) -> Path:
     csv_path = tmp_path / "mini.csv"
     rows = [
+        [
+            "class",
+            "params",
+            "seed",
+            "closure",
+            "memory",
+            "constraint",
+            "quadrant",
+            "notes",
+        ],
+        ["ECASystem", "rule=110", "0", "0.950000", "0.600000", "1.000000", "autopoietic", ""],
+        ["ECASystem", "rule=30", "0", "1.000000", "0.150000", "1.000000", "clockwork", ""],
+        ["KauffmanNetwork", "coupling=0.5", "0", "0.300000", "0.500000", "0.400000", "drift", ""],
+        [
+            "SimpleAutomaton",
+            "self_generated",
+            "0",
+            "0.980000",
+            "0.970000",
+            "0.000000",
+            "autopoietic",
+            "",
+        ],
+        ["SimpleAutomaton", "external", "0", "0.020000", "0.400000", "0.000000", "drift", ""],
+        ["KauffmanNetwork", "coupling=0.0", "0", "", "", "", "n/a", "degenerate"],
+    ]
+    with csv_path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.writer(fh)
+        writer.writerows(rows)
+    return csv_path
+
+
+@pytest.fixture
+def legacy_csv(tmp_path: Path) -> Path:
+    """Older CSV (no ``constraint`` column) to confirm backwards compat."""
+    csv_path = tmp_path / "legacy.csv"
+    rows = [
         ["class", "params", "seed", "closure", "memory", "quadrant", "notes"],
         ["ECASystem", "rule=110", "0", "0.950000", "0.600000", "autopoietic", ""],
-        ["ECASystem", "rule=30", "0", "1.000000", "0.150000", "clockwork", ""],
         ["KauffmanNetwork", "coupling=0.5", "0", "0.300000", "0.500000", "drift", ""],
-        ["SimpleAutomaton", "self_generated", "0", "0.980000", "0.970000", "autopoietic", ""],
-        ["SimpleAutomaton", "external", "0", "0.020000", "0.400000", "drift", ""],
-        ["KauffmanNetwork", "coupling=0.0", "0", "", "", "n/a", "degenerate"],
     ]
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.writer(fh)
@@ -62,9 +95,19 @@ def test_load_csv_coerces_floats_and_handles_empty(plot: ModuleType, mini_csv: P
     rows = plot.load_csv(mini_csv)
     assert len(rows) == 6
     assert rows[0]["closure"] == 0.95
+    assert rows[0]["constraint"] == 1.0
     assert rows[0]["seed"] == 0
     assert rows[-1]["closure"] is None
     assert rows[-1]["memory"] is None
+    assert rows[-1]["constraint"] is None
+
+
+def test_load_csv_handles_legacy_without_constraint(
+    plot: ModuleType, legacy_csv: Path
+) -> None:
+    rows = plot.load_csv(legacy_csv)
+    assert len(rows) == 2
+    assert all(r["constraint"] is None for r in rows)
 
 
 def test_render_writes_png(plot: ModuleType, mini_csv: Path, tmp_path: Path) -> None:

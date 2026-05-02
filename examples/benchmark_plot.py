@@ -1,12 +1,16 @@
-"""Render a ``(closure, memory)`` scatter from a benchmark CSV.
+"""Render a ``(closure, memory, constraint)`` scatter from a benchmark CSV.
 
 Reads a CSV produced by ``examples/benchmark_demo.py`` and writes a
-single-figure PNG to disk. Points are coloured by their system class
-and the four quadrants of the autonomy plane are drawn as soft
-guides. Degenerate rows (``closure`` or ``memory`` empty in the CSV)
-are dropped silently — they are recorded in the CSV itself with a
-``notes`` field, and the figure is meant to communicate the
-distribution over the *valid* sample.
+single-figure PNG to disk. Points are placed on the
+``(closure, memory)`` plane, coloured by their system class, and
+sized by their ``constraint`` axis when that column is present in
+the CSV; CSVs from earlier versions (without the column) fall back
+to a uniform marker size so the script remains backwards
+compatible. The four quadrants of the autonomy plane are drawn as
+soft guides. Degenerate rows (``closure`` or ``memory`` empty in
+the CSV) are dropped silently — they are recorded in the CSV
+itself with a ``notes`` field, and the figure is meant to
+communicate the distribution over the *valid* sample.
 
 This script depends on :mod:`matplotlib`, which is **not** a runtime
 dependency of ``autonometrics``. Install the optional extra to use
@@ -33,7 +37,11 @@ import numpy as np
 
 
 def load_csv(path: Path) -> list[dict[str, Any]]:
-    """Load a benchmark CSV; coerce ``closure``/``memory`` to ``float | None``."""
+    """Load a benchmark CSV; coerce numeric columns to ``float | None``.
+
+    The ``constraint`` column is optional so the loader still works on
+    CSVs produced by versions of the demo that predate the third axis.
+    """
     rows: list[dict[str, Any]] = []
     with path.open("r", encoding="utf-8", newline="") as fh:
         reader = csv.DictReader(fh)
@@ -41,6 +49,13 @@ def load_csv(path: Path) -> list[dict[str, Any]]:
             for key in ("closure", "memory"):
                 value = row.get(key, "")
                 row[key] = float(value) if value not in ("", None) else None
+            if "constraint" in row:
+                value = row.get("constraint", "")
+                row["constraint"] = (
+                    float(value) if value not in ("", None) else None
+                )
+            else:
+                row["constraint"] = None
             row["seed"] = int(row["seed"])
             rows.append(row)
     return rows
@@ -115,11 +130,13 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
 
     fig, ax = plt.subplots(figsize=(7.0, 6.5), dpi=150)
 
-    by_group: dict[tuple[str, str | None], list[tuple[float, float]]] = defaultdict(list)
+    by_group: dict[
+        tuple[str, str | None], list[tuple[float, float, float | None]]
+    ] = defaultdict(list)
     for r in rows:
         if r["closure"] is None or r["memory"] is None:
             continue
-        by_group[_classify(r)].append((r["closure"], r["memory"]))
+        by_group[_classify(r)].append((r["closure"], r["memory"], r.get("constraint")))
 
     palette = plt.get_cmap("tab10")
     class_to_color: dict[str, Any] = {}
@@ -127,15 +144,23 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
         if klass not in class_to_color:
             class_to_color[klass] = palette(len(class_to_color))
 
+    base_size = 60.0
+    constraint_scale = 180.0
+
     sorted_groups = sorted(by_group.items(), key=lambda kv: (kv[0][0], kv[0][1] or ""))
     for (klass, sub), points in sorted_groups:
-        xs, ys = zip(*points, strict=True)
+        xs = [p[0] for p in points]
+        ys = [p[1] for p in points]
+        cs = [p[2] for p in points]
+        sizes = [
+            base_size + constraint_scale * c if c is not None else base_size for c in cs
+        ]
         marker = _marker_for(sub)
         ax.scatter(
             xs,
             ys,
             label=_label_for(klass, sub, len(points)),
-            s=60,
+            s=sizes,
             alpha=0.75,
             marker=marker,
             color=class_to_color[klass],
@@ -162,6 +187,19 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
     ax.legend(loc="lower left", framealpha=0.95, fontsize=8)
     ax.grid(True, alpha=0.25)
 
+    has_constraint = any(r.get("constraint") is not None for r in rows)
+    if has_constraint:
+        ax.text(
+            0.99,
+            0.01,
+            "marker size proportional to constraint_closure",
+            transform=ax.transAxes,
+            ha="right",
+            va="bottom",
+            fontsize=7,
+            color="gray",
+        )
+
     fig.tight_layout()
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output)
@@ -169,10 +207,10 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
 
 
 _DEFAULT_CSV = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.5.0a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.csv"
 )
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.5.0a0.png"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.6.0a0.png"
 )
 
 

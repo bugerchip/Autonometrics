@@ -50,6 +50,8 @@ def test_quick_run_points_have_valid_fields(demo: ModuleType) -> None:
             assert 0.0 <= p.closure <= 1.0
         if p.memory is not None:
             assert 0.0 <= p.memory <= 1.0
+        if p.constraint is not None:
+            assert 0.0 <= p.constraint <= 1.0
         assert p.quadrant in {"drift", "clockwork", "turbulence", "autopoietic", "n/a"}
 
 
@@ -61,7 +63,16 @@ def test_write_csv_produces_well_formed_file(demo: ModuleType, tmp_path: Path) -
     lines = out.read_text(encoding="utf-8").splitlines()
     assert len(lines) == 1 + len(points)
     header = lines[0].split(",")
-    assert header == ["class", "params", "seed", "closure", "memory", "quadrant", "notes"]
+    assert header == [
+        "class",
+        "params",
+        "seed",
+        "closure",
+        "memory",
+        "constraint",
+        "quadrant",
+        "notes",
+    ]
 
 
 def test_summarise_returns_expected_keys(demo: ModuleType) -> None:
@@ -69,8 +80,16 @@ def test_summarise_returns_expected_keys(demo: ModuleType) -> None:
     summary = demo.summarise(points)
     assert summary["n_total"] == 3
     assert summary["n_valid"] <= summary["n_total"]
-    assert "pearson" in summary
-    assert "spearman" in summary
+    assert "correlations" in summary
+    pairs = summary["correlations"]
+    assert set(pairs.keys()) == {
+        "closure-memory",
+        "closure-constraint",
+        "memory-constraint",
+    }
+    for stats in pairs.values():
+        assert {"n", "pearson", "spearman", "flag"} <= stats.keys()
+        assert stats["flag"] in {"OK", "WARN", "FAIL", "N/A"}
     assert summary["flag"] in {"OK", "WARN", "FAIL", "N/A"}
     assert isinstance(summary["quadrants"], dict)
 
