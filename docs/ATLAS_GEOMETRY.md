@@ -414,3 +414,258 @@ already do.
 document are restricted to (a) the implementation report, (b)
 the verdict section, (c) the rejected/deferred section. The
 "Locked decisions" section is read-only after this commit.*
+
+---
+
+## Implementation report
+
+This section is added **after** the analysis was run. The
+"Locked decisions" section above is unchanged from the
+pre-registration commit.
+
+### Sample produced
+
+- `n_total = 405` swept configurations (the same five ECA rules,
+  five Kauffman couplings, three periodic periods, and two
+  `SimpleAutomaton` modes as in `v0.7.0a0`; only `n_seeds` was
+  raised).
+- `n_valid = 247` fully-valid 4-D points after dropouts.
+- `n_dropped = 158` (39%).
+
+The valid count clears the pre-registered floor of 200 with
+margin. To clear the floor with only `n_seeds` extension, the
+final value used was `n_seeds = 30`, not 20 as the locked
+decision text says "typically". This is **within** the
+pre-registered intent (the floor is on `n_valid`, not on
+`n_seeds`); the `n_seeds = 20` value yields ~163 valid points
+and would have missed the floor. The CSV is at
+`docs/benchmarks/v0.7.2a0.csv`; the human-readable run log is
+at `docs/benchmarks/v0.7.2a0.log.txt`.
+
+### Dropout pattern
+
+| Adapter class      | total | dropped | rate |
+|--------------------|------:|--------:|-----:|
+| `ECASystem`        |   150 |      82 | 55%  |
+| `KauffmanNetwork`  |   150 |      76 | 51%  |
+| `PeriodicCycle`    |    45 |       0 | 0%   |
+| `SimpleAutomaton`  |    60 |       0 | 0%   |
+
+Dropouts are **not** random across the zoo. They concentrate on
+`ECASystem` (rules with constant or near-constant focal
+trajectories at `width = 51`) and `KauffmanNetwork` (focal
+nodes that absorb into a fixed point at extreme `coupling`
+values). `PeriodicCycle` and `SimpleAutomaton` produce
+non-degenerate trajectories on every seed.
+
+This is itself a structural finding: the metric set has a
+**joint blind spot** that is selective for the cellular and
+network adapters, not for the synthetic ones. We record this as
+a health flag and condition the verdict on
+`non-degeneracy`, exactly as `docs/PBA.md` already does for the
+saturation theorem and `docs/CONSTRAINT_CLOSURE.md` for the
+trivial-zero theorem.
+
+### Indicators (raw)
+
+PCA on the standardised 4-D matrix:
+
+| Indicator         |  Value |
+|-------------------|-------:|
+| `λ_1`             | 0.4688 |
+| `λ_2`             | 0.3402 |
+| `λ_3`             | 0.1062 |
+| `λ_4`             | 0.0848 |
+| `λ_1 + λ_2`       | 0.8090 |
+| `λ_1 + λ_2 + λ_3` | 0.9152 |
+
+K-means + silhouette on the PCA-whitened scores
+(`k ∈ {2, 3, 4, 5}`):
+
+| `k` | silhouette `s(k)` | inertia |
+|----:|------------------:|--------:|
+|   2 |            +0.356 |  747.13 |
+|   3 |            +0.465 |  537.79 |
+|   4 |            +0.563 |  373.48 |
+|   5 |            +0.642 |  240.18 |
+
+`k* = 5` (the silhouette is monotone on this grid). Cluster
+composition at `k* = 5`:
+
+| Cluster | size | composition (count by adapter)             | dominant class    |
+|--------:|-----:|--------------------------------------------|-------------------|
+| 0       |   38 | ECASystem 30, KauffmanNetwork 8            | `ECASystem`       |
+| 1       |   77 | KauffmanNetwork 2, PeriodicCycle 45, SimpleAutomaton 30 | `PeriodicCycle` |
+| 2       |   34 | KauffmanNetwork 4, SimpleAutomaton 30      | `SimpleAutomaton` |
+| 3       |   66 | ECASystem 38, KauffmanNetwork 28           | `ECASystem`       |
+| 4       |   32 | KauffmanNetwork 32                         | `KauffmanNetwork` |
+
+Four of the five clusters are **dominated** (more than 50% of
+their members belong to a single adapter class). One cluster
+(cluster 4) is *purely* one adapter class. Cluster 1 is the
+only one that mixes more than two adapter classes; cluster 3 is
+borderline between `ECASystem` and `KauffmanNetwork`.
+
+### Conditional correlations (Simpson's-paradox check)
+
+Selected pairs where the within-cluster or within-class
+correlation differs from the global value by more than `0.30`:
+
+- `closure–persistence`: global `−0.61`. Within `KauffmanNetwork`
+  alone the correlation is `−0.07`; within `SimpleAutomaton`
+  alone it is `−1.00`. The global moderate-negative correlation
+  is *not* a within-substrate property — it is a between-substrate
+  contrast.
+- `memory–constraint`: global `−0.52`. Within cluster 3 the
+  correlation is `−0.68`; within cluster 4 it is `−0.14`.
+- `closure–constraint`: global `+0.04`. Within cluster 1 the
+  correlation is `−1.00`; within cluster 0 it is `+0.40`.
+
+The global correlation table from `v0.7.0a0` already showed all
+six pairs below the falsification threshold of `|r| < 0.7`, and
+that result is preserved on the `v0.7.2a0` extended sample. What
+the conditional analysis adds is that **the magnitudes of the
+global correlations are partly artefacts of the substrate
+mixture**: the four adapter classes occupy different parts of
+the 4-D cube, and several of the global pair-correlations would
+shrink (in absolute value) if the analysis were run within a
+single adapter class.
+
+For at least three of the six pair-correlations, `|r_global -
+r_within_cluster| > 0.30` for two or more of the five clusters;
+per Decision 3, this raises the **Simpson's-paradox health
+flag**.
+
+The full per-cluster and per-adapter-class correlation tables
+are in `docs/benchmarks/atlas_geometry_v0.7.2a0.json`. The
+pretty-printed log is at
+`docs/benchmarks/atlas_geometry_v0.7.2a0.log.txt`. The PCA scree
+plus the PC1/PC2 biplot (with axis loadings overlaid and the
+pre-registered `λ_1 = 0.70` reference line drawn on the scree)
+is at `docs/benchmarks/atlas_geometry_v0.7.2a0.png`.
+
+---
+
+## Verdict
+
+The pre-registered outcome bands (Decision 3 + "Predicted
+outcomes" section) are evaluated against the indicators above.
+
+**Outcome A — Level 2 reinforced.** Requires `λ_1 ≥ 0.70` *or*
+(`λ_1 + λ_2 ≥ 0.85` *and* `s(k*) ≥ 0.25` *with cross-adapter
+clusters*). Observed: `λ_1 = 0.47` (no), `λ_1 + λ_2 = 0.81` (no),
+clusters are **not** cross-adapter (4 of 5 are dominated by one
+adapter class). **Outcome A is rejected.**
+
+**Outcome C — Level 3 suspected.** Requires `λ_1 < 0.40` *and*
+`λ_1 + λ_2 < 0.65` *and* `k*` clusters that correlate with
+adapter classes. Observed: `λ_1 = 0.47` (no), `λ_1 + λ_2 = 0.81`
+(no), clusters do correlate with adapter classes (yes).
+**Outcome C is rejected on PCA grounds**, even though its
+clustering condition is met.
+
+**Outcome B — Inconclusive.** Requires `λ_1 ∈ [0.40, 0.70)`
+*and* `λ_1 + λ_2 ∈ [0.65, 0.85)` *and* `s(k*) < 0.25`. Observed:
+`λ_1 = 0.47` (yes), `λ_1 + λ_2 = 0.81` (yes), `s(k*) = 0.64`
+(no — clearly above 0.25). Outcome B's PCA clauses match;
+its silhouette clause does **not**.
+
+The data therefore lands in a **gap** the pre-registration did
+not anticipate: PCA in the inconclusive band, silhouette
+strongly above the inconclusive ceiling, but with the strong
+clustering structure aligned to substrate (adapter class)
+rather than to autonomy.
+
+The honest verdict is therefore:
+
+> **Inconclusive on the level question (PCA reading), with a
+> Level-3-suggestive overlay (clustering reading).**
+
+Specifically:
+
+1. **PCA-only verdict: inconclusive.** The 4-D autonomy cloud is
+   neither effectively one-dimensional (`λ_1 = 0.47 < 0.70`) nor
+   effectively two-dimensional (`λ_1 + λ_2 = 0.81 < 0.85`). It
+   carries non-trivial structure on at least three of its four
+   PCA components; the fourth still accounts for `8.5%` of total
+   variance. Per Decision 3, this PCA pattern alone does not
+   support Level 2 and does not justify a Level-3 declaration
+   either.
+
+2. **Clustering overlay: Level-3-suggestive but
+   non-decisive.** The silhouette is clearly high
+   (`s(k* = 5) = 0.64`), and 4 of the 5 clusters are dominated
+   by a single adapter class. Per Decision 3, when clusters
+   align with adapter classes the clustering reflects the *zoo's
+   structure*, not the autonomy structure. **Cluster strength
+   without cross-adapter mixing therefore does not constitute
+   evidence for Level 2; if anything it is mild evidence
+   against**, in the sense that "the four metrics behave
+   differently on different substrates" is the kind of pattern
+   Level 3 predicts and Level 2 does not.
+
+3. **Simpson's-paradox flag raised.** Several pairwise global
+   correlations are partly artefacts of the substrate
+   composition of the zoo. The flag is *not* a level-question
+   decision (per Decision 3 it is a health flag), but it
+   reinforces the overlay above: the four metrics interact with
+   *each other* differently inside different adapter classes.
+   This is, again, the pattern Level 3 expects.
+
+4. **Conditional on non-degeneracy.** The verdict is conditional
+   on the ECA / Kauffman dropout pattern. The 39% dropout rate
+   shows the metric set is not currently defined on a substantial
+   slice of the structural zoo, and that slice is not random
+   across substrates. A future iteration that closes the
+   degenerate zone might shift the indicators non-trivially.
+
+The structural-geometry analysis therefore **does not** rule out
+Level 2 — it cannot, by construction (see "What this cycle is
+*not*"). It **does** weaken the structural-side prior on
+Level 2 enough to elevate Level 3 from "considered and rejected
+in v0.7.0a0" to "consistent with the cluster geometry of the
+extended zoo, awaiting behavioural validation in v0.9.0".
+
+The package's external behaviour does **not** change. The four
+metrics still ship, still measure what their docstrings say,
+and still preserve their pairwise `|r| < 0.7` falsification
+result. What changes is the wording in `docs/PBA.md` and
+`docs/PBA.es.md`: the framing moves from "Level 2 plausible"
+to "Level 2 plausible **on the structural geometry, but** the
+cluster overlay is Level-3-suggestive on the same data; the
+question is now genuinely under-determined and is pushed to
+v0.9.0".
+
+### Where the verdict goes next
+
+- `v0.7.2a0` (this cycle): documentation-only update. No new
+  metric, no API change.
+- `v0.9.0`: behavioural validation. The atlas analysis is
+  re-run, this time on systems whose autonomy is *known
+  externally* (LLM transcripts, RAI questionnaires).
+  Cross-tradition agreement at that point is what would
+  finally arbitrate Level 2 vs Level 3.
+
+### Deviations from the pre-registration
+
+- **Decision 1 (sample size).** Pre-registration text said
+  "typically from 5 to 20"; final implementation used
+  `n_seeds = 30`. The pre-registered floor was on `n_valid`, not
+  `n_seeds`; `n_seeds = 30` is the smallest grid multiplier that
+  cleared the 200 floor with margin under the observed ~60%
+  retention rate. This is a benign deviation; recorded for
+  transparency.
+- **Decision 3 (verdict bands).** The data fell in a gap between
+  the three pre-registered outcomes (PCA in Outcome-B band,
+  silhouette in Outcome-A/C band). Pre-registration did not
+  anticipate this combination. The verdict text above resolves
+  the gap conservatively, treating PCA as the primary technique
+  (per Decision 2's "numerical primary, visual secondary")
+  and treating clustering's substrate-alignment as a
+  Level-3-suggestive overlay rather than a Level-3 declaration.
+  Documented here so future iterations can revise the bands if
+  the same combination recurs.
+- No deviations on Decisions 2, 4, or 5.
+
+*End of v0.7.2a0 cycle. Locked decisions remain read-only;
+this implementation report and verdict close the cycle.*

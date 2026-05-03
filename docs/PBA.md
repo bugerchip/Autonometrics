@@ -450,9 +450,84 @@ The remaining axis (the coherence-based ratio planned for
 metric's domain of applicability has to be stated before that
 metric counts as evidence for or against PBA.
 
+### Atlas geometry: do the four axes share a single object?
+
+The four-axis benchmark passes the pairwise `|r| < 0.7`
+falsification gate on every release. That result rules out the
+strong **Level 1** reading of PBA (one scalar in different
+notations) but does **not** decide between **Level 2** (one
+multidimensional object, four projections) and **Level 3**
+(several objects sharing a label). Both readings are consistent
+with the same correlation table.
+
+The `v0.7.2a0` cycle subjects the Level-2 reading to a *partial*
+structural test by analysing the geometry of the 4-D point cloud
+produced by the extended benchmark. The pre-registration is at
+[`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md); the analyser is
+`examples/atlas_geometry.py`; snapshots are at
+`docs/benchmarks/atlas_geometry_v0.7.2a0.{json,log.txt,png}`.
+
+The pre-registered indicators are anchored in textbook
+conventions (Jolliffe 2002 for PCA variance shares, Rousseeuw
+1987 for silhouette ranges) and were locked before the extended
+analysis was run. On the `n_valid = 247` (out of 405) extended
+zoo:
+
+| Indicator         |   Value | Pre-registered band                                |
+|-------------------|--------:|----------------------------------------------------|
+| `λ_1`             | `0.469` | `[0.40, 0.70)` — inconclusive PCA                  |
+| `λ_1 + λ_2`       | `0.809` | `[0.65, 0.85)` — partial low-dimensionality        |
+| `s(k* = 5)`       | `0.642` | `≥ 0.50` — strong cluster structure                |
+| Cluster alignment |       — | 4 of 5 clusters dominated by one adapter class     |
+
+The combination is not a clean fit to any of the three
+pre-registered outcomes. PCA lands in Outcome B's *inconclusive*
+band; silhouette lands in Outcome A's *strong-cluster* band; the
+clusters are *not* cross-adapter, so the Outcome A path is
+blocked. The honest verdict, written up in
+[`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md), is
+
+> **Inconclusive on the level question (PCA reading), with a
+> Level-3-suggestive overlay (clustering reading).**
+
+Three concrete consequences for the framework:
+
+1. **Level 2 is no longer "supported by structural geometry".**
+   The 4-D cloud is neither effectively 1-D nor effectively 2-D.
+   It carries non-trivial structure on at least three of its
+   four PCA components.
+2. **Level 3 cannot be declared on this evidence either.** The
+   isotropy thresholds (`λ_1 < 0.40`, `λ_1 + λ_2 < 0.65`) are
+   not crossed, even though the cluster geometry tracks
+   substrate.
+3. **The level question is pushed to v0.9.0.** Behavioural
+   validation against transcript-based RAI is now the only path
+   that can arbitrate Level 2 vs Level 3 cleanly. Structural
+   geometry alone, on the current zoo, is genuinely
+   under-determined.
+
+A Simpson's-paradox health flag is also raised: several of the
+six global pairwise correlations differ from their within-cluster
+or within-adapter counterparts by more than `0.30`. The most
+extreme case is `closure–persistence`: global `−0.61`, within
+`KauffmanNetwork` `−0.07`, within `SimpleAutomaton` `−1.00`. The
+falsification result (`|r_global| < 0.7` on every pair) survives
+on the extended sample, but the magnitudes of the global
+correlations are partly artefacts of the substrate mixture in
+the zoo.
+
+The verdict is conditional on the `non-degeneracy` clause: the
+extended sweep produces dropouts in 39% of configurations,
+concentrated on `ECASystem` and `KauffmanNetwork` (51 — 55%
+adapter-internal dropout) and zero on `PeriodicCycle` and
+`SimpleAutomaton`. This is itself a structural finding — the
+metric set has a joint blind spot selective for the cellular and
+network adapters — and is documented as such in
+[`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md).
+
 ## Current evidence status
 
-As of `v0.7.0a0`:
+As of `v0.7.2a0`:
 
 - Four of the five ratios are implemented (`ratio_endo_total`,
   `memory_endo_ratio`, `constraint_closure`,
@@ -497,22 +572,44 @@ As of `v0.7.0a0`:
   `r(memory, persistence) = -0.38`,
   `r(constraint, persistence) = +0.05`,
   all below the `|r| < 0.7` threshold. The aggregate diagnostic
-  flag (`max` over the six pairs) is `OK`. The fourth axis
+  flag (`max` over the six pairs) is `OK`.
+- The `v0.7.2a0` extended benchmark scales `n_seeds` from 5 to
+  30 on the same zoo (snapshot under
+  `docs/benchmarks/v0.7.2a0.{csv,png,log.txt}`). On `247` valid
+  points (out of `405` configurations, with the dropout pattern
+  documented in [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md))
+  the six Pearson correlations are
+  `r(closure, memory) = +0.27`,
+  `r(closure, constraint) = +0.04`,
+  `r(closure, persistence) = -0.61`,
+  `r(memory, constraint) = -0.52`,
+  `r(memory, persistence) = -0.33`,
+  `r(constraint, persistence) = -0.07`,
+  again all below the `|r| < 0.7` threshold. The fourth axis
   therefore carries information not already encoded by the
-  first three on the current adapter zoo. The cross-tradition
-  test of the atlas hypothesis is partial at this point: the
-  structural proxy passes the structural audit, but the strong
-  validation against transcript-based RAI is deferred to
-  `v0.9.0`.
+  first three on the extended adapter zoo as well. The
+  cross-tradition test of the atlas hypothesis is partial at
+  this point: the structural proxy passes the structural audit,
+  but the strong validation against transcript-based RAI is
+  deferred to `v0.9.0`.
+- The `v0.7.2a0` atlas-geometry analysis (PCA + k-means +
+  silhouette + conditional correlations on the same extended
+  zoo) lands the level question in an honestly *inconclusive*
+  state with a *Level-3-suggestive overlay*; details and
+  pre-registered thresholds are in
+  [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md) and summarised
+  in the *Atlas geometry* subsection above.
 
 PBA is therefore at the stage of *plausible working hypothesis
 with diagnostic-grade limitations mapped on three of the four
 shipped axes (saturation under determinism, single-constraint
 trivial-zero, symmetric-neighbour saturation; the persistence
 boundaries are recorded as provisional findings to be formalised
-in v0.7.1) and four of the five axes empirically distinguishable
-on the current zoo*, not *empirical claim*. Documents and demos
-in the package phrase it accordingly.
+in v0.7.1), four of the five axes empirically distinguishable
+on the current zoo, and the Level 2 vs Level 3 question
+genuinely under-determined on the structural domain pending
+v0.9.0's behavioural validation*, not *empirical claim*.
+Documents and demos in the package phrase it accordingly.
 
 ## Next decision points
 
@@ -521,13 +618,18 @@ in the package phrase it accordingly.
   theorems analogous to Theorem A / Theorem B for
   `constraint_closure`, and ships the perturbation-magnitude
   sweep deferred from `v0.7.0a0` in `docs/RAI.md`.
+- `v0.7.2a0` (this release) ships the atlas-geometry analysis
+  pre-registered in [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md).
+  Verdict above.
 - `v0.8.0a0` adds the coherence-based axis (CBA); completing
   the five lets the prediction above be evaluated for the first
   time.
 - `v0.9.0a0` adds the LLM transcript adapter and the strong
   validation pass against behavioural / RAI-style data, the
   formal home of the falsification test that builds on the
-  `v0.5.x`, `v0.6.x` and `v0.7.x` baselines.
+  `v0.5.x`, `v0.6.x` and `v0.7.x` baselines. **The Level 2 vs
+  Level 3 question, currently under-determined on the
+  structural domain, is decided here or stays open.**
 
 If at any of these checkpoints the prediction starts failing,
 this document is updated honestly: PBA's status is downgraded

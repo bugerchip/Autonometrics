@@ -480,9 +480,85 @@ incorpore: el dominio de aplicabilidad de cada métrica debe
 quedar enunciado antes de que esa métrica cuente como evidencia
 a favor o en contra de PBA.
 
+### Geometría del atlas: ¿son los cuatro ejes proyecciones de un único objeto?
+
+El benchmark de cuatro ejes pasa el filtro de falsación
+`|r| < 0.7` por pares en cada release. Ese resultado descarta la
+lectura **Nivel 1** fuerte de PBA (un único escalar en
+notaciones distintas), pero **no** decide entre **Nivel 2** (un
+objeto multidimensional, cuatro proyecciones) y **Nivel 3**
+(varios objetos compartiendo etiqueta). Ambas lecturas son
+consistentes con la misma tabla de correlaciones.
+
+El ciclo `v0.7.2a0` somete la lectura Nivel 2 a una *prueba
+estructural parcial* analizando la geometría de la nube 4-D que
+produce el benchmark extendido. La pre-registración está en
+[`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md); el analizador es
+`examples/atlas_geometry.py`; los snapshots están en
+`docs/benchmarks/atlas_geometry_v0.7.2a0.{json,log.txt,png}`.
+
+Los indicadores pre-registrados se anclan en convenciones de
+manual (Jolliffe 2002 para fracciones de varianza PCA, Rousseeuw
+1987 para rangos de silueta) y quedaron fijados antes de
+ejecutar el análisis extendido. Sobre el zoológico extendido
+(`n_valid = 247` de `405`):
+
+| Indicador          |   Valor | Banda pre-registrada                                |
+|--------------------|--------:|-----------------------------------------------------|
+| `λ_1`              | `0.469` | `[0.40, 0.70)` — PCA inconcluso                     |
+| `λ_1 + λ_2`        | `0.809` | `[0.65, 0.85)` — baja-dimensionalidad parcial       |
+| `s(k* = 5)`        | `0.642` | `≥ 0.50` — estructura fuerte de clusters            |
+| Alineación cluster |       — | 4 de 5 clusters dominados por una clase de adapter |
+
+La combinación no encaja limpiamente en ninguno de los tres
+resultados pre-registrados. PCA cae en la banda *inconclusa* de
+Outcome B; la silueta cae en la banda *cluster fuerte* de
+Outcome A; los clusters **no** son cross-adapter, así que la
+ruta de Outcome A queda bloqueada. El veredicto honesto, escrito
+en [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md), es
+
+> **Inconcluso sobre la cuestión de nivel (lectura PCA), con un
+> *overlay* sugestivo de Nivel 3 (lectura de clustering).**
+
+Tres consecuencias concretas para el marco:
+
+1. **Nivel 2 deja de estar "respaldado por geometría
+   estructural".** La nube 4-D no es efectivamente 1-D ni
+   efectivamente 2-D. Carga estructura no trivial sobre al menos
+   tres de sus cuatro componentes PCA.
+2. **Nivel 3 tampoco puede declararse con esta evidencia.** Los
+   umbrales de isotropía (`λ_1 < 0.40`,
+   `λ_1 + λ_2 < 0.65`) no se cruzan, aunque la geometría de
+   clusters sí siga al sustrato.
+3. **La cuestión de nivel se empuja a v0.9.0.** La validación
+   conductual contra RAI sobre transcripts es ahora la única
+   ruta que puede arbitrar Nivel 2 vs Nivel 3 limpiamente. La
+   geometría estructural por sí sola, sobre el zoológico actual,
+   está genuinamente sub-determinada.
+
+Se levanta también una **bandera de paradoja de Simpson**: varias
+de las seis correlaciones globales por pares difieren de sus
+contrapartes intra-cluster o intra-adapter por más de `0.30`. El
+caso más extremo es `closure–persistence`: global `−0.61`,
+dentro de `KauffmanNetwork` `−0.07`, dentro de `SimpleAutomaton`
+`−1.00`. El resultado de falsación (`|r_global| < 0.7` en cada
+par) sobrevive sobre la muestra extendida, pero las magnitudes
+de las correlaciones globales son en parte artefactos de la
+mezcla de sustratos en el zoológico.
+
+El veredicto está condicionado por la cláusula de
+`no-degeneración`: el barrido extendido produce *dropouts* en el
+39 % de las configuraciones, concentrados sobre `ECASystem` y
+`KauffmanNetwork` (51 — 55 % de tasa interna por adapter) y cero
+sobre `PeriodicCycle` y `SimpleAutomaton`. Esto es en sí mismo
+un hallazgo estructural — el conjunto de métricas tiene un punto
+ciego conjunto selectivo para los adapters celulares y de redes
+— y queda documentado como tal en
+[`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md).
+
 ## Estado actual de evidencia
 
-A fecha de `v0.7.0a0`:
+A fecha de `v0.7.2a0`:
 
 - Cuatro de las cinco razones están implementadas
   (`ratio_endo_total`, `memory_endo_ratio`,
@@ -530,23 +606,46 @@ A fecha de `v0.7.0a0`:
   `r(memory, persistence) = -0.38`,
   `r(constraint, persistence) = +0.05`,
   todas por debajo del umbral `|r| < 0.7`. La bandera
-  diagnóstica agregada (el peor de los seis pares) es `OK`. El
-  cuarto eje transporta información que los tres primeros no
-  codifican sobre el zoológico actual. La prueba transversal a
-  tradiciones de la hipótesis del atlas es parcial en este
-  punto: el proxy estructural pasa el control estructural, pero
-  la validación fuerte contra RAI conductual / transcripción se
-  difiere a `v0.9.0`.
+  diagnóstica agregada (el peor de los seis pares) es `OK`.
+- El benchmark extendido de `v0.7.2a0` escala `n_seeds` de 5 a
+  30 sobre el mismo zoológico (snapshot bajo
+  `docs/benchmarks/v0.7.2a0.{csv,png,log.txt}`). Sobre `247`
+  puntos válidos (de `405` configuraciones, con el patrón de
+  *dropouts* documentado en
+  [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md)) las seis
+  correlaciones Pearson son
+  `r(closure, memory) = +0.27`,
+  `r(closure, constraint) = +0.04`,
+  `r(closure, persistence) = -0.61`,
+  `r(memory, constraint) = -0.52`,
+  `r(memory, persistence) = -0.33`,
+  `r(constraint, persistence) = -0.07`,
+  todas de nuevo por debajo del umbral `|r| < 0.7`. El cuarto
+  eje sigue transportando información que los tres primeros no
+  codifican, también sobre el zoológico extendido. La prueba
+  transversal a tradiciones de la hipótesis del atlas es parcial
+  en este punto: el proxy estructural pasa el control
+  estructural, pero la validación fuerte contra RAI conductual /
+  transcripción se difiere a `v0.9.0`.
+- El análisis de geometría del atlas de `v0.7.2a0` (PCA +
+  k-means + silueta + correlaciones condicionales sobre el
+  mismo zoológico extendido) deja la cuestión de nivel en un
+  estado honestamente *inconcluso* con un *overlay sugestivo de
+  Nivel 3*; detalles y umbrales pre-registrados en
+  [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md) y resumen en la
+  subsección *Geometría del atlas* arriba.
 
 Por lo tanto, PBA está en la etapa de *hipótesis de trabajo
 plausible con limitaciones de grado diagnóstico mapeadas en tres
 de los cuatro ejes (saturación bajo determinismo, cero trivial
 por restricción única, saturación por vecindad simétrica; las
 fronteras de la persistencia se registran como hallazgos
-provisionales a formalizar en v0.7.1) y cuatro de los cinco ejes
-empíricamente distinguibles sobre el zoológico actual*, no de
-*afirmación empírica*. Los documentos y demos del paquete se
-redactan en consecuencia.
+provisionales a formalizar en v0.7.1), cuatro de los cinco ejes
+empíricamente distinguibles sobre el zoológico actual y la
+cuestión Nivel 2 vs Nivel 3 genuinamente sub-determinada sobre
+el dominio estructural a la espera de la validación conductual
+de v0.9.0*, no de *afirmación empírica*. Los documentos y demos
+del paquete se redactan en consecuencia.
 
 ## Próximos puntos de decisión
 
@@ -556,13 +655,19 @@ redactan en consecuencia.
   / Teorema B para `constraint_closure`, e incorpora el
   barrido de magnitud de perturbación diferido desde
   `v0.7.0a0` en `docs/RAI.md`.
+- `v0.7.2a0` (este release) ejecuta el análisis de geometría
+  del atlas pre-registrado en
+  [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md). Veredicto
+  arriba.
 - `v0.8.0a0` añade el eje basado en coherencia (CBA);
   completar las cinco permite por primera vez evaluar la
   predicción anterior.
 - `v0.9.0a0` añade el adapter de transcript LLM y la pasada de
   validación fuerte contra datos conductuales / RAI-style, el
   hogar formal de la prueba de falsación, construida sobre las
-  líneas base de `v0.5.x`, `v0.6.x` y `v0.7.x`.
+  líneas base de `v0.5.x`, `v0.6.x` y `v0.7.x`. **La cuestión
+  Nivel 2 vs Nivel 3, actualmente sub-determinada sobre el
+  dominio estructural, se decide aquí o queda abierta.**
 
 Si en cualquiera de estos puntos de control la predicción empieza
 a fallar, este documento se actualiza con honestidad: el estatus
