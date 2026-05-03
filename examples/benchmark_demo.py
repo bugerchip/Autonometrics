@@ -1,4 +1,4 @@
-"""Mini-benchmark for ``autonometrics`` v0.7.0a0.
+"""Mini-benchmark for ``autonometrics`` v0.7.2a0.
 
 Sweeps a curated set of systems whose autonomy structure is
 independently understood (elementary cellular automata, random Boolean
@@ -8,7 +8,7 @@ PBA axes ``(closure, memory, constraint, persistence)`` for each,
 and reports:
 
 - a per-system table on stdout,
-- a CSV snapshot at ``docs/benchmarks/v0.7.0a0.csv`` (overridable
+- a CSV snapshot at ``docs/benchmarks/v0.7.2a0.csv`` (overridable
   via ``--output``),
 - aggregate Pearson and Spearman correlations between every pair of
   the four axes (six pairs in total),
@@ -17,11 +17,23 @@ and reports:
   ``docs/PBA.md``. The aggregate flag is the worst of the six
   pairwise flags so a single overlap is enough to raise it.
 
+Compared with v0.7.0a0, the only change is sample size. The zoo
+(adapter classes and parameter values) is unchanged; ``n_seeds``
+is raised from 5 to 30 by default. The pre-registered guidance in
+``docs/ATLAS_GEOMETRY.md`` floored the *valid* sample at 200; an
+empirical retention rate of ~60% (degenerate trajectories on a
+non-trivial fraction of seeds) makes ``n_seeds = 30`` the smallest
+multiplier that clears the floor with margin. ``n_seeds = 20`` is
+also a defensible value but yields ~163 valid points and just
+misses the floor; it is kept available via ``--n-seeds`` for
+diagnostics.
+
 Usage::
 
     python examples/benchmark_demo.py
     python examples/benchmark_demo.py --output results/run.csv
     python examples/benchmark_demo.py --quick     # tiny smoke subset
+    python examples/benchmark_demo.py --n-seeds 5 # legacy v0.7.0a0 size
 
 The script is intentionally numpy-only and adds no new runtime
 dependency. It is a *consumer* of ``autonometrics``; it imports the
@@ -63,6 +75,7 @@ _ECA_RULES = (30, 90, 110, 184, 250)
 _KAUFFMAN_COUPLINGS = (0.0, 0.33, 0.5, 0.67, 1.0)
 _PERIODIC_PERIODS = (2, 4, 8)
 _N_STEPS = 2000
+_DEFAULT_N_SEEDS = 30
 
 _PAIRS: tuple[tuple[str, str], ...] = (
     ("closure", "memory"),
@@ -74,12 +87,21 @@ _PAIRS: tuple[tuple[str, str], ...] = (
 )
 
 
-def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
+def iter_systems(
+    quick: bool = False, n_seeds: int = _DEFAULT_N_SEEDS
+) -> Iterator[tuple[str, str, int, Any]]:
     """Yield ``(system_class, params, seed, system)`` tuples.
 
     With ``quick=True`` only three lightweight systems are emitted, so
     the smoke test exercises every code path without paying for the
     full sweep.
+
+    ``n_seeds`` controls how many random seeds are explored per
+    parameter setting. Periodic cycles use ``max(3, n_seeds // 2)``
+    seeds since they have less stochastic structure to exercise.
+    Adapter classes and parameter values themselves are kept fixed
+    across versions; only ``n_seeds`` is dialled up to grow the
+    sample (per ``docs/ATLAS_GEOMETRY.md``).
     """
     if quick:
         yield (
@@ -102,8 +124,13 @@ def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
         )
         return
 
+    if n_seeds < 1:
+        raise ValueError(f"n_seeds must be >= 1, got {n_seeds!r}")
+
+    periodic_seeds = max(3, n_seeds // 2)
+
     for rule in _ECA_RULES:
-        for seed in range(5):
+        for seed in range(n_seeds):
             yield (
                 "ECASystem",
                 f"rule={rule}",
@@ -112,7 +139,7 @@ def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
             )
 
     for coupling in _KAUFFMAN_COUPLINGS:
-        for seed in range(5):
+        for seed in range(n_seeds):
             yield (
                 "KauffmanNetwork",
                 f"coupling={coupling}",
@@ -127,7 +154,7 @@ def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
             )
 
     for period in _PERIODIC_PERIODS:
-        for seed in range(3):
+        for seed in range(periodic_seeds):
             yield (
                 "PeriodicCycle",
                 f"period={period}",
@@ -142,7 +169,7 @@ def iter_systems(quick: bool = False) -> Iterator[tuple[str, str, int, Any]]:
 
     rng = np.random.default_rng(0)
     env = rng.integers(0, 3, size=_N_STEPS).astype(np.int64)
-    for seed in range(5):
+    for seed in range(n_seeds):
         yield (
             "SimpleAutomaton",
             "self_generated",
@@ -248,13 +275,19 @@ def _aggregate_flag(flags: dict[str, str]) -> str:
     return max(valid)[1]
 
 
-def run_benchmark(quick: bool = False) -> list[BenchmarkPoint]:
-    """Generate every system, measure it, and return the list of points."""
+def run_benchmark(
+    quick: bool = False, n_seeds: int = _DEFAULT_N_SEEDS
+) -> list[BenchmarkPoint]:
+    """Generate every system, measure it, and return the list of points.
+
+    ``n_seeds`` is forwarded to :func:`iter_systems` and ignored when
+    ``quick`` is set.
+    """
     meter = Autonometer(
         metrics=["albantakis", "memory", "constraint_closure", "persistence"]
     )
     points: list[BenchmarkPoint] = []
-    for system_class, params, seed, system in iter_systems(quick=quick):
+    for system_class, params, seed, system in iter_systems(quick=quick, n_seeds=n_seeds):
         closure, memory, constraint, persistence, notes = measure_safe(meter, system)
         points.append(
             BenchmarkPoint(
@@ -454,7 +487,7 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.0a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
 )
 
 
@@ -472,9 +505,18 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Run a tiny subset (smoke mode).",
     )
+    parser.add_argument(
+        "--n-seeds",
+        type=int,
+        default=_DEFAULT_N_SEEDS,
+        help=(
+            f"Number of seeds per parameter setting (default: {_DEFAULT_N_SEEDS}). "
+            "Use 5 to reproduce the v0.7.0a0 snapshot. Ignored under --quick."
+        ),
+    )
     args = parser.parse_args(argv)
 
-    points = run_benchmark(quick=args.quick)
+    points = run_benchmark(quick=args.quick, n_seeds=args.n_seeds)
     print_table(points)
     write_csv(points, args.output)
     summary = summarise(points)
