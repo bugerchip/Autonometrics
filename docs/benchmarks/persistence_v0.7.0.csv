@@ -1,0 +1,111 @@
+coupling,seed,persistence,notes
+0.0000,0,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.0000,1,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.0000,2,1.000000,
+0.0000,3,1.000000,
+0.0000,4,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.0000,5,1.000000,
+0.0000,6,1.000000,
+0.0000,7,1.000000,
+0.0000,8,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.0000,9,1.000000,
+0.1000,0,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.1000,1,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.1000,2,1.000000,
+0.1000,3,1.000000,
+0.1000,4,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.1000,5,1.000000,
+0.1000,6,1.000000,
+0.1000,7,1.000000,
+0.1000,8,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.1000,9,1.000000,
+0.2000,0,0.981445,
+0.2000,1,0.998047,
+0.2000,2,0.537476,
+0.2000,3,0.950927,
+0.2000,4,0.000000,
+0.2000,5,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.2000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.2000,7,0.981445,
+0.2000,8,0.000000,
+0.2000,9,0.000000,
+0.3000,0,0.981445,
+0.3000,1,0.998047,
+0.3000,2,0.537476,
+0.3000,3,0.950927,
+0.3000,4,0.000000,
+0.3000,5,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.3000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.3000,7,0.981445,
+0.3000,8,0.000000,
+0.3000,9,0.000000,
+0.4000,0,0.981445,
+0.4000,1,0.998047,
+0.4000,2,0.537476,
+0.4000,3,0.950927,
+0.4000,4,0.000000,
+0.4000,5,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.4000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.4000,7,0.981445,
+0.4000,8,0.000000,
+0.4000,9,0.000000,
+0.5000,0,0.981445,
+0.5000,1,0.998047,
+0.5000,2,0.537476,
+0.5000,3,0.950927,
+0.5000,4,0.000000,
+0.5000,5,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.5000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.5000,7,0.981445,
+0.5000,8,0.000000,
+0.5000,9,0.000000,
+0.6000,0,0.853271,
+0.6000,1,0.000000,
+0.6000,2,0.937610,
+0.6000,3,0.000000,
+0.6000,4,0.000000,
+0.6000,5,0.000000,
+0.6000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.6000,7,1.000000,
+0.6000,8,0.945312,
+0.6000,9,0.000000,
+0.7000,0,0.853271,
+0.7000,1,0.000000,
+0.7000,2,0.937610,
+0.7000,3,0.000000,
+0.7000,4,0.000000,
+0.7000,5,0.000000,
+0.7000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.7000,7,1.000000,
+0.7000,8,0.945312,
+0.7000,9,0.000000,
+0.8000,0,0.853271,
+0.8000,1,0.000000,
+0.8000,2,0.937610,
+0.8000,3,0.000000,
+0.8000,4,0.000000,
+0.8000,5,0.000000,
+0.8000,6,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.8000,7,1.000000,
+0.8000,8,0.945312,
+0.8000,9,0.000000,
+0.9000,0,0.000000,
+0.9000,1,0.553819,
+0.9000,2,0.970703,
+0.9000,3,0.000000,
+0.9000,4,1.000000,
+0.9000,5,0.457455,
+0.9000,6,1.000000,
+0.9000,7,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+0.9000,8,1.000000,
+0.9000,9,1.000000,
+1.0000,0,0.000000,
+1.0000,1,0.553819,
+1.0000,2,0.970703,
+1.0000,3,0.000000,
+1.0000,4,1.000000,
+1.0000,5,0.457455,
+1.0000,6,1.000000,
+1.0000,7,,focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+1.0000,8,1.000000,
+1.0000,9,1.000000,

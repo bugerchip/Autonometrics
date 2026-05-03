@@ -1,0 +1,131 @@
+﻿ coupling seed  persistence notes
+--------- ---- ------------ ------------------------------
+     0.00    0          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.00    1          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.00    2       1.0000 
+     0.00    3       1.0000 
+     0.00    4          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.00    5       1.0000 
+     0.00    6       1.0000 
+     0.00    7       1.0000 
+     0.00    8          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.00    9       1.0000 
+     0.10    0          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.10    1          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.10    2       1.0000 
+     0.10    3       1.0000 
+     0.10    4          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.10    5       1.0000 
+     0.10    6       1.0000 
+     0.10    7       1.0000 
+     0.10    8          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.10    9       1.0000 
+     0.20    0       0.9814 
+     0.20    1       0.9980 
+     0.20    2       0.5375 
+     0.20    3       0.9509 
+     0.20    4       0.0000 
+     0.20    5          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.20    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.20    7       0.9814 
+     0.20    8       0.0000 
+     0.20    9       0.0000 
+     0.30    0       0.9814 
+     0.30    1       0.9980 
+     0.30    2       0.5375 
+     0.30    3       0.9509 
+     0.30    4       0.0000 
+     0.30    5          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.30    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.30    7       0.9814 
+     0.30    8       0.0000 
+     0.30    9       0.0000 
+     0.40    0       0.9814 
+     0.40    1       0.9980 
+     0.40    2       0.5375 
+     0.40    3       0.9509 
+     0.40    4       0.0000 
+     0.40    5          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.40    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.40    7       0.9814 
+     0.40    8       0.0000 
+     0.40    9       0.0000 
+     0.50    0       0.9814 
+     0.50    1       0.9980 
+     0.50    2       0.5375 
+     0.50    3       0.9509 
+     0.50    4       0.0000 
+     0.50    5          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.50    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.50    7       0.9814 
+     0.50    8       0.0000 
+     0.50    9       0.0000 
+     0.60    0       0.8533 
+     0.60    1       0.0000 
+     0.60    2       0.9376 
+     0.60    3       0.0000 
+     0.60    4       0.0000 
+     0.60    5       0.0000 
+     0.60    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.60    7       1.0000 
+     0.60    8       0.9453 
+     0.60    9       0.0000 
+     0.70    0       0.8533 
+     0.70    1       0.0000 
+     0.70    2       0.9376 
+     0.70    3       0.0000 
+     0.70    4       0.0000 
+     0.70    5       0.0000 
+     0.70    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.70    7       1.0000 
+     0.70    8       0.9453 
+     0.70    9       0.0000 
+     0.80    0       0.8533 
+     0.80    1       0.0000 
+     0.80    2       0.9376 
+     0.80    3       0.0000 
+     0.80    4       0.0000 
+     0.80    5       0.0000 
+     0.80    6          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.80    7       1.0000 
+     0.80    8       0.9453 
+     0.80    9       0.0000 
+     0.90    0       0.0000 
+     0.90    1       0.5538 
+     0.90    2       0.9707 
+     0.90    3       0.0000 
+     0.90    4       1.0000 
+     0.90    5       0.4575 
+     0.90    6       1.0000 
+     0.90    7          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     0.90    8       1.0000 
+     0.90    9       1.0000 
+     1.00    0       0.0000 
+     1.00    1       0.5538 
+     1.00    2       0.9707 
+     1.00    3       0.0000 
+     1.00    4       1.0000 
+     1.00    5       0.4575 
+     1.00    6       1.0000 
+     1.00    7          n/a focal marginal is (near-)constant; persistence is undefined (d_ref = 0.00e+00)
+     1.00    8       1.0000 
+     1.00    9       1.0000 
+
+Aggregate (mean +/- std per coupling):
+ coupling     n          persistence
+--------- ----- --------------------
+     0.00  6/10    1.0000 +/- 0.0000
+     0.10  6/10    1.0000 +/- 0.0000
+     0.20  8/10    0.5562 +/- 0.4529
+     0.30  8/10    0.5562 +/- 0.4529
+     0.40  8/10    0.5562 +/- 0.4529
+     0.50  8/10    0.5562 +/- 0.4529
+     0.60  9/10    0.4151 +/- 0.4654
+     0.70  9/10    0.4151 +/- 0.4654
+     0.80  9/10    0.4151 +/- 0.4654
+     0.90  9/10    0.6647 +/- 0.4058
+     1.00  9/10    0.6647 +/- 0.4058
+
+[OK] U-shape observed: persistence(0.00) = 1.000, min at coupling = 0.60 (0.415), persistence(1.00) = 0.665; dip = 0.417. Both boundary regimes (low coupling: focal collapses to fixed point; high coupling: focal flip invisible to its own rule) produce trivial absorption. The non-trivial useful range of the metric on Kauffman networks lies in the intermediate couplings, where actual perturbation propagation is observed.
+
+CSV saved to: C:\Users\Usuario\Documents\GitHub\Autonometrics\docs\benchmarks\persistence_v0.7.0.csv
