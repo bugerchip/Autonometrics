@@ -1,33 +1,67 @@
 # autonometrics
 
-> An instrument for quantifying structural self-determination across systems.
+> ### *Shadows of Self-Determination*
+>
+> **An instrument for quantifying structural self-determination across systems.**
+>
+> *We see shadows of autonomy, calibrated and reproducible.*
+> *Whether the cave behind them holds one object or many,*
+> *this tool does not decide.*
 
 **Status:** `alpha` — work in progress, API unstable.
 
-`autonometrics` is a Python package that applies existing measures of
-autonomy and self-determination to discrete trajectories from
-automata, agent traces, simulations and similar systems, returning
-comparable normalised scores. It is a measurement tool, not a new
-theory: it packages established measures from information theory and
-dynamical-systems analysis behind a single, cross-substrate API.
+---
 
-The unifying argument the package follows is the **Principio de
-Bordes Autodeterminados (PBA)**: a system's structural
-self-determination is a multidimensional phenomenon, and several
-traditions in the autonomy literature each operationalise one of
-its coordinates as a *ratio of internal magnitude over total
-magnitude*. `autonometrics` collects those ratios under a shared
-`[0, 1]` normalisation so points from different substrates land
-in the same comparable space. The package therefore behaves as
-an **atlas of autonomy** — a small set of charts (metrics) that
-cover the same territory from different operational angles —
-not as a reduction of autonomy to a single underlying quantity.
-PBA is treated as a falsifiable working hypothesis at that
-multidimensional level, not as an axiom and not as an
-entropy-style extensional identity. See
-[`docs/PBA.md`](docs/PBA.md) for the full statement, the
-three-level taxonomy of unification, and the falsification
-criteria (Spanish version: [`docs/PBA.es.md`](docs/PBA.es.md)).
+## What it is
+
+`autonometrics` is a Python instrument that takes a discrete
+trajectory — a cellular automaton, a Boolean network, an agent
+log, a simulation — and returns four normalised readings of how
+*self-determined* its structure looks. Each reading comes from a
+different scientific tradition; together they form a small
+**atlas of autonomy**: a few charts that cover the same territory
+from different operational angles.
+
+It is a measurement tool, not a new theory of autonomy. The
+package collects existing measures, normalises them to a shared
+`[0, 1]` scale, and lets you compare points from very different
+substrates in the same space.
+
+## The four axes
+
+| Axis | Question it answers | Tradition | Reference |
+|---|---|---|---|
+| **`closure`** | How much of the system's information is generated *from inside*? | Information theory | Shannon (1948); Bertschinger et al. (2008); Albantakis (2021) |
+| **`memory`** | How much of the system's predictability is carried *by its own past*? | Computational mechanics | Crutchfield & Young (1989); Feldman & Crutchfield (2002) |
+| **`constraint`** | How tightly do the system's constraints enable *each other*? | Theoretical biology | Montévil & Mossio (2015) |
+| **`persistence`** | How well does the system's structure resist a small perturbation? | Operational goal-directedness | Lee & McShea (2020) |
+
+All four readings live in `[0, 1]` and can be plotted, correlated
+and compared across substrates in the same space.
+
+## What the project does *not* claim
+
+The four axes are **not** assumed to be shadows of a single
+underlying quantity. The current empirical picture
+(`v0.7.2a0`, 247-point synthetic benchmark) is honest about
+that: pairwise correlations are all below `|r| < 0.7`, the
+first principal component explains only `~47%` of the variance,
+and clusters in the 4-D atlas track the *substrate class* more
+than any latent autonomy dimension.
+
+So the package ships a measurement framework, a benchmark, the
+dropouts, and a falsifiable working hypothesis — not a
+definitive theory of autonomy. The level question (one object
+or many?) is left as an empirical matter, not a postulate.
+
+The full conceptual statement and the falsification criteria
+live in [`docs/PBA.md`](docs/PBA.md) (English) and
+[`docs/PBA.es.md`](docs/PBA.es.md) (Spanish). The
+pre-registered geometry analysis is in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md);
+per-axis design notes in
+[`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md)
+and [`docs/RAI.md`](docs/RAI.md).
 
 ## Installation
 
