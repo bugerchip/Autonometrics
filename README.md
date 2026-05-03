@@ -209,70 +209,87 @@ interpreter argue.
 
 `v0.5.0a0` shipped the first reference benchmark on two axes;
 `v0.6.0a0` extended it to the third axis (`constraint_closure`);
-`v0.7.0a0` adds the fourth axis (`rai_proxy_persistence`) without
-changing the system zoo, so the new readings are directly
-comparable with both prior baselines. The intent is not to score
-one system as "more autonomous" than another. It is to check
-whether the four axes carry distinct information for the systems
-we can generate today, before adding a fifth axis to PBA.
+`v0.7.0a0` added the fourth axis (`rai_proxy_persistence`)
+without changing the system zoo. `v0.7.2a0` (this release)
+re-runs the four-axis benchmark with `n_seeds` raised from 5 to
+30 to clear the 200-valid-point floor pre-registered in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md) for the
+atlas-geometry analysis. Adapter classes and parameter values
+are unchanged, so all results are directly comparable with the
+two prior baselines. The intent is not to score one system as
+"more autonomous" than another. It is to check whether the four
+axes carry distinct information for the systems we can generate
+today, before adding a fifth axis to PBA.
 
 Reproducing the run:
 
 ```bash
 pip install -e ".[dev]"
-python examples/benchmark_demo.py        # writes docs/benchmarks/v0.7.0a0.csv
+python examples/benchmark_demo.py        # writes docs/benchmarks/v0.7.2a0.csv
 pip install -e ".[dev,viz]"
-python examples/benchmark_plot.py        # writes docs/benchmarks/v0.7.0a0.png
+python examples/benchmark_plot.py        # writes docs/benchmarks/v0.7.2a0.png
 ```
 
 Headline numbers from the snapshot shipped here
-(`docs/benchmarks/v0.7.0a0.csv`):
+(`docs/benchmarks/v0.7.2a0.csv`):
 
 | Quantity                              | Value         |
 |---------------------------------------|---------------|
-| Configurations swept                  | 69            |
-| Fully-valid points                    | 48            |
-| Configurations dropped (n/a)          | 21            |
-| Pearson r(closure, memory)            | +0.32         |
-| Pearson r(closure, constraint)        | -0.04         |
-| Pearson r(closure, persistence)       | -0.44         |
-| Pearson r(memory, constraint)         | -0.57         |
-| Pearson r(memory, persistence)        | -0.38         |
-| Pearson r(constraint, persistence)    | +0.05         |
-| Spearman r(closure, memory)           | +0.56         |
-| Spearman r(closure, constraint)       | -0.27         |
-| Spearman r(closure, persistence)      | -0.50         |
-| Spearman r(memory, constraint)        | -0.45         |
-| Spearman r(memory, persistence)       | -0.42         |
-| Spearman r(constraint, persistence)   | +0.21         |
+| Configurations swept                  | 405           |
+| Fully-valid points                    | 247           |
+| Configurations dropped (n/a)          | 158 (39%)     |
+| Pearson r(closure, memory)            | +0.27         |
+| Pearson r(closure, constraint)        | +0.04         |
+| Pearson r(closure, persistence)       | -0.61         |
+| Pearson r(memory, constraint)         | -0.52         |
+| Pearson r(memory, persistence)        | -0.33         |
+| Pearson r(constraint, persistence)    | -0.07         |
+| Spearman r(closure, memory)           | +0.47         |
+| Spearman r(closure, constraint)       | -0.20         |
+| Spearman r(closure, persistence)      | -0.47         |
+| Spearman r(memory, constraint)        | -0.34         |
+| Spearman r(memory, persistence)       | -0.33         |
+| Spearman r(constraint, persistence)   | -0.01         |
 | Falsification threshold               | `|r| < 0.7`   |
 | Aggregate diagnosis                   | OK            |
 
-The 21 dropped configurations correspond to systems whose focal
+The 158 dropped configurations correspond to systems whose focal
 trajectory collapses to a constant or to a value fully determined
 by the environment, in which case `H(S_{t+1} | E_t) = 0` and the
-closure ratio is undefined by construction. They are kept in the
-CSV with empty metric columns so the dropout is visible rather
-than hidden.
+closure ratio is undefined by construction. They concentrate
+on `ECASystem` (55% adapter-internal dropout) and
+`KauffmanNetwork` (51%); `PeriodicCycle` and `SimpleAutomaton`
+have zero dropouts. The pattern is itself a structural finding —
+the metric set has a joint blind spot selective for the cellular
+and network adapters — and is documented in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md). Dropouts are
+kept in the CSV with empty metric columns so the dropout is
+visible rather than hidden.
 
 All six pairwise Pearson correlations stay below the
 `|r| < 0.7` falsification threshold documented in
-[`docs/PBA.md`](docs/PBA.md), so on this zoo of systems the four
-axes carry distinct information and PBA's *"add more ratios in
-the same shape"* roadmap remains motivated. The aggregate flag is
-the worst of the six pairwise flags so a single overlap is enough
-to raise it.
+[`docs/PBA.md`](docs/PBA.md), now on the extended sample of 247
+valid points. The aggregate flag is the worst of the six
+pairwise flags so a single overlap is enough to raise it.
 
-The three pairs involving the new persistence axis sit comfortably
-inside the `|r| < 0.7` band: `closure-persistence` at `−0.44`,
-`memory-persistence` at `−0.38`, and `constraint-persistence` at
-`+0.05`. This is the empirical correlation gate pre-registered in
+The three pairs involving the persistence axis sit inside the
+`|r| < 0.7` band on the extended sample as well:
+`closure-persistence` at `−0.61`, `memory-persistence` at
+`−0.33`, and `constraint-persistence` at `−0.07`. This is the
+empirical correlation gate pre-registered in
 [`docs/RAI.md`](docs/RAI.md) ("Empirical correlation `|r| < 0.7`
 on the benchmark zoo"). Together with the static no-cross-import
 audit baked into `compute_rai_proxy_persistence`, it is the
-falsification criterion the fourth axis had to clear before being
-considered a fourth dimension of the autonomy atlas rather than a
-re-skin of an existing axis.
+falsification criterion the fourth axis had to clear before
+being considered a fourth dimension of the autonomy atlas rather
+than a re-skin of an existing axis. The `closure–persistence`
+correlation has tightened from `−0.44` (v0.7.0a0) to `−0.61`
+(v0.7.2a0) on the larger sample, but still sits below the
+falsification threshold; the same `closure–persistence` pair
+also flips to `−0.07` *within* `KauffmanNetwork` and to `−1.00`
+*within* `SimpleAutomaton`, raising the Simpson's-paradox health
+flag analysed in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md).
 
 The third axis cleanly **breaks the closure-saturation wall**
 identified in `v0.5.0a0`: single-node periodic cycles and
@@ -287,19 +304,75 @@ signal.
 A scatter rendering of the same CSV — points placed on the
 `(closure, memory)` plane, with marker size proportional to the
 `constraint` axis — is shipped at
-[`docs/benchmarks/v0.7.0a0.png`](docs/benchmarks/v0.7.0a0.png),
+[`docs/benchmarks/v0.7.2a0.png`](docs/benchmarks/v0.7.2a0.png),
 and the captured stdout of the reference run lives at
-[`docs/benchmarks/v0.7.0a0.log.txt`](docs/benchmarks/v0.7.0a0.log.txt)
+[`docs/benchmarks/v0.7.2a0.log.txt`](docs/benchmarks/v0.7.2a0.log.txt)
 for traceability. The persistence axis is reported in the CSV's
 fourth metric column and is rendered separately as a domain-of-
 applicability curve under
 [`docs/benchmarks/persistence_v0.7.0.png`](docs/benchmarks/persistence_v0.7.0.png).
 The two-axis baseline from `v0.5.0a0`
 ([`csv`](docs/benchmarks/v0.5.0a0.csv) /
-[`png`](docs/benchmarks/v0.5.0a0.png)) and the three-axis snapshot
+[`png`](docs/benchmarks/v0.5.0a0.png)), the three-axis snapshot
 from `v0.6.0a0` ([`csv`](docs/benchmarks/v0.6.0a0.csv) /
-[`png`](docs/benchmarks/v0.6.0a0.png)) are kept under
+[`png`](docs/benchmarks/v0.6.0a0.png)), and the four-axis
+short-sample snapshot from `v0.7.0a0`
+([`csv`](docs/benchmarks/v0.7.0a0.csv) /
+[`png`](docs/benchmarks/v0.7.0a0.png)) are kept under
 `docs/benchmarks/` for traceability.
+
+### Atlas geometry analysis (`v0.7.2a0`)
+
+`v0.7.2a0` ships a pre-registered geometric audit of the
+four-axis cloud, designed *before* any extended-sweep data was
+seen. The full pre-registration, threshold table, implementation
+report, and verdict live in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md). Headline
+indicators on the 247 valid points:
+
+| Indicator                        | Value   | Pre-registered band             |
+|----------------------------------|--------:|---------------------------------|
+| `λ_1`                            | `0.469` | `[0.40, 0.70)` — inconclusive   |
+| `λ_1 + λ_2`                      | `0.809` | `[0.65, 0.85)` — partial low-D  |
+| `s(k* = 5)` (silhouette, k-means)| `0.642` | `≥ 0.50` — strong cluster       |
+| Adapter-class alignment          |  4 of 5 | clusters dominated by one class |
+
+The combination is not a clean fit to any of the three
+pre-registered outcomes (Level 2 reinforced, inconclusive,
+Level 3 suspected); per the resolution rule pre-registered in
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md), the verdict
+is
+
+> **Inconclusive on the level question (PCA reading), with a
+> Level-3-suggestive overlay (clustering reading).**
+
+A Simpson's-paradox health flag is also raised: several global
+pairwise correlations are partly artefacts of the substrate
+composition of the zoo (the most extreme case is
+`closure–persistence`, global `−0.61` vs `−1.00` within
+`SimpleAutomaton` alone). The level question — Level 2 (one
+multidimensional object) vs Level 3 (several objects sharing a
+label) — is therefore genuinely *under-determined* on the
+structural domain and is pushed to `v0.9.0`'s behavioural
+validation against transcript-based RAI for a clean arbitration.
+
+Reproducing the analysis:
+
+```bash
+pip install -e ".[dev]"
+python examples/atlas_geometry.py        # writes docs/benchmarks/atlas_geometry_v0.7.2a0.json
+pip install -e ".[dev,viz]"
+python examples/atlas_geometry_plot.py   # writes docs/benchmarks/atlas_geometry_v0.7.2a0.png
+```
+
+The biplot
+([`docs/benchmarks/atlas_geometry_v0.7.2a0.png`](docs/benchmarks/atlas_geometry_v0.7.2a0.png))
+renders the PCA scree (with the pre-registered `λ_1 ≥ 0.70`
+reference line) and the PC1/PC2 projection of the standardised
+4-D cloud with axis loadings drawn as labelled arrows. t-SNE /
+UMAP panels are deliberately omitted; the pre-registration
+flagged them as illustrative-only because they can manufacture
+visual clusters from isotropic noise.
 
 ### Saturation diagnostic (`v0.5.1a0`)
 
@@ -599,9 +672,11 @@ information on the current adapter zoo, the `v0.5.1a0`
 diagnostic mapped the `closure = 1.0` saturation wall,
 `v0.6.0a0` added the third axis to break that wall while
 preserving pairwise independence, `v0.6.1a0` mapped the two
-saturating regions of `constraint_closure`, and `v0.7.0a0` added
+saturating regions of `constraint_closure`, `v0.7.0a0` added
 the fourth axis (`rai_proxy_persistence`) and revealed its U-
-shaped domain of applicability.
+shaped domain of applicability, and `v0.7.2a0` ran a
+pre-registered geometric audit of the four-axis cloud whose
+verdict pushed the Level 2 vs Level 3 question to `v0.9.0`.
 
 - `v0.5.0-alpha`: benchmark suite + scatter plot. Reference
   systems (`ECASystem`, `KauffmanNetwork`, `PeriodicCycle`) wired
@@ -622,23 +697,35 @@ shaped domain of applicability.
   symmetric-neighbour saturation theorem; Kauffman density
   sweep snapshot under
   `docs/benchmarks/constraint_density_v0.6.1.*`.
-- `v0.7.0-alpha` *(current)*: fourth axis —
-  `rai_proxy_persistence` (Lee & McShea-style perturbation
-  persistence, RAI-style structural proxy). Adapter-side
-  `replay_from_perturbation` protocol, four-axis benchmark
-  snapshot with six pairwise correlations (all `|r| < 0.7`), and
-  a first persistence-vs-coupling diagnostic that revealed the
-  U-shape boundary regimes. Pre-registered in
-  [`docs/RAI.md`](docs/RAI.md).
+- `v0.7.0-alpha`: fourth axis — `rai_proxy_persistence` (Lee &
+  McShea-style perturbation persistence, RAI-style structural
+  proxy). Adapter-side `replay_from_perturbation` protocol,
+  four-axis benchmark snapshot with six pairwise correlations
+  (all `|r| < 0.7`), and a first persistence-vs-coupling
+  diagnostic that revealed the U-shape boundary regimes.
+  Pre-registered in [`docs/RAI.md`](docs/RAI.md).
 - `v0.7.1-alpha`: domain-of-applicability cycle for
   `rai_proxy_persistence`. Formal statement of the two boundary
   theorems (low-coupling collapse and high-coupling
   invisibility), perturbation-magnitude sweep already deferred
   there in `docs/RAI.md`, and the same diagnostic-grade rigour
-  the prior axes already enjoy.
+  the prior axes already enjoy. Intentionally **skipped** in
+  the chronological release order; the boundary theorems and
+  the magnitude sweep land here.
+- `v0.7.2-alpha` *(current)*: pre-registered atlas-geometry
+  analysis. PCA + k-means + silhouette + conditional
+  correlations on the extended four-axis benchmark
+  (`n_valid = 247`). Pre-registered in
+  [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md). Verdict:
+  inconclusive on the level question (PCA reading), with a
+  Level-3-suggestive overlay (clustering reading); the level
+  question is pushed to `v0.9.0`'s behavioural validation.
 - `v0.8.0-alpha`: fifth axis — coherence-based alignment ratio.
 - `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
-  and additional public-dataset benchmarks.
+  and additional public-dataset benchmarks. **Behavioural
+  validation pass**: arbitrates Level 2 vs Level 3 against
+  transcript-based RAI, the test the structural geometry
+  cannot run alone.
 - `v1.0.0` (without alpha marker): PyPI publication once five
   ratios, three adapters, and the full benchmark battery are
   stable.

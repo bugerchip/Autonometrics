@@ -7,6 +7,144 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.7.2a0] - 2026-05-02
+
+> Maintenance and analysis cycle. **No new metric, no API
+> change.** Version `0.7.1a0` is *intentionally skipped* and
+> reserved for the persistence-boundary theorem cycle (see
+> `docs/PBA.md` *Next decision points* and `docs/RAI.md` open
+> design questions). Skipping a sub-version this way keeps the
+> `0.7.x` series chronologically auditable: `0.7.0a0` shipped
+> the metric and the diagnostic, `0.7.1a0` will formalise its
+> boundaries, `0.7.2a0` (this release) ships the geometric audit
+> of the four-axis cloud.
+
+### Added
+
+- **Pre-registered atlas-geometry analysis cycle.** New design
+  document `docs/ATLAS_GEOMETRY.md` locks the research
+  question (Level 2 vs Level 3 unification of PBA), the
+  techniques (PCA primary, k-means + silhouette secondary,
+  t-SNE/UMAP illustrative-only), the numerical thresholds
+  anchored in Jolliffe (2002) and Rousseeuw (1987), the
+  treatment of dropouts, and the documentation structure
+  *before* the analysis is run. Three predicted outcomes
+  (Level 2 reinforced, inconclusive, Level 3 suspected) are
+  enumerated in advance so the verdict cannot drift after the
+  data is in.
+- **Extended four-axis benchmark snapshot
+  `docs/benchmarks/v0.7.2a0.{csv,png,log.txt}`.** Same zoo as
+  `v0.7.0a0` but with `n_seeds` raised from 5 to 30 (typical
+  guideline of 5 → 20 was insufficient because retention is
+  ~60%; 30 clears the pre-registered floor of 200 valid points
+  with margin). 247 valid points out of 405 swept
+  configurations. All six pairwise `|Pearson r| < 0.7` —
+  closure–memory `+0.27`, closure–constraint `+0.04`,
+  closure–persistence `−0.61`, memory–constraint `−0.52`,
+  memory–persistence `−0.33`, constraint–persistence `−0.07`.
+  The `v0.7.0a0` falsification result therefore survives the
+  larger sample.
+- **`examples/atlas_geometry.py`.** numpy-only analyser that
+  computes:
+  - PCA via `numpy.linalg.svd` on the standardised 4-D matrix
+    (per-component variance shares and cumulative ratios),
+  - k-means with k-means++ initialisation and 20 restarts on
+    the PCA-whitened scores for `k ∈ {2, 3, 4, 5}`,
+  - silhouette score (Rousseeuw 1987) per `k`,
+  - cluster composition by adapter class at `k* =
+    argmax_k s(k)`,
+  - conditional Pearson correlations within each cluster and
+    within each adapter class (Simpson's-paradox check),
+  - dropout breakdown by adapter class and by parameter
+    setting.
+  Output: human-readable stdout, structured JSON snapshot at
+  `docs/benchmarks/atlas_geometry_v0.7.2a0.json`. The script is
+  threshold-free; thresholds live in
+  `docs/ATLAS_GEOMETRY.md` and verdict prose in `docs/PBA.md`.
+- **`examples/atlas_geometry_plot.py`.** Two-panel matplotlib
+  figure: a scree plot with the pre-registered `λ_1 ≥ 0.70`
+  reference line and the cumulative variance overlay, plus a
+  PC1 vs PC2 biplot with axis loadings drawn as labelled
+  arrows, points coloured by k-means cluster and shape-coded
+  by adapter class. Snapshot at
+  `docs/benchmarks/atlas_geometry_v0.7.2a0.png`. t-SNE/UMAP
+  panels are deliberately omitted per the pre-registration's
+  "illustrative only, not evidence" clause.
+- **Tests:** `tests/benchmarks/test_atlas_geometry_smoke.py` (7
+  tests covering PCA recovery on synthetic anisotropic data,
+  k-means separation of well-separated blobs, silhouette
+  sensitivity to label quality, CSV round-trip and JSON write
+  on the v0.7.2a0 snapshot, dropout-breakdown consistency) and
+  `tests/benchmarks/test_atlas_geometry_plot_smoke.py` (2
+  tests covering JSON load and PNG render round-trip).
+- **Verdict (atlas-geometry analysis).** Inconclusive on the
+  level question (PCA reading), with a Level-3-suggestive
+  overlay (clustering reading). Indicators on the v0.7.2a0
+  zoo: `λ_1 = 0.469` (in pre-registered inconclusive band),
+  `λ_1 + λ_2 = 0.809` (in pre-registered partial-low-D band),
+  `s(k* = 5) = 0.642` (above pre-registered Outcome-B
+  ceiling), 4 of 5 k-means clusters dominated by a single
+  adapter class. The combination is not a clean fit to any of
+  the three pre-registered outcomes; the verdict resolves the
+  gap by treating PCA as primary (per Decision 2) and the
+  substrate-aligned clusters as a Level-3-suggestive overlay.
+  Documentation around the four-axis conjunction moves from
+  "Level 2 plausible" to "Level 2 plausible on the structural
+  geometry, but the cluster overlay is L3-suggestive on the
+  same data; the question is genuinely under-determined and is
+  pushed to v0.9.0".
+- **Simpson's-paradox health flag raised.** Several global
+  pairwise correlations are partly artefacts of the substrate
+  composition of the zoo. The most extreme case:
+  closure–persistence global `−0.61`, within `KauffmanNetwork`
+  `−0.07`, within `SimpleAutomaton` `−1.00`. The flag is *not*
+  a level-question decision (per Decision 3 it is a health
+  flag), but it reinforces the L3-suggestive overlay above.
+- **Dropout pattern documented as a structural finding.** The
+  extended sweep produces a 39% dropout rate concentrated on
+  `ECASystem` (55%) and `KauffmanNetwork` (51%) and zero on
+  `PeriodicCycle` and `SimpleAutomaton`. The metric set has a
+  joint blind spot selective for the cellular and network
+  adapters; the verdict is conditional on the
+  `non-degeneracy` clause, the same convention already used in
+  the saturation and constraint-density theorems.
+
+### Changed
+
+- **Version bump** `0.7.0a0 → 0.7.2a0` in `pyproject.toml`,
+  `src/autonometrics/__init__.py`, and `tests/test_smoke.py`.
+  `0.7.1a0` is *intentionally skipped* (reserved for
+  persistence-boundary theorems and the perturbation-magnitude
+  sweep deferred from `v0.7.0a0`).
+- **`examples/benchmark_demo.py`** now exposes a `--n-seeds`
+  flag (default 30) and `iter_systems` / `run_benchmark` accept
+  an `n_seeds` keyword argument. Default snapshot path moved
+  from `docs/benchmarks/v0.7.0a0.csv` to
+  `docs/benchmarks/v0.7.2a0.csv`. Periodic adapters use
+  `max(3, n_seeds // 2)` seeds since they have less stochastic
+  structure to exercise.
+- **`examples/benchmark_plot.py`** default input/output paths
+  moved to `v0.7.2a0.{csv,png}`.
+- **`docs/PBA.md` and `docs/PBA.es.md`** gain a new "Atlas
+  geometry: do the four axes share a single object?"
+  subsection summarising the indicators, the band mapping, and
+  the verdict; "Current evidence status" updated to record the
+  v0.7.2a0 benchmark and the verdict; "Next decision points"
+  updated.
+- **`README.md`** roadmap, status, and benchmark sections
+  updated to reflect `v0.7.2a0`.
+
+### Skipped versions
+
+- **`0.7.1a0`** (intentionally reserved). Will land:
+  - Theorem statements for the two persistence-boundary
+    regimes observed in the `v0.7.0a0` U-shape diagnostic
+    (low-coupling fixed-point absorption,
+    high-coupling perturbation invisibility),
+  - Perturbation-magnitude sweep for `rai_proxy_persistence`
+    deferred from the `v0.7.0a0` design questions in
+    `docs/RAI.md`.
+
 ## [0.7.0a0] - 2026-05-02
 
 ### Added
