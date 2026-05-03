@@ -65,18 +65,33 @@ and [`docs/RAI.md`](docs/RAI.md).
 
 ## Installation
 
-This package is not yet published to PyPI. Install from source in
-development mode:
+### From PyPI (recommended)
+
+```bash
+pip install --pre autonometrics
+```
+
+For the optional plotting / benchmark dependencies:
+
+```bash
+pip install --pre "autonometrics[viz]"
+```
+
+> The `--pre` flag is required while the package is in `alpha`.
+> Once a non-alpha release is published, plain `pip install
+> autonometrics` will be enough.
+
+### From source (for development)
 
 ```bash
 git clone https://github.com/bugerchip/Autonometrics.git
 cd Autonometrics
-pip install -e ".[dev]"
+pip install -e ".[dev,viz]"
 ```
 
 Requires Python 3.10 or later. The core package depends only on
-`numpy`. The optional `viz` extra (`pip install -e ".[dev,viz]"`)
-adds `matplotlib`, used by the optional benchmark plotting script.
+`numpy`. The optional `viz` extra adds `matplotlib`, used by the
+benchmark plotting scripts.
 
 ## Quickstart
 

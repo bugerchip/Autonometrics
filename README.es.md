@@ -66,12 +66,41 @@ notas de diseño por eje en
 [`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md)
 y [`docs/RAI.md`](docs/RAI.md).
 
-## Instalación, uso y benchmarks
+## Instalación
 
-Para instalación, quickstart, ejemplos, benchmarks, roadmap y
-demás detalles técnicos, ver el README en inglés:
-[`README.md`](README.md).
+### Desde PyPI (recomendado)
+
+```bash
+pip install --pre autonometrics
+```
+
+Para las dependencias opcionales de gráficos / benchmarks:
+
+```bash
+pip install --pre "autonometrics[viz]"
+```
+
+> El flag `--pre` es necesario mientras el paquete está en
+> `alpha`. Cuando se publique una versión no-alpha, bastará
+> con `pip install autonometrics`.
+
+### Desde código fuente (modo desarrollo)
+
+```bash
+git clone https://github.com/bugerchip/Autonometrics.git
+cd Autonometrics
+pip install -e ".[dev,viz]"
+```
+
+Requiere Python 3.10 o superior. El paquete base solo depende
+de `numpy`. El extra `viz` agrega `matplotlib`, usado por los
+scripts de plotting del benchmark.
+
+## Uso, ejemplos y benchmarks
+
+Para quickstart, ejemplos, benchmarks, roadmap y demás detalles
+técnicos, ver el README en inglés: [`README.md`](README.md).
 
 Esta versión en español mantiene sincronizada la sección
-introductoria; el resto de la documentación se irá traduciendo
-progresivamente.
+introductoria y la de instalación; el resto de la documentación
+se irá traduciendo progresivamente.
