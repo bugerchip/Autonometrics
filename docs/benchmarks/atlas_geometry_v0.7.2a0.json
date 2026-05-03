@@ -1,0 +1,365 @@
+{
+  "n_total": 405,
+  "n_valid": 247,
+  "n_dropped": 158,
+  "axes": [
+    "closure",
+    "memory",
+    "constraint",
+    "persistence"
+  ],
+  "axis_mean": [
+    0.712027680161943,
+    0.6264745141700409,
+    0.5263157894736846,
+    0.26395444534412954
+  ],
+  "axis_std": [
+    0.42735593650684534,
+    0.32068326451352497,
+    0.4637418107941397,
+    0.40304898370682635
+  ],
+  "pca": {
+    "explained_variance_ratio": [
+      0.468756553700696,
+      0.34023461523341764,
+      0.10616940662334484,
+      0.08483942444254156
+    ],
+    "cumulative_ratio": [
+      0.468756553700696,
+      0.8089911689341136,
+      0.9151605755574584,
+      1.0
+    ],
+    "components": [
+      [
+        -0.5573320383003106,
+        -0.5439698158298905,
+        0.25692925340187456,
+        0.5722457490417656
+      ],
+      [
+        0.37473265387355215,
+        -0.4310444445895185,
+        0.7311648172377193,
+        -0.37306049769860394
+      ],
+      [
+        0.6862411477514133,
+        -0.4387488076350916,
+        -0.39228479219525514,
+        0.42741690741468563
+      ],
+      [
+        0.27933765291798424,
+        0.5707863085720383,
+        0.49547755811178074,
+        0.592178566833151
+      ]
+    ]
+  },
+  "kmeans": {
+    "k_grid": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "silhouette": {
+      "2": 0.3555308912452188,
+      "3": 0.46541068171816724,
+      "4": 0.5632269010887916,
+      "5": 0.6421397556479356
+    },
+    "inertia": {
+      "2": 747.1280106471906,
+      "3": 537.7924895430704,
+      "4": 373.48348146057634,
+      "5": 240.1822209025391
+    },
+    "k_star": 5,
+    "composition_at_k_star": [
+      {
+        "cluster": 0,
+        "size": 38,
+        "composition": {
+          "ECASystem": 30,
+          "KauffmanNetwork": 8
+        },
+        "dominant_class": "ECASystem"
+      },
+      {
+        "cluster": 1,
+        "size": 77,
+        "composition": {
+          "KauffmanNetwork": 2,
+          "PeriodicCycle": 45,
+          "SimpleAutomaton": 30
+        },
+        "dominant_class": "PeriodicCycle"
+      },
+      {
+        "cluster": 2,
+        "size": 34,
+        "composition": {
+          "KauffmanNetwork": 4,
+          "SimpleAutomaton": 30
+        },
+        "dominant_class": "SimpleAutomaton"
+      },
+      {
+        "cluster": 3,
+        "size": 66,
+        "composition": {
+          "ECASystem": 38,
+          "KauffmanNetwork": 28
+        },
+        "dominant_class": "ECASystem"
+      },
+      {
+        "cluster": 4,
+        "size": 32,
+        "composition": {
+          "KauffmanNetwork": 32
+        },
+        "dominant_class": "KauffmanNetwork"
+      }
+    ]
+  },
+  "correlations": {
+    "global": {
+      "closure-memory": 0.27487034303233315,
+      "closure-constraint": 0.03703607524443399,
+      "closure-persistence": -0.6075617437604723,
+      "memory-constraint": -0.5219089607568367,
+      "memory-persistence": -0.3297536435125274,
+      "constraint-persistence": -0.06717655473066524
+    },
+    "by_cluster_at_k_star": [
+      {
+        "cluster": 0,
+        "size": 38,
+        "correlations": {
+          "closure-memory": 0.3374814584248255,
+          "closure-constraint": 0.4036036973367913,
+          "closure-persistence": -0.18857962519062163,
+          "memory-constraint": -0.21144105012651215,
+          "memory-persistence": -0.3915536713367053,
+          "constraint-persistence": -0.5210178891711058
+        }
+      },
+      {
+        "cluster": 1,
+        "size": 77,
+        "correlations": {
+          "closure-memory": -0.35627026158581043,
+          "closure-constraint": -1.0,
+          "closure-persistence": null,
+          "memory-constraint": 0.3562702615858099,
+          "memory-persistence": null,
+          "constraint-persistence": null
+        }
+      },
+      {
+        "cluster": 2,
+        "size": 34,
+        "correlations": {
+          "closure-memory": -0.2091667806025581,
+          "closure-constraint": -0.03077756469040957,
+          "closure-persistence": null,
+          "memory-constraint": -0.30501586778083,
+          "memory-persistence": null,
+          "constraint-persistence": null
+        }
+      },
+      {
+        "cluster": 3,
+        "size": 66,
+        "correlations": {
+          "closure-memory": 0.09156673672959018,
+          "closure-constraint": 0.02703318122088403,
+          "closure-persistence": -0.5684151701190765,
+          "memory-constraint": -0.6823891520672076,
+          "memory-persistence": -0.17950877040896374,
+          "constraint-persistence": -0.17228761287881345
+        }
+      },
+      {
+        "cluster": 4,
+        "size": 32,
+        "correlations": {
+          "closure-memory": 0.09895973780138186,
+          "closure-constraint": 0.11767813106845101,
+          "closure-persistence": 0.07172794929387837,
+          "memory-constraint": -0.14267300732771585,
+          "memory-persistence": 0.1810701332901749,
+          "constraint-persistence": 0.14824292333258524
+        }
+      }
+    ],
+    "by_adapter_class": [
+      {
+        "class": "ECASystem",
+        "size": 68,
+        "correlations": {
+          "closure-memory": null,
+          "closure-constraint": null,
+          "closure-persistence": null,
+          "memory-constraint": null,
+          "memory-persistence": 0.2686932386882665,
+          "constraint-persistence": null
+        }
+      },
+      {
+        "class": "KauffmanNetwork",
+        "size": 74,
+        "correlations": {
+          "closure-memory": 0.18706639268857245,
+          "closure-constraint": -0.16241888786752703,
+          "closure-persistence": -0.07421959689614487,
+          "memory-constraint": -0.07568623436668223,
+          "memory-persistence": -0.15268889185520781,
+          "constraint-persistence": 0.020736309141624682
+        }
+      },
+      {
+        "class": "PeriodicCycle",
+        "size": 45,
+        "correlations": {
+          "closure-memory": null,
+          "closure-constraint": null,
+          "closure-persistence": null,
+          "memory-constraint": null,
+          "memory-persistence": null,
+          "constraint-persistence": null
+        }
+      },
+      {
+        "class": "SimpleAutomaton",
+        "size": 60,
+        "correlations": {
+          "closure-memory": 0.99317561156647,
+          "closure-constraint": null,
+          "closure-persistence": -0.9999805824414747,
+          "memory-constraint": null,
+          "memory-persistence": -0.9933084753048973,
+          "constraint-persistence": null
+        }
+      }
+    ]
+  },
+  "dropouts": {
+    "by_class": {
+      "ECASystem": {
+        "total": 150,
+        "dropped": 82
+      },
+      "KauffmanNetwork": {
+        "total": 150,
+        "dropped": 76
+      },
+      "PeriodicCycle": {
+        "total": 45,
+        "dropped": 0
+      },
+      "SimpleAutomaton": {
+        "total": 60,
+        "dropped": 0
+      }
+    },
+    "by_params": [
+      {
+        "class": "ECASystem",
+        "params": "rule=110",
+        "total": 30,
+        "dropped": 0
+      },
+      {
+        "class": "ECASystem",
+        "params": "rule=184",
+        "total": 30,
+        "dropped": 22
+      },
+      {
+        "class": "ECASystem",
+        "params": "rule=250",
+        "total": 30,
+        "dropped": 30
+      },
+      {
+        "class": "ECASystem",
+        "params": "rule=30",
+        "total": 30,
+        "dropped": 0
+      },
+      {
+        "class": "ECASystem",
+        "params": "rule=90",
+        "total": 30,
+        "dropped": 30
+      },
+      {
+        "class": "KauffmanNetwork",
+        "params": "coupling=0.0",
+        "total": 30,
+        "dropped": 29
+      },
+      {
+        "class": "KauffmanNetwork",
+        "params": "coupling=0.33",
+        "total": 30,
+        "dropped": 14
+      },
+      {
+        "class": "KauffmanNetwork",
+        "params": "coupling=0.5",
+        "total": 30,
+        "dropped": 14
+      },
+      {
+        "class": "KauffmanNetwork",
+        "params": "coupling=0.67",
+        "total": 30,
+        "dropped": 10
+      },
+      {
+        "class": "KauffmanNetwork",
+        "params": "coupling=1.0",
+        "total": 30,
+        "dropped": 9
+      },
+      {
+        "class": "PeriodicCycle",
+        "params": "period=2",
+        "total": 15,
+        "dropped": 0
+      },
+      {
+        "class": "PeriodicCycle",
+        "params": "period=4",
+        "total": 15,
+        "dropped": 0
+      },
+      {
+        "class": "PeriodicCycle",
+        "params": "period=8",
+        "total": 15,
+        "dropped": 0
+      },
+      {
+        "class": "SimpleAutomaton",
+        "params": "external",
+        "total": 30,
+        "dropped": 0
+      },
+      {
+        "class": "SimpleAutomaton",
+        "params": "self_generated",
+        "total": 30,
+        "dropped": 0
+      }
+    ]
+  }
+}
