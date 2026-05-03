@@ -101,14 +101,18 @@ a taxonomic mistake.
 ### PBA is Level 2, not Level 1
 
 PBA does **not** claim that the five metrics it integrates
-(`closure`, `memory`, `constraint_closure`, the planned RAI axis,
+(`closure`, `memory`, `constraint_closure`, `rai_proxy_persistence`,
 the planned CBA axis) are the same scalar quantity in different
 notations. That stronger claim, if made, would be falsified by
 any pairwise correlation noticeably below `|r| ≈ 1.0`. Empirically,
-the v0.5.0a0 and v0.6.0a0 benchmarks already show pairwise
-Pearson correlations between the three structural axes of `+0.32`,
-`-0.04` and `-0.57`. A Level 1 reading of PBA is therefore already
-falsified, and was never the intended reading.
+the v0.5.0a0, v0.6.0a0 and v0.7.0a0 benchmarks already show
+pairwise Pearson correlations between the four shipped axes of
+`+0.32` (closure-memory), `-0.04` (closure-constraint), `-0.57`
+(memory-constraint), `-0.44` (closure-persistence), `-0.38`
+(memory-persistence) and `+0.05` (constraint-persistence). A
+Level 1 reading of PBA is therefore already falsified — by six
+pairs of correlations sitting below the saturating `|r| ≈ 1.0` —
+and was never the intended reading.
 
 What PBA does claim is the Level 2 reading:
 
@@ -374,7 +378,10 @@ discussion:
    axes, three pairwise correlations exist (`closure-memory`,
    `closure-constraint`, `memory-constraint`); the
    engineered-correlation safeguard in the previous section
-   applies to each of them.
+   applies to each of them. The fourth axis added in
+   `v0.7.0a0` raises the count to six pairwise correlations,
+   and all six stay below `|r| < 0.7` on the v0.7.0a0 zoo (see
+   "Current evidence status" below).
 
 The two saturating regions of the third axis are themselves
 formal theorems, documented and verified in
@@ -399,23 +406,65 @@ boundary, dense). Single-node adapters and dense periodic rings
 are correctly identified as **outside the metric's
 discriminative domain** rather than as low- or high-autonomy.
 
-The remaining two ratios (the motivational and the
-coherence-based axes planned for `v0.7.x`/`v0.8.x`) will receive
-analogous diagnostics as they ship: each metric's domain of
-applicability has to be stated before that metric counts as
-evidence for or against PBA.
+### Persistence saturates at both extremes of focal coupling
+
+The fourth axis shipped in `v0.7.0a0`,
+`rai_proxy_persistence`, was added in part to *cross-traditions
+test* the atlas claim: closure / memory / constraint are
+information-theoretic and graph-theoretic; persistence is a
+**dynamical** structural proxy drawn from the
+goal-directedness literature (Lee & McShea 2020) and adapted to
+systems without an externally specified goal. Its design is
+documented in [`docs/RAI.md`](RAI.md). Like the previous three
+axes, persistence has saturating regions of its own that have to
+be stated explicitly:
+
+1. **Persistence saturates differently on different boundaries.**
+   On a `KauffmanNetwork` swept across focal coupling, the
+   `v0.7.0a0` diagnostic
+   (`docs/benchmarks/persistence_v0.7.0.{csv,png,log.txt}`)
+   observes a **U-shape**: the metric sits near `1.0` at both
+   ends of the coupling axis (left end: focal trajectory
+   collapses to a fixed point so any perturbation is absorbed
+   trivially; right end: the focal flip never enters the rule
+   that computes the focal at `t_star + 1`, so the perturbation
+   is invisible by construction), and dips in the middle, where
+   actual perturbation propagation is observed. The non-trivial
+   useful range of the metric on Boolean-network adapters is the
+   intermediate-coupling regime; both tails are
+   trivial-absorption regions of different kinds.
+2. **Independence is now testable on six pairs.** With four
+   axes, six pairwise correlations exist; the engineered-
+   correlation safeguard applies to each. On the v0.7.0a0
+   benchmark all six pass the `|r| < 0.7` gate.
+
+The two saturation regimes for persistence are noted as
+provisional findings in this release. Formalising them as named
+theorems (analogous to Theorem A / Theorem B for
+`constraint_closure`) is the planned content of the `v0.7.1`
+maintenance cycle, jointly with the perturbation-magnitude sweep
+already deferred there in `docs/RAI.md`.
+
+The remaining axis (the coherence-based ratio planned for
+`v0.8.x`) will receive an analogous diagnostic as it ships: each
+metric's domain of applicability has to be stated before that
+metric counts as evidence for or against PBA.
 
 ## Current evidence status
 
-As of `v0.6.0a0`:
+As of `v0.7.0a0`:
 
-- Three of the five ratios are implemented (`ratio_endo_total`,
-  `memory_endo_ratio`, `constraint_closure`).
-- Internal sanity tests show the three ratios behave as the
+- Four of the five ratios are implemented (`ratio_endo_total`,
+  `memory_endo_ratio`, `constraint_closure`,
+  `rai_proxy_persistence`).
+- Internal sanity tests show the four ratios behave as the
   literature predicts on canonical cases (constant series,
   i.i.d. noise, deterministic cycles, mixed self-rule plus
   environment-driven dynamics, isolated constraints versus
-  mutually-sustaining ones).
+  mutually-sustaining ones, perturbation propagation under
+  determinism, perturbation absorption under fixed-point
+  collapse, perturbation invisibility under full external
+  coupling).
 - A first cross-system mini-benchmark with two axes was run in
   `v0.5.0a0`
   (snapshot under `docs/benchmarks/v0.5.0a0.{csv,png,log.txt}`):
@@ -436,33 +485,49 @@ As of `v0.6.0a0`:
   `r(closure, memory) = +0.32`,
   `r(closure, constraint) = -0.04`,
   `r(memory, constraint) = -0.57`,
-  all below the `|r| < 0.7` threshold. The aggregate
-  diagnostic flag (`max` over the three pairs) is `OK`. The
-  third axis therefore carries information not already encoded
-  by the first two on the current adapter zoo, and it does
-  break the closure-saturation wall: ECA rings keep
-  `constraint = 1.0`, while single-node periodic cycles and
-  self-generated automata cleanly drop to `constraint = 0.0`.
+  all below the `|r| < 0.7` threshold.
+- The `v0.7.0a0` benchmark adds the fourth axis to the same zoo
+  (snapshot under `docs/benchmarks/v0.7.0a0.{csv,png,log.txt}`):
+  on 48 valid points out of 69 configurations the six
+  Pearson correlations are
+  `r(closure, memory) = +0.32`,
+  `r(closure, constraint) = -0.04`,
+  `r(closure, persistence) = -0.44`,
+  `r(memory, constraint) = -0.57`,
+  `r(memory, persistence) = -0.38`,
+  `r(constraint, persistence) = +0.05`,
+  all below the `|r| < 0.7` threshold. The aggregate diagnostic
+  flag (`max` over the six pairs) is `OK`. The fourth axis
+  therefore carries information not already encoded by the
+  first three on the current adapter zoo. The cross-tradition
+  test of the atlas hypothesis is partial at this point: the
+  structural proxy passes the structural audit, but the strong
+  validation against transcript-based RAI is deferred to
+  `v0.9.0`.
 
 PBA is therefore at the stage of *plausible working hypothesis
-with one diagnostic-grade limitation explicitly mapped and three
-of the five axes empirically distinguishable*, not *empirical
-claim*. Documents and demos in the package phrase it
-accordingly.
+with diagnostic-grade limitations mapped on three of the four
+shipped axes (saturation under determinism, single-constraint
+trivial-zero, symmetric-neighbour saturation; the persistence
+boundaries are recorded as provisional findings to be formalised
+in v0.7.1) and four of the five axes empirically distinguishable
+on the current zoo*, not *empirical claim*. Documents and demos
+in the package phrase it accordingly.
 
 ## Next decision points
 
-- `v0.7.0a0` ships the fourth axis — RAI-style relative autonomy
-  ratio (Deci & Ryan); first opportunity to check whether a
-  ratio drawn from a different research tradition (psychology
-  of motivation) co-discriminates with the three
-  structural ratios on a shared system.
+- `v0.7.1a0` formalises the two persistence boundary regimes
+  (low-coupling collapse and high-coupling invisibility) as named
+  theorems analogous to Theorem A / Theorem B for
+  `constraint_closure`, and ships the perturbation-magnitude
+  sweep deferred from `v0.7.0a0` in `docs/RAI.md`.
 - `v0.8.0a0` adds the coherence-based axis (CBA); completing
   the five lets the prediction above be evaluated for the first
   time.
-- A dedicated benchmarks track (provisionally `v0.9.0a0` in the
-  README roadmap) is the formal home of the falsification
-  test, building on the `v0.5.x` and `v0.6.0a0` baselines.
+- `v0.9.0a0` adds the LLM transcript adapter and the strong
+  validation pass against behavioural / RAI-style data, the
+  formal home of the falsification test that builds on the
+  `v0.5.x`, `v0.6.x` and `v0.7.x` baselines.
 
 If at any of these checkpoints the prediction starts failing,
 this document is updated honestly: PBA's status is downgraded

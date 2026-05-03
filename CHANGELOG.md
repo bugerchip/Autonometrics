@@ -7,6 +7,156 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.7.0a0] - 2026-05-02
+
+### Added
+
+- **Fourth PBA axis: `rai_proxy_persistence` (Lee & McShea-style
+  perturbation persistence).** Operationalises a structural
+  autonomous-motivation proxy (RAI-style) on the existing adapter
+  zoo. The score answers "if the system is perturbed, does it
+  return to its own trajectory?" via:
+  ```
+  persistence = clip(1 − d_bar / d_ref, 0, 1)
+  ```
+  where `d_bar` is the mean Hamming distance between the perturbed
+  and the unperturbed focal trajectories over a horizon of
+  `horizon` steps (default 64), averaged over `n_perturbations`
+  independent perturbation times (default 32), and `d_ref =
+  1 − Σ p_a²` is the empirical complement of the collision
+  probability of two i.i.d. draws from the focal marginal. The
+  metric lands in `[0, 1]`: `1.0` means perturbations are absorbed
+  perfectly; `0.0` means perturbations propagate as much as
+  random noise of the same alphabet.
+- **Provenance and adaptation explicit.** The metric is a
+  generalisation of Lee & McShea (2020) *persistence* to systems
+  without an externally specified goal. Four adaptations vs the
+  original formula are documented in `src/autonometrics/metrics/
+  persistence.py` and in `docs/RAI.md`: implicit goal (the
+  system's own unperturbed trajectory), Hamming distance for
+  discrete state, empirical baseline `R` per adapter, and
+  multi-perturbation averaging.
+- **Independence-by-design audit baked into the module.**
+  `compute_rai_proxy_persistence` does not import any of
+  `_entropy`, `albantakis`, `memory_ratio`,
+  `constraint_closure` or third-party information-theory toolkits.
+  An automated test asserts the no-cross-import contract, so the
+  audit cannot silently regress.
+- **Adapter-side replay protocol.** All deterministic adapters in
+  the zoo (`ECASystem`, `KauffmanNetwork`, `SimpleAutomaton`,
+  `PeriodicCycle`) now expose `replay_from_perturbation(t_star,
+  n_steps, rng=None)`, which returns the focal trajectory after a
+  single-element perturbation has been applied to the system's
+  full internal state at time `t_star`. CSV-only adapters
+  (`CSVTrajectory`) deliberately do *not* implement the method,
+  and `Autonometer` records `None` for the persistence axis on
+  those adapters — the same fail-loudly contract used for
+  `get_causal_graph` and the constraint-closure axis.
+- **`Autonometer` now dispatches a third input kind.** A new
+  `_INPUT_REPLAY` kind is added alongside `_INPUT_TRAJECTORY` and
+  `_INPUT_GRAPH`. `AutonomyProfile` gains a fourth field,
+  `rai_proxy_persistence: float | None`, with a docstring that
+  flags it as a *structural proxy*: strong validation against
+  transcript-based RAI scoring is deferred to `v0.9.0` (per
+  `docs/RAI.md`).
+- **Mini-benchmark expanded to four axes and six pairwise
+  correlations.** `examples/benchmark_demo.py` now measures
+  `(closure, memory, constraint, persistence)` per system and
+  reports the full six-pair correlation matrix. The on-stdout
+  table and the written CSV both gain a `persistence` column.
+  Snapshot at `docs/benchmarks/v0.7.0a0.{csv,png,log.txt}`.
+- **Empirical falsification gate passed.** Aggregate diagnosis on
+  the full v0.7.0a0 zoo (48 fully-valid points) is `OK`: every
+  pairwise `|r| < 0.7`. The three new pairs involving the
+  persistence axis sit comfortably below the threshold:
+  - `closure-persistence`: `pearson −0.4386, spearman −0.5022`
+  - `memory-persistence`: `pearson −0.3776, spearman −0.4164`
+  - `constraint-persistence`: `pearson +0.0461, spearman +0.2080`
+  This is the empirical correlation threshold pre-registered in
+  `docs/RAI.md` ("Empirical correlation `|r| < 0.7` on the
+  benchmark zoo"). The atlas of autonomy gains a fourth axis
+  that survives the audit both structurally (no shared imports
+  with the other three) and empirically (low pairwise
+  correlations).
+- **Persistence diagnostic + plot.** `examples/persistence_
+  diagnostic.py` sweeps the focal coupling of `KauffmanNetwork`
+  from `0.0` to `1.0` and reports a per-coupling `mean ± std`.
+  `examples/persistence_plot.py` renders the curve with
+  `matplotlib`. Snapshot at
+  `docs/benchmarks/persistence_v0.7.0.{csv,png,log.txt}`.
+- **U-shape boundary regimes recorded as a finding.** The
+  diagnostic *falsified* the naïve "monotone rise from low to
+  high persistence as coupling grows" expectation. The actual
+  shape is U-shaped:
+  ```
+  coupling=0.00 -> persistence = 1.000 (n=6/10 valid)  [trivial absorption: focal collapses to fixed point]
+  coupling=0.60 -> persistence = 0.415 (n=9/10 valid)  [non-trivial middle]
+  coupling=1.00 -> persistence = 0.665 (n=9/10 valid)  [trivial absorption: focal flip invisible]
+  ```
+  Two boundary regimes produce trivial-absorption signatures of
+  different kinds, and the meaningful useful range of the metric
+  on Kauffman networks lies in the intermediate couplings.
+  Formalising the two theorems is the planned content of the
+  `v0.7.1` maintenance cycle, jointly with the
+  perturbation-magnitude sweep already deferred there in
+  `docs/RAI.md`.
+- **Tests.** 16 new tests covering: the four adapter replay
+  methods (8 tests), the `Autonometer` four-axis combo and the
+  None-fallback for replay-less adapters (3 tests), the
+  diagnostic sweep, CSV format, aggregate grouping and the
+  diagnosis-line `[OK]` U-shape verdict (5 tests), the plot's
+  CSV loading, aggregate grouping and PNG rendering (3 tests).
+  Plus 10 unit tests for the metric proper covering the full
+  score range, all input-validation paths, and the
+  no-cross-import audit. Total suite is now 212 tests (up from
+  196 at `v0.6.1a0`); all green.
+
+### Changed
+
+- Version bumped from `0.6.1a0` to `0.7.0a0` across
+  `pyproject.toml`, `src/autonometrics/__init__.py`, and
+  `tests/test_smoke.py`.
+- `examples/benchmark_plot.py` defaults updated to the
+  `v0.7.0a0` CSV / PNG paths. The scatter still uses the
+  `(closure, memory)` plane plus `constraint` as marker size for
+  visual continuity; the persistence axis appears in its own
+  diagnostic plot rather than as a fourth visual encoding on the
+  scatter.
+- The `AutonomySystem` protocol docstring documents the new
+  optional `replay_from_perturbation` method (with the same
+  opt-in style used for `get_causal_graph`), formalising the
+  contract that replay-less adapters return `None` rather than
+  failing.
+
+### Why this release exists
+
+`v0.7.0a0` ships the metric drawn up by the design document
+introduced in the previous commit (`docs/RAI.md`) — the fourth
+PBA axis. Three things make the release defensible enough to be
+worth tagging:
+
+1. **Lineage.** The metric is not invented from scratch but
+   adapted from Lee & McShea (2020). Four explicit adaptations
+   are documented; both halves (their intuition + our
+   discrete-state generalisation) are cited in code, in the
+   metric's docstring, and in `docs/RAI.md`.
+2. **Independence.** Static (no-cross-import) and empirical
+   (`|r| < 0.7`) audits both pass. The atlas claim survives.
+3. **Honest diagnostic.** The persistence diagnostic *falsified*
+   its own naïve expectation and revealed two trivial-absorption
+   boundary regimes. We documented the U-shape rather than
+   smoothing it away. The boundary theorems are explicitly
+   deferred to `v0.7.1`, mirroring the maintenance cadence
+   already established by `v0.5.1a0` (closure saturation) and
+   `v0.6.1a0` (constraint-closure density).
+
+The cross-tradition test of the atlas hypothesis is partial at
+this point: the structural proxy passes the structural audit on
+the existing zoo, but the strong validation against behavioural
+RAI on transcript adapters is still deferred to `v0.9.0`. The
+release reports this gap explicitly in `docs/PBA.md` and in
+`AutonomyProfile.rai_proxy_persistence`'s docstring.
+
 ## [0.6.1a0] - 2026-05-02
 
 ### Added

@@ -106,15 +106,20 @@ Nivel 3 no es unificación; es un error taxonómico.
 ### PBA es Nivel 2, no Nivel 1
 
 PBA **no** afirma que las cinco métricas que integra
-(`closure`, `memory`, `constraint_closure`, el eje RAI
-planificado y el eje CBA planificado) sean la misma cantidad
-escalar en notaciones distintas. Esa afirmación más fuerte, de
-sostenerse, sería falsada por cualquier correlación por pares
-notablemente menor a `|r| ≈ 1.0`. Empíricamente, los benchmarks
-de `v0.5.0a0` y `v0.6.0a0` ya muestran correlaciones Pearson
-por pares entre los tres ejes estructurales de `+0.32`, `-0.04`
-y `-0.57`. Una lectura de Nivel 1 de PBA está, por tanto, ya
-falsada, y nunca fue la lectura pretendida.
+(`closure`, `memory`, `constraint_closure`,
+`rai_proxy_persistence` y el eje CBA planificado) sean la misma
+cantidad escalar en notaciones distintas. Esa afirmación más
+fuerte, de sostenerse, sería falsada por cualquier correlación
+por pares notablemente menor a `|r| ≈ 1.0`. Empíricamente, los
+benchmarks de `v0.5.0a0`, `v0.6.0a0` y `v0.7.0a0` ya muestran
+correlaciones Pearson por pares entre los cuatro ejes
+estructurales de `+0.32` (closure-memory), `-0.04`
+(closure-constraint), `-0.57` (memory-constraint), `-0.44`
+(closure-persistence), `-0.38` (memory-persistence) y `+0.05`
+(constraint-persistence). Una lectura de Nivel 1 de PBA está,
+por tanto, ya falsada — por seis pares de correlaciones que
+quedan por debajo del `|r| ≈ 1.0` saturante — y nunca fue la
+lectura pretendida.
 
 Lo que PBA sí afirma es la lectura de Nivel 2:
 
@@ -396,7 +401,10 @@ para la discusión sobre dominio de aplicabilidad:
    pares (`closure-memory`, `closure-constraint`,
    `memory-constraint`); la salvaguarda contra correlación
    inducida por construcción de la sección anterior aplica a
-   cada uno de ellos.
+   cada uno de ellos. El cuarto eje añadido en `v0.7.0a0` eleva
+   el conteo a seis correlaciones por pares, y las seis se
+   mantienen por debajo de `|r| < 0.7` en el zoológico v0.7.0a0
+   (ver "Estado actual de evidencia" más abajo).
 
 Las dos regiones de saturación del tercer eje son a su vez
 teoremas formales, documentados y verificados en
@@ -423,24 +431,71 @@ correctamente identificados como **fuera del dominio
 discriminativo de la métrica**, no como sistemas de baja o alta
 autonomía.
 
-Las dos razones restantes (los ejes motivacional y basado en
-coherencia previstos para `v0.7.x`/`v0.8.x`) recibirán
-diagnósticos análogos a medida que se incorporen: el dominio de
-aplicabilidad de cada métrica debe quedar enunciado antes de que
-esa métrica cuente como evidencia a favor o en contra de PBA.
+### La persistencia satura en ambos extremos del coupling focal
+
+El cuarto eje incorporado en `v0.7.0a0`,
+`rai_proxy_persistence`, se añadió en parte para someter la
+afirmación del atlas a una *prueba transversal a tradiciones*:
+clausura / memoria / restricciones son teóricos de la
+información y de grafos; persistencia es un proxy estructural
+**dinámico** tomado de la literatura sobre direccionalidad a
+metas (Lee & McShea 2020) y adaptado a sistemas sin meta
+externa explícita. Su diseño está documentado en
+[`docs/RAI.md`](RAI.md). Como los tres ejes anteriores, la
+persistencia tiene regiones de saturación propias que deben
+enunciarse explícitamente:
+
+1. **La persistencia satura distinto en distintas fronteras.**
+   Sobre un `KauffmanNetwork` barrido a través del coupling
+   focal, el diagnóstico de `v0.7.0a0`
+   (`docs/benchmarks/persistence_v0.7.0.{csv,png,log.txt}`)
+   observa una **forma de U**: la métrica se sienta cerca de
+   `1.0` en ambos extremos del eje de coupling (extremo
+   izquierdo: la trayectoria focal colapsa a un punto fijo y
+   cualquier perturbación queda absorbida trivialmente;
+   extremo derecho: el bit-flip nunca entra en la regla que
+   computa el focal en `t_star + 1`, así que la perturbación
+   es invisible por construcción), y dipa en el medio, donde
+   sí se observa propagación real de la perturbación. El rango
+   útil no trivial de la métrica sobre redes booleanas vive
+   en los couplings intermedios; ambas colas son regiones de
+   absorción trivial de naturaleza distinta.
+2. **La independencia ahora se contrasta sobre seis pares.**
+   Con cuatro ejes existen seis correlaciones por pares; la
+   salvaguarda contra correlación inducida por construcción
+   aplica a cada una. En el benchmark v0.7.0a0 las seis pasan
+   el filtro `|r| < 0.7`.
+
+Los dos regímenes de saturación de la persistencia se
+registran como hallazgos provisionales en este release.
+Formalizarlos como teoremas con nombre (análogos a Teorema A /
+Teorema B para `constraint_closure`) es el contenido planeado
+del ciclo de mantenimiento `v0.7.1`, conjuntamente con el
+barrido de magnitud de perturbación ya diferido allí en
+`docs/RAI.md`.
+
+La razón restante (el eje basado en coherencia previsto para
+`v0.8.x`) recibirá un diagnóstico análogo a medida que se
+incorpore: el dominio de aplicabilidad de cada métrica debe
+quedar enunciado antes de que esa métrica cuente como evidencia
+a favor o en contra de PBA.
 
 ## Estado actual de evidencia
 
-A fecha de `v0.6.0a0`:
+A fecha de `v0.7.0a0`:
 
-- Tres de las cinco razones están implementadas
+- Cuatro de las cinco razones están implementadas
   (`ratio_endo_total`, `memory_endo_ratio`,
-  `constraint_closure`).
-- Las pruebas internas de cordura muestran que las tres razones
-  se comportan como la literatura predice en casos canónicos
-  (series constantes, ruido i.i.d., ciclos deterministas,
-  dinámicas mixtas regla-propia / impulsadas-por-entorno,
-  restricciones aisladas frente a mutuamente sostenidas).
+  `constraint_closure`, `rai_proxy_persistence`).
+- Las pruebas internas de cordura muestran que las cuatro
+  razones se comportan como la literatura predice en casos
+  canónicos (series constantes, ruido i.i.d., ciclos
+  deterministas, dinámicas mixtas regla-propia /
+  impulsadas-por-entorno, restricciones aisladas frente a
+  mutuamente sostenidas, propagación de perturbación bajo
+  determinismo, absorción de perturbación bajo colapso a punto
+  fijo, invisibilidad de perturbación bajo coupling externo
+  total).
 - Se ejecutó un primer mini-benchmark con dos ejes en
   `v0.5.0a0` (snapshot bajo
   `docs/benchmarks/v0.5.0a0.{csv,png,log.txt}`). Sobre 48
@@ -462,35 +517,52 @@ A fecha de `v0.6.0a0`:
   `r(closure, memory) = +0.32`,
   `r(closure, constraint) = -0.04`,
   `r(memory, constraint) = -0.57`,
+  todas por debajo del umbral `|r| < 0.7`.
+- El benchmark de `v0.7.0a0` añade el cuarto eje al mismo
+  zoológico (snapshot bajo
+  `docs/benchmarks/v0.7.0a0.{csv,png,log.txt}`): sobre 48
+  puntos válidos de 69 configuraciones, las seis correlaciones
+  Pearson son
+  `r(closure, memory) = +0.32`,
+  `r(closure, constraint) = -0.04`,
+  `r(closure, persistence) = -0.44`,
+  `r(memory, constraint) = -0.57`,
+  `r(memory, persistence) = -0.38`,
+  `r(constraint, persistence) = +0.05`,
   todas por debajo del umbral `|r| < 0.7`. La bandera
-  diagnóstica agregada (el peor de los tres pares) es `OK`. El
-  tercer eje, entonces, transporta información que los dos
-  primeros no codifican sobre el zoológico actual y rompe
-  además la pared de saturación de clausura: los anillos ECA
-  mantienen `constraint = 1.0`, mientras que los ciclos
-  periódicos de un solo nodo y los autómatas autogenerados
-  caen limpiamente a `constraint = 0.0`.
+  diagnóstica agregada (el peor de los seis pares) es `OK`. El
+  cuarto eje transporta información que los tres primeros no
+  codifican sobre el zoológico actual. La prueba transversal a
+  tradiciones de la hipótesis del atlas es parcial en este
+  punto: el proxy estructural pasa el control estructural, pero
+  la validación fuerte contra RAI conductual / transcripción se
+  difiere a `v0.9.0`.
 
 Por lo tanto, PBA está en la etapa de *hipótesis de trabajo
-plausible con una limitación de grado diagnóstico explícitamente
-mapeada y tres de los cinco ejes empíricamente distinguibles*,
-no de *afirmación empírica*. Los documentos y demos del paquete
-se redactan en consecuencia.
+plausible con limitaciones de grado diagnóstico mapeadas en tres
+de los cuatro ejes (saturación bajo determinismo, cero trivial
+por restricción única, saturación por vecindad simétrica; las
+fronteras de la persistencia se registran como hallazgos
+provisionales a formalizar en v0.7.1) y cuatro de los cinco ejes
+empíricamente distinguibles sobre el zoológico actual*, no de
+*afirmación empírica*. Los documentos y demos del paquete se
+redactan en consecuencia.
 
 ## Próximos puntos de decisión
 
-- `v0.7.0a0` incorpora la cuarta razón — RAI-style de Deci &
-  Ryan; primera oportunidad de comprobar si una razón tomada de
-  una tradición distinta (psicología de la motivación)
-  co-discrimina con las tres razones estructurales sobre un
-  mismo sistema.
+- `v0.7.1a0` formaliza los dos regímenes de frontera de la
+  persistencia (colapso de coupling bajo e invisibilidad de
+  coupling alto) como teoremas con nombre análogos a Teorema A
+  / Teorema B para `constraint_closure`, e incorpora el
+  barrido de magnitud de perturbación diferido desde
+  `v0.7.0a0` en `docs/RAI.md`.
 - `v0.8.0a0` añade el eje basado en coherencia (CBA);
   completar las cinco permite por primera vez evaluar la
   predicción anterior.
-- Una pista de benchmarks dedicada (provisionalmente `v0.9.0a0`
-  en el roadmap del README) es el lugar formal para la prueba
-  de falsación, construida sobre las líneas base de `v0.5.x` y
-  `v0.6.0a0`.
+- `v0.9.0a0` añade el adapter de transcript LLM y la pasada de
+  validación fuerte contra datos conductuales / RAI-style, el
+  hogar formal de la prueba de falsación, construida sobre las
+  líneas base de `v0.5.x`, `v0.6.x` y `v0.7.x`.
 
 Si en cualquiera de estos puntos de control la predicción empieza
 a fallar, este documento se actualiza con honestidad: el estatus

@@ -208,39 +208,45 @@ interpreter argue.
 ## Benchmark
 
 `v0.5.0a0` shipped the first reference benchmark on two axes;
-`v0.6.0a0` extends it to the third axis (`constraint_closure`)
-without changing the system zoo, so the new readings are
-directly comparable with the v0.5 baseline. The intent is not to
-score one system as "more autonomous" than another. It is to
-check whether the three axes carry distinct information for the
-systems we can generate today, before adding a fourth axis to
-PBA.
+`v0.6.0a0` extended it to the third axis (`constraint_closure`);
+`v0.7.0a0` adds the fourth axis (`rai_proxy_persistence`) without
+changing the system zoo, so the new readings are directly
+comparable with both prior baselines. The intent is not to score
+one system as "more autonomous" than another. It is to check
+whether the four axes carry distinct information for the systems
+we can generate today, before adding a fifth axis to PBA.
 
 Reproducing the run:
 
 ```bash
 pip install -e ".[dev]"
-python examples/benchmark_demo.py        # writes docs/benchmarks/v0.6.0a0.csv
+python examples/benchmark_demo.py        # writes docs/benchmarks/v0.7.0a0.csv
 pip install -e ".[dev,viz]"
-python examples/benchmark_plot.py        # writes docs/benchmarks/v0.6.0a0.png
+python examples/benchmark_plot.py        # writes docs/benchmarks/v0.7.0a0.png
 ```
 
 Headline numbers from the snapshot shipped here
-(`docs/benchmarks/v0.6.0a0.csv`):
+(`docs/benchmarks/v0.7.0a0.csv`):
 
-| Quantity                          | Value     |
-|-----------------------------------|-----------|
-| Configurations swept              | 69        |
-| Fully-valid points                | 48        |
-| Configurations dropped (n/a)      | 21        |
-| Pearson r(closure, memory)        | +0.32     |
-| Pearson r(closure, constraint)    | -0.04     |
-| Pearson r(memory, constraint)     | -0.57     |
-| Spearman r(closure, memory)       | +0.56     |
-| Spearman r(closure, constraint)   | -0.27     |
-| Spearman r(memory, constraint)    | -0.45     |
-| Falsification threshold           | `|r| < 0.7` |
-| Aggregate diagnosis               | OK        |
+| Quantity                              | Value         |
+|---------------------------------------|---------------|
+| Configurations swept                  | 69            |
+| Fully-valid points                    | 48            |
+| Configurations dropped (n/a)          | 21            |
+| Pearson r(closure, memory)            | +0.32         |
+| Pearson r(closure, constraint)        | -0.04         |
+| Pearson r(closure, persistence)       | -0.44         |
+| Pearson r(memory, constraint)         | -0.57         |
+| Pearson r(memory, persistence)        | -0.38         |
+| Pearson r(constraint, persistence)    | +0.05         |
+| Spearman r(closure, memory)           | +0.56         |
+| Spearman r(closure, constraint)       | -0.27         |
+| Spearman r(closure, persistence)      | -0.50         |
+| Spearman r(memory, constraint)        | -0.45         |
+| Spearman r(memory, persistence)       | -0.42         |
+| Spearman r(constraint, persistence)   | +0.21         |
+| Falsification threshold               | `|r| < 0.7`   |
+| Aggregate diagnosis                   | OK            |
 
 The 21 dropped configurations correspond to systems whose focal
 trajectory collapses to a constant or to a value fully determined
@@ -249,13 +255,24 @@ closure ratio is undefined by construction. They are kept in the
 CSV with empty metric columns so the dropout is visible rather
 than hidden.
 
-All three pairwise Pearson correlations stay below the
+All six pairwise Pearson correlations stay below the
 `|r| < 0.7` falsification threshold documented in
-[`docs/PBA.md`](docs/PBA.md), so on this zoo of systems the three
+[`docs/PBA.md`](docs/PBA.md), so on this zoo of systems the four
 axes carry distinct information and PBA's *"add more ratios in
 the same shape"* roadmap remains motivated. The aggregate flag is
-the worst of the three pairwise flags so a single overlap is
-enough to raise it.
+the worst of the six pairwise flags so a single overlap is enough
+to raise it.
+
+The three pairs involving the new persistence axis sit comfortably
+inside the `|r| < 0.7` band: `closure-persistence` at `−0.44`,
+`memory-persistence` at `−0.38`, and `constraint-persistence` at
+`+0.05`. This is the empirical correlation gate pre-registered in
+[`docs/RAI.md`](docs/RAI.md) ("Empirical correlation `|r| < 0.7`
+on the benchmark zoo"). Together with the static no-cross-import
+audit baked into `compute_rai_proxy_persistence`, it is the
+falsification criterion the fourth axis had to clear before being
+considered a fourth dimension of the autonomy atlas rather than a
+re-skin of an existing axis.
 
 The third axis cleanly **breaks the closure-saturation wall**
 identified in `v0.5.0a0`: single-node periodic cycles and
@@ -270,14 +287,19 @@ signal.
 A scatter rendering of the same CSV — points placed on the
 `(closure, memory)` plane, with marker size proportional to the
 `constraint` axis — is shipped at
-[`docs/benchmarks/v0.6.0a0.png`](docs/benchmarks/v0.6.0a0.png),
+[`docs/benchmarks/v0.7.0a0.png`](docs/benchmarks/v0.7.0a0.png),
 and the captured stdout of the reference run lives at
-[`docs/benchmarks/v0.6.0a0.log.txt`](docs/benchmarks/v0.6.0a0.log.txt)
-for traceability. The two-axis baseline from `v0.5.0a0` is kept
-under
-[`docs/benchmarks/v0.5.0a0.csv`](docs/benchmarks/v0.5.0a0.csv)
-and
-[`docs/benchmarks/v0.5.0a0.png`](docs/benchmarks/v0.5.0a0.png).
+[`docs/benchmarks/v0.7.0a0.log.txt`](docs/benchmarks/v0.7.0a0.log.txt)
+for traceability. The persistence axis is reported in the CSV's
+fourth metric column and is rendered separately as a domain-of-
+applicability curve under
+[`docs/benchmarks/persistence_v0.7.0.png`](docs/benchmarks/persistence_v0.7.0.png).
+The two-axis baseline from `v0.5.0a0`
+([`csv`](docs/benchmarks/v0.5.0a0.csv) /
+[`png`](docs/benchmarks/v0.5.0a0.png)) and the three-axis snapshot
+from `v0.6.0a0` ([`csv`](docs/benchmarks/v0.6.0a0.csv) /
+[`png`](docs/benchmarks/v0.6.0a0.png)) are kept under
+`docs/benchmarks/` for traceability.
 
 ### Saturation diagnostic (`v0.5.1a0`)
 
@@ -406,6 +428,65 @@ and reflected in
 [`docs/PBA.md` § "Domain of applicability"](docs/PBA.md#domain-of-applicability)
 (Spanish: [`docs/PBA.es.md`](docs/PBA.es.md)).
 
+### Persistence-vs-coupling diagnostic (`v0.7.0a0`)
+
+The persistence axis added in `v0.7.0a0` ships with a first
+domain-of-applicability run that sweeps the **focal coupling** of
+a `KauffmanNetwork`. The naïve expectation was a monotone rise
+("low coupling → focal flip propagates → low persistence; high
+coupling → focal flip invisible → high persistence"). The
+diagnostic *falsified* that expectation and revealed a
+**U-shape** with two trivial-absorption boundary regimes flanking
+a non-trivial middle.
+
+```bash
+pip install -e ".[dev]"
+python examples/persistence_diagnostic.py        # writes docs/benchmarks/persistence_v0.7.0.csv
+pip install -e ".[dev,viz]"
+python examples/persistence_plot.py              # writes docs/benchmarks/persistence_v0.7.0.png
+```
+
+Headline numbers from the snapshot shipped here
+(`docs/benchmarks/persistence_v0.7.0.csv`, 11 coupling levels × 10
+seeds at `n = 10`, `k = 3`):
+
+| Focal coupling | persistence (mean ± std) | n_valid / n_total |
+|---------------:|-------------------------:|------------------:|
+| 0.00           | 1.000 ± 0.000            | 6 / 10            |
+| 0.10           | 1.000 ± 0.000            | 6 / 10            |
+| 0.20 – 0.50    | 0.556 ± 0.453            | 8 / 10            |
+| 0.60 – 0.80    | 0.415 ± 0.465            | 9 / 10            |
+| 0.90           | 0.665 ± 0.406            | 9 / 10            |
+| 1.00           | 0.665 ± 0.406            | 9 / 10            |
+
+The full curve is rendered at
+[`docs/benchmarks/persistence_v0.7.0.png`](docs/benchmarks/persistence_v0.7.0.png).
+Two practical reads:
+
+- **Low-coupling boundary (coupling ≈ 0).** Most seeds drop
+  because the focal trajectory collapses to a constant (a 1-bit
+  rule generally has a fixed point). The seeds that survive
+  score `persistence ≈ 1` not because the system *defends* its
+  trajectory, but because the perturbation is absorbed by the
+  fixed point in one step. This is **trivial absorption by
+  collapse**, not autonomy.
+- **High-coupling boundary (coupling ≈ 1).** The focal node
+  ignores its own previous value, so the focal flip never enters
+  the rule that computes the focal at `t_star + 1`. The metric
+  returns `persistence ≈ 1` by construction. This is **trivial
+  absorption by invisibility**, again not autonomy.
+
+The non-trivial useful range of the metric on Kauffman networks
+sits in the intermediate couplings, where actual perturbation
+propagation is observed. The U-shape is the persistence analogue
+of the closure-saturation theorem (`v0.5.1a0`) and the
+symmetric-neighbour saturation theorem for constraint-closure
+(`v0.6.1a0`): the metric has structurally trivial regions at the
+edges of its parameter space and a non-trivial useful range in
+the middle. Formalising the two boundary theorems for persistence
+(jointly with the deferred perturbation-magnitude sweep) is the
+planned content of the `v0.7.1` maintenance cycle.
+
 ## Adapters
 
 - **`SimpleAutomaton`** — two factory constructors
@@ -517,9 +598,10 @@ established that `closure` and `memory` carry distinct
 information on the current adapter zoo, the `v0.5.1a0`
 diagnostic mapped the `closure = 1.0` saturation wall,
 `v0.6.0a0` added the third axis to break that wall while
-preserving pairwise independence, and `v0.6.1a0` mapped the
-two saturating regions of the new axis with the same
-diagnostic-grade rigour the closure axis already enjoyed.
+preserving pairwise independence, `v0.6.1a0` mapped the two
+saturating regions of `constraint_closure`, and `v0.7.0a0` added
+the fourth axis (`rai_proxy_persistence`) and revealed its U-
+shaped domain of applicability.
 
 - `v0.5.0-alpha`: benchmark suite + scatter plot. Reference
   systems (`ECASystem`, `KauffmanNetwork`, `PeriodicCycle`) wired
@@ -534,17 +616,26 @@ diagnostic-grade rigour the closure axis already enjoyed.
   Mossio-style). Per-adapter causal-graph implementations,
   three-axis benchmark snapshot with three pairwise
   correlations, and an independence-by-design audit.
-- `v0.6.1-alpha` *(current)*: domain-of-applicability
-  diagnostic for `constraint_closure`. Formal statement of the
+- `v0.6.1-alpha`: domain-of-applicability diagnostic for
+  `constraint_closure`. Formal statement of the
   single-constraint trivial-zero theorem and the
   symmetric-neighbour saturation theorem; Kauffman density
-  sweep snapshot under `docs/benchmarks/constraint_density_v0.6.1.*`.
-- `v0.7.0-alpha`: fourth axis — RAI-style relative autonomy
-  ratio (Deci & Ryan). The next release is gated by a design
-  document analogous to `docs/CONSTRAINT_CLOSURE.md`, written
-  before any code, since the conceptual leap to motivational
-  psychology is large enough to deserve a written
-  operationalisation up front.
+  sweep snapshot under
+  `docs/benchmarks/constraint_density_v0.6.1.*`.
+- `v0.7.0-alpha` *(current)*: fourth axis —
+  `rai_proxy_persistence` (Lee & McShea-style perturbation
+  persistence, RAI-style structural proxy). Adapter-side
+  `replay_from_perturbation` protocol, four-axis benchmark
+  snapshot with six pairwise correlations (all `|r| < 0.7`), and
+  a first persistence-vs-coupling diagnostic that revealed the
+  U-shape boundary regimes. Pre-registered in
+  [`docs/RAI.md`](docs/RAI.md).
+- `v0.7.1-alpha`: domain-of-applicability cycle for
+  `rai_proxy_persistence`. Formal statement of the two boundary
+  theorems (low-coupling collapse and high-coupling
+  invisibility), perturbation-magnitude sweep already deferred
+  there in `docs/RAI.md`, and the same diagnostic-grade rigour
+  the prior axes already enjoy.
 - `v0.8.0-alpha`: fifth axis — coherence-based alignment ratio.
 - `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
   and additional public-dataset benchmarks.
