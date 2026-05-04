@@ -207,3 +207,59 @@ def test_rejects_invalid_p_env() -> None:
         PromisedCycle(length=100, period=4, alphabet=4, p_env=-0.1, seed=0)
     with pytest.raises(ValueError, match="p_env"):
         PromisedCycle(length=100, period=4, alphabet=4, p_env=1.5, seed=0)
+
+
+# --------------------------------------------------------------------- #
+# .simple() factory (since v0.8.2a0)
+# --------------------------------------------------------------------- #
+
+
+def test_simple_factory_returns_promised_cycle_instance() -> None:
+    sys = PromisedCycle.simple()
+    assert isinstance(sys, PromisedCycle)
+
+
+def test_simple_factory_defaults_clear_memory_minimum() -> None:
+    """The default ``length`` must clear the 500-timestep memory floor."""
+    sys = PromisedCycle.simple()
+    assert sys.length >= 500
+
+
+def test_simple_factory_default_p_noise_is_low_but_nonzero() -> None:
+    sys = PromisedCycle.simple()
+    assert 0.0 < sys.p_noise < 0.5
+
+
+def test_simple_factory_picks_consistent_period_and_alphabet() -> None:
+    """Default ``period == alphabet`` so the cycle visits every symbol."""
+    sys = PromisedCycle.simple()
+    assert sys.period == sys.alphabet
+
+
+def test_simple_factory_accepts_p_noise_override() -> None:
+    sys = PromisedCycle.simple(p_noise=0.4)
+    assert sys.p_noise == pytest.approx(0.4)
+
+
+def test_simple_factory_accepts_seed_override() -> None:
+    sys_a = PromisedCycle.simple(seed=1)
+    sys_b = PromisedCycle.simple(seed=2)
+    declared_a, _ = sys_a.get_declared_executed()
+    declared_b, _ = sys_b.get_declared_executed()
+    # Same length, same period, same alphabet, but different env-noise stream
+    # produces different executed channels even at p_noise=0.1.
+    _, executed_a = sys_a.get_declared_executed()
+    _, executed_b = sys_b.get_declared_executed()
+    assert not np.array_equal(executed_a, executed_b)
+
+
+def test_simple_factory_end_to_end_with_measure() -> None:
+    """Smoke test mirroring the canonical README cookbook entry."""
+    import autonometrics as anm
+
+    sys = PromisedCycle.simple()
+    profile = anm.measure(sys)
+    assert profile.closure is not None
+    assert profile.memory is not None
+    assert profile.persistence is not None
+    assert profile.coherence is not None
