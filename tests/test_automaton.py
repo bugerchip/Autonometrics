@@ -82,3 +82,74 @@ def test_mode_property() -> None:
     b = SimpleAutomaton.from_external_rules(n_states=3, env=env, seed=0)
     assert a.mode == "self_generated"
     assert b.mode == "external"
+
+
+# --------------------------------------------------------------------- #
+# .demo() factory (since v0.8.2a0)
+# --------------------------------------------------------------------- #
+
+
+def test_demo_factory_returns_self_generated_by_default() -> None:
+    sys = SimpleAutomaton.demo()
+    assert sys.mode == "self_generated"
+
+
+def test_demo_factory_external_mode_works() -> None:
+    sys = SimpleAutomaton.demo(mode="external")
+    assert sys.mode == "external"
+
+
+def test_demo_factory_default_env_has_expected_length() -> None:
+    sys = SimpleAutomaton.demo()
+    assert sys.get_env_history().shape == (3000,)
+
+
+def test_demo_factory_custom_n_steps_propagates() -> None:
+    sys = SimpleAutomaton.demo(n_steps=500)
+    assert sys.get_env_history().shape == (500,)
+
+
+def test_demo_factory_custom_n_states_bounds_state_history() -> None:
+    sys = SimpleAutomaton.demo(n_states=6)
+    states = sys.get_state_history()
+    assert states.min() >= 0
+    assert states.max() < 6
+
+
+def test_demo_factory_seed_is_reproducible() -> None:
+    sys_a = SimpleAutomaton.demo(seed=7)
+    sys_b = SimpleAutomaton.demo(seed=7)
+    np.testing.assert_array_equal(sys_a.get_env_history(), sys_b.get_env_history())
+    np.testing.assert_array_equal(
+        sys_a.get_state_history(), sys_b.get_state_history()
+    )
+
+
+def test_demo_factory_different_seeds_diverge() -> None:
+    sys_a = SimpleAutomaton.demo(seed=1)
+    sys_b = SimpleAutomaton.demo(seed=2)
+    assert not np.array_equal(sys_a.get_env_history(), sys_b.get_env_history())
+
+
+def test_demo_factory_rejects_unknown_mode() -> None:
+    with pytest.raises(ValueError, match="Unknown mode"):
+        SimpleAutomaton.demo(mode="nonsense")
+
+
+def test_demo_factory_end_to_end_with_measure() -> None:
+    """Smoke test mirroring the canonical README cookbook entry."""
+    import autonometrics as anm
+
+    sys_self = SimpleAutomaton.demo(mode="self_generated")
+    profile_self = anm.measure(sys_self, axes=["closure", "memory"])
+    assert profile_self.closure is not None
+    assert profile_self.memory is not None
+
+    sys_ext = SimpleAutomaton.demo(mode="external")
+    profile_ext = anm.measure(sys_ext, axes=["closure", "memory"])
+    assert profile_ext.closure is not None
+    assert profile_ext.memory is not None
+    # Sanity: the self-generated automaton scores higher on closure
+    # than the externally-driven one (the qualitative claim that
+    # motivates the demo in the first place).
+    assert profile_self.closure > profile_ext.closure
