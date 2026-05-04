@@ -46,13 +46,18 @@ class CSVTrajectory:
         return cls(state=state, env=env)
 
     @classmethod
-    def from_path(
+    def from_file(
         cls,
         path: str | Path,
         state_col: str = "state",
         env_col: str = "env",
     ) -> CSVTrajectory:
         """Load a trajectory from a CSV file.
+
+        Canonical entry point since v0.8.2a0; matches the
+        ``from_file`` / ``read_csv`` naming convention used by pandas,
+        numpy and most of the scientific Python ecosystem. The legacy
+        :meth:`from_path` alias remains supported indefinitely.
 
         Parameters
         ----------
@@ -120,6 +125,25 @@ class CSVTrajectory:
             state=np.asarray(state_vals, dtype=np.int64),
             env=np.asarray(env_vals, dtype=np.int64),
         )
+
+    @classmethod
+    def from_path(
+        cls,
+        path: str | Path,
+        state_col: str = "state",
+        env_col: str = "env",
+    ) -> CSVTrajectory:
+        """Legacy alias of :meth:`from_file`, kept for backward compatibility.
+
+        ``from_path`` was the original entry point in versions
+        ``v0.1.0`` through ``v0.8.1a0``. Since ``v0.8.2a0`` the
+        canonical name is :meth:`from_file`, which matches the
+        ecosystem convention (``pandas.read_csv``, ``np.loadtxt``,
+        ``json.load``, ...). This alias delegates to
+        :meth:`from_file` unchanged and will remain supported until
+        at least ``v2.0``.
+        """
+        return cls.from_file(path=path, state_col=state_col, env_col=env_col)
 
     def get_state_history(self) -> np.ndarray:
         return self._state.copy()
