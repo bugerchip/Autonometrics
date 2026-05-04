@@ -157,6 +157,22 @@ class Autonometer:
         Adapters that do not support a given axis report ``None`` for
         that field instead of aborting the measurement (mosaic
         dropout policy).
+
+    Notes
+    -----
+    Each axis ships with a hard floor on the trajectory length below
+    which the estimator refuses to run:
+
+    - ``closure``      : 2 timesteps (soft ~200)
+    - ``memory``       : **500 timesteps** (hard limit)
+    - ``constraint``   : reads the graph, no timestep requirement
+    - ``persistence``  : ``horizon + 2`` (66 with defaults; soft 200+)
+    - ``coherence``    : 2 timesteps (soft ~100)
+
+    Generating ``length >= 600`` clears every hard floor; the
+    convenience factories ``PromisedCycle.simple()`` and
+    ``SimpleAutomaton.demo()`` already do this. See the README's
+    "Minimum trajectory length per axis" section for full context.
     """
 
     def __init__(
@@ -304,6 +320,13 @@ def measure(
     Notes
     -----
     Equivalent to ``Autonometer(metrics=axes).measure(system)``.
+
+    Each axis ships with a hard floor on the trajectory length below
+    which the estimator refuses to run; ``memory`` requires at least
+    **500 timesteps**, ``persistence`` at least ``horizon + 2`` (66
+    with defaults). Generating ``length >= 600`` clears every floor.
+    See the README's "Minimum trajectory length per axis" section
+    for full context.
     """
     selected = list(axes) if axes is not None else list(AXES)
     return Autonometer(metrics=selected).measure(system)
