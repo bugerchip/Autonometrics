@@ -108,6 +108,68 @@ class SimpleAutomaton:
             external_noise=noise,
         )
 
+    @classmethod
+    def demo(
+        cls,
+        *,
+        mode: str = _MODE_SELF,
+        n_states: int = 4,
+        n_steps: int = 3000,
+        seed: int = 0,
+    ) -> SimpleAutomaton:
+        """Build a typical ``SimpleAutomaton`` without supplying ``env``.
+
+        Convenience factory for casual use and demos. Generates a uniform
+        random environment internally so the caller never has to import
+        ``numpy`` or pre-build an array. Picks defaults that:
+
+        - default to ``mode = "self_generated"`` (the high-autonomy
+          baseline used in the README "Quickstart" cookbook);
+        - use ``n_states = 4``, matching the alphabet of the
+          ``PromisedCycle.simple()`` baseline so the two reference
+          adapters live in compatible state spaces;
+        - generate ``n_steps = 3000`` of environment, comfortably above
+          every per-axis minimum.
+
+        The verbose ``SimpleAutomaton(...)`` constructor and the
+        ``from_self_generated_rules`` / ``from_external_rules`` factories
+        remain the only path for caller-supplied environments and for
+        non-default ``external_noise``.
+
+        Parameters
+        ----------
+        mode:
+            Either ``"self_generated"`` (default, high-autonomy) or
+            ``"external"`` (low-autonomy, environment-driven).
+        n_states:
+            Size of the state space. Defaults to ``4``.
+        n_steps:
+            Number of environment timesteps. Defaults to ``3000``.
+        seed:
+            Reproducibility seed for both the environment draw and the
+            transition tables.
+
+        Returns
+        -------
+        SimpleAutomaton
+            A configured instance ready to be passed to
+            :class:`autonometrics.Autonometer` or
+            :func:`autonometrics.measure`.
+
+        Examples
+        --------
+        >>> import autonometrics as anm
+        >>> sys = anm.SimpleAutomaton.demo()
+        >>> profile = anm.measure(sys)  # doctest: +SKIP
+        """
+        if mode not in (_MODE_SELF, _MODE_EXTERNAL):
+            raise ValueError(
+                f"Unknown mode {mode!r}; expected 'self_generated' or 'external'"
+            )
+        rng = np.random.default_rng(seed)
+        env = rng.integers(0, n_states, size=n_steps).astype(np.int64)
+        return cls(mode=mode, n_states=n_states, env=env, seed=seed)
+
     def run(self) -> None:
         """Execute the automaton over the full environment history and cache states.
 
