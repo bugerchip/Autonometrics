@@ -1,32 +1,37 @@
-"""Mini-benchmark for ``autonometrics`` v0.7.2a0.
+"""Mini-benchmark for ``autonometrics`` v0.8.0a0.
 
 Sweeps a curated set of systems whose autonomy structure is
-independently understood (elementary cellular automata, random Boolean
-networks at varying focal coupling, period-``p`` cycles, and the
-package's existing ``SimpleAutomaton``), measures the four current
-PBA axes ``(closure, memory, constraint, persistence)`` for each,
-and reports:
+independently understood (elementary cellular automata, random
+Boolean networks at varying focal coupling, period-``p`` cycles,
+the package's existing ``SimpleAutomaton`` and the new
+``PromisedCycle`` adapter introduced for the CBA axis), measures
+the **five** PBA axes ``(closure, memory, constraint, persistence,
+coherence)`` for each, and reports:
 
 - a per-system table on stdout,
-- a CSV snapshot at ``docs/benchmarks/v0.7.2a0.csv`` (overridable
+- a CSV snapshot at ``docs/benchmarks/v0.8.0a0.csv`` (overridable
   via ``--output``),
 - aggregate Pearson and Spearman correlations between every pair of
-  the four axes (six pairs in total),
+  the five axes (ten pairs in total),
 - a quick-look diagnosis flag (``OK`` / ``WARN`` / ``FAIL``) keyed
   to the engineered-correlation thresholds spelt out in
-  ``docs/PBA.md``. The aggregate flag is the worst of the six
-  pairwise flags so a single overlap is enough to raise it.
+  ``docs/PBA.md`` and ``docs/CBA.md``. The aggregate flag is the
+  worst of the ten pairwise flags so a single overlap is enough to
+  raise it.
 
-Compared with v0.7.0a0, the only change is sample size. The zoo
-(adapter classes and parameter values) is unchanged; ``n_seeds``
-is raised from 5 to 30 by default. The pre-registered guidance in
-``docs/ATLAS_GEOMETRY.md`` floored the *valid* sample at 200; an
-empirical retention rate of ~60% (degenerate trajectories on a
-non-trivial fraction of seeds) makes ``n_seeds = 30`` the smallest
-multiplier that clears the floor with margin. ``n_seeds = 20`` is
-also a defensible value but yields ~163 valid points and just
-misses the floor; it is kept available via ``--n-seeds`` for
-diagnostics.
+Compared with v0.7.2a0, the changes are:
+
+1. The fifth axis ``coherence`` (CBA, Theil-U style) is added to
+   the meter and to the CSV. Adapters without a declarative layer
+   (every adapter shipped before v0.8.0a0) score ``None`` for
+   coherence and the orchestrator drops them out cleanly.
+2. ``PromisedCycle`` is added to the zoo as the canonical
+   CBA-positive substrate, with a sweep over ``p_noise`` and a
+   single ``adversarial_shift`` configuration. Pre-registered
+   per-mode predictions live in ``docs/CBA.md``.
+3. The pairwise correlation table grows from six pairs to ten.
+4. The default output path moves from ``v0.7.2a0.csv`` to
+   ``v0.8.0a0.csv``.
 
 Usage::
 
@@ -52,13 +57,13 @@ from typing import Any
 
 import numpy as np
 
-from autonometrics import Autonometer, SimpleAutomaton
+from autonometrics import Autonometer, PromisedCycle, SimpleAutomaton
 from autonometrics.benchmarks import ECASystem, KauffmanNetwork, PeriodicCycle
 
 
 @dataclass
 class BenchmarkPoint:
-    """One ``(closure, memory, constraint, persistence)`` measurement."""
+    """One ``(closure, memory, constraint, persistence, coherence)`` measurement."""
 
     system_class: str
     params: str
@@ -67,6 +72,7 @@ class BenchmarkPoint:
     memory: float | None
     constraint: float | None
     persistence: float | None
+    coherence: float | None
     quadrant: str
     notes: str
 
@@ -74,16 +80,36 @@ class BenchmarkPoint:
 _ECA_RULES = (30, 90, 110, 184, 250)
 _KAUFFMAN_COUPLINGS = (0.0, 0.33, 0.5, 0.67, 1.0)
 _PERIODIC_PERIODS = (2, 4, 8)
+_PROMISED_CONFIGS: tuple[tuple[int, int], ...] = (
+    (2, 4),
+    (4, 4),
+    (4, 8),
+)
+_PROMISED_NOISES = (0.0, 0.25, 0.5, 0.75, 1.0)
+_ADVERSARIAL_PERIOD = 4
+_ADVERSARIAL_ALPHABET = 5
 _N_STEPS = 2000
 _DEFAULT_N_SEEDS = 30
+
+_AXIS_FIELDS: tuple[str, ...] = (
+    "closure",
+    "memory",
+    "constraint",
+    "persistence",
+    "coherence",
+)
 
 _PAIRS: tuple[tuple[str, str], ...] = (
     ("closure", "memory"),
     ("closure", "constraint"),
     ("closure", "persistence"),
+    ("closure", "coherence"),
     ("memory", "constraint"),
     ("memory", "persistence"),
+    ("memory", "coherence"),
     ("constraint", "persistence"),
+    ("constraint", "coherence"),
+    ("persistence", "coherence"),
 )
 
 
@@ -121,6 +147,18 @@ def iter_systems(
             "period=4",
             0,
             PeriodicCycle(period=4, n_steps=_N_STEPS, env_alphabet=3, seed=0),
+        )
+        yield (
+            "PromisedCycle",
+            "period=4,alphabet=4,p_noise=0.25",
+            0,
+            PromisedCycle(
+                length=_N_STEPS,
+                period=4,
+                alphabet=4,
+                p_noise=0.25,
+                seed=0,
+            ),
         )
         return
 
@@ -183,6 +221,37 @@ def iter_systems(
             SimpleAutomaton.from_external_rules(n_states=4, env=env, seed=seed),
         )
 
+    promised_seeds = max(3, n_seeds // 2)
+    for period, alphabet in _PROMISED_CONFIGS:
+        for p_noise in _PROMISED_NOISES:
+            for seed in range(promised_seeds):
+                yield (
+                    "PromisedCycle",
+                    f"period={period},alphabet={alphabet},p_noise={p_noise}",
+                    seed,
+                    PromisedCycle(
+                        length=_N_STEPS,
+                        period=period,
+                        alphabet=alphabet,
+                        mode="random_noise",
+                        p_noise=p_noise,
+                        seed=seed,
+                    ),
+                )
+    for seed in range(promised_seeds):
+        yield (
+            "PromisedCycle",
+            f"adversarial,period={_ADVERSARIAL_PERIOD}",
+            seed,
+            PromisedCycle(
+                length=_N_STEPS,
+                period=_ADVERSARIAL_PERIOD,
+                alphabet=_ADVERSARIAL_ALPHABET,
+                mode="adversarial_shift",
+                seed=seed,
+            ),
+        )
+
 
 def quadrant_of(closure: float | None, memory: float | None) -> str:
     """Map a ``(closure, memory)`` pair to one of four named quadrants.
@@ -207,7 +276,14 @@ def quadrant_of(closure: float | None, memory: float | None) -> str:
 
 def measure_safe(
     meter: Autonometer, system: Any
-) -> tuple[float | None, float | None, float | None, float | None, str]:
+) -> tuple[
+    float | None,
+    float | None,
+    float | None,
+    float | None,
+    float | None,
+    str,
+]:
     """Run ``meter.measure`` and turn ``ValueError`` into a recorded note.
 
     Degenerate trajectories (constant series, zero conditional entropy,
@@ -218,12 +294,13 @@ def measure_safe(
     try:
         profile = meter.measure(system)
     except ValueError as exc:
-        return None, None, None, None, _truncate(str(exc))
+        return None, None, None, None, None, _truncate(str(exc))
     return (
         profile.ratio_endo_total,
         profile.memory_endo_ratio,
         profile.constraint_closure,
         profile.rai_proxy_persistence,
+        profile.cba_theil_u,
         "",
     )
 
@@ -284,11 +361,19 @@ def run_benchmark(
     ``quick`` is set.
     """
     meter = Autonometer(
-        metrics=["albantakis", "memory", "constraint_closure", "persistence"]
+        metrics=[
+            "albantakis",
+            "memory",
+            "constraint_closure",
+            "persistence",
+            "coherence",
+        ]
     )
     points: list[BenchmarkPoint] = []
     for system_class, params, seed, system in iter_systems(quick=quick, n_seeds=n_seeds):
-        closure, memory, constraint, persistence, notes = measure_safe(meter, system)
+        closure, memory, constraint, persistence, coherence, notes = measure_safe(
+            meter, system
+        )
         points.append(
             BenchmarkPoint(
                 system_class=system_class,
@@ -298,6 +383,7 @@ def run_benchmark(
                 memory=memory,
                 constraint=constraint,
                 persistence=persistence,
+                coherence=coherence,
                 quadrant=quadrant_of(closure, memory),
                 notes=notes,
             )
@@ -307,7 +393,7 @@ def run_benchmark(
 
 def print_table(points: list[BenchmarkPoint]) -> None:
     """Pretty-print one row per benchmark point on stdout."""
-    fmt = "{:<18} {:<22} {:>4} {:>10} {:>10} {:>10} {:>11} {:<14} {}"
+    fmt = "{:<18} {:<28} {:>4} {:>10} {:>10} {:>10} {:>11} {:>10} {:<14} {}"
     print(
         fmt.format(
             "class",
@@ -317,6 +403,7 @@ def print_table(points: list[BenchmarkPoint]) -> None:
             "memory",
             "constraint",
             "persistence",
+            "coherence",
             "quadrant",
             "notes",
         )
@@ -324,12 +411,13 @@ def print_table(points: list[BenchmarkPoint]) -> None:
     print(
         fmt.format(
             "-" * 18,
-            "-" * 22,
+            "-" * 28,
             "----",
             "-" * 10,
             "-" * 10,
             "-" * 10,
             "-" * 11,
+            "-" * 10,
             "-" * 14,
             "-" * 30,
         )
@@ -339,9 +427,19 @@ def print_table(points: list[BenchmarkPoint]) -> None:
         m = "n/a" if p.memory is None else f"{p.memory:.4f}"
         cc = "n/a" if p.constraint is None else f"{p.constraint:.4f}"
         pp = "n/a" if p.persistence is None else f"{p.persistence:.4f}"
+        co = "n/a" if p.coherence is None else f"{p.coherence:.4f}"
         print(
             fmt.format(
-                p.system_class, p.params, p.seed, c, m, cc, pp, p.quadrant, p.notes
+                p.system_class,
+                p.params,
+                p.seed,
+                c,
+                m,
+                cc,
+                pp,
+                co,
+                p.quadrant,
+                p.notes,
             )
         )
 
@@ -354,6 +452,7 @@ _CSV_FIELDS = [
     "memory",
     "constraint",
     "persistence",
+    "coherence",
     "quadrant",
     "notes",
 ]
@@ -368,7 +467,7 @@ def write_csv(points: list[BenchmarkPoint], path: Path) -> None:
         for p in points:
             row = asdict(p)
             row["class"] = row.pop("system_class")
-            for key in ("closure", "memory", "constraint", "persistence"):
+            for key in _AXIS_FIELDS:
                 row[key] = "" if row[key] is None else f"{row[key]:.6f}"
             writer.writerow(row)
 
@@ -399,10 +498,7 @@ def summarise(points: list[BenchmarkPoint]) -> dict[str, Any]:
     n_valid_full = sum(
         1
         for p in points
-        if p.closure is not None
-        and p.memory is not None
-        and p.constraint is not None
-        and p.persistence is not None
+        if all(getattr(p, axis) is not None for axis in _AXIS_FIELDS)
     )
 
     correlations: dict[str, dict[str, float | str | int]] = {}
@@ -487,7 +583,7 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.8.0a0.csv"
 )
 
 

@@ -35,25 +35,26 @@ def demo() -> ModuleType:
     return _load_demo()
 
 
-def test_quick_run_yields_three_points(demo: ModuleType) -> None:
+def test_quick_run_yields_four_points(demo: ModuleType) -> None:
     points = demo.run_benchmark(quick=True)
-    assert len(points) == 3
+    assert len(points) == 4
     classes = {p.system_class for p in points}
-    assert classes == {"ECASystem", "KauffmanNetwork", "PeriodicCycle"}
+    assert classes == {
+        "ECASystem",
+        "KauffmanNetwork",
+        "PeriodicCycle",
+        "PromisedCycle",
+    }
 
 
 def test_quick_run_points_have_valid_fields(demo: ModuleType) -> None:
     points = demo.run_benchmark(quick=True)
     for p in points:
         assert p.seed == 0
-        if p.closure is not None:
-            assert 0.0 <= p.closure <= 1.0
-        if p.memory is not None:
-            assert 0.0 <= p.memory <= 1.0
-        if p.constraint is not None:
-            assert 0.0 <= p.constraint <= 1.0
-        if p.persistence is not None:
-            assert 0.0 <= p.persistence <= 1.0
+        for axis in ("closure", "memory", "constraint", "persistence", "coherence"):
+            value = getattr(p, axis)
+            if value is not None:
+                assert 0.0 <= value <= 1.0
         assert p.quadrant in {"drift", "clockwork", "turbulence", "autopoietic", "n/a"}
 
 
@@ -73,6 +74,7 @@ def test_write_csv_produces_well_formed_file(demo: ModuleType, tmp_path: Path) -
         "memory",
         "constraint",
         "persistence",
+        "coherence",
         "quadrant",
         "notes",
     ]
@@ -81,7 +83,7 @@ def test_write_csv_produces_well_formed_file(demo: ModuleType, tmp_path: Path) -
 def test_summarise_returns_expected_keys(demo: ModuleType) -> None:
     points = demo.run_benchmark(quick=True)
     summary = demo.summarise(points)
-    assert summary["n_total"] == 3
+    assert summary["n_total"] == 4
     assert summary["n_valid"] <= summary["n_total"]
     assert "correlations" in summary
     pairs = summary["correlations"]
@@ -89,9 +91,13 @@ def test_summarise_returns_expected_keys(demo: ModuleType) -> None:
         "closure-memory",
         "closure-constraint",
         "closure-persistence",
+        "closure-coherence",
         "memory-constraint",
         "memory-persistence",
+        "memory-coherence",
         "constraint-persistence",
+        "constraint-coherence",
+        "persistence-coherence",
     }
     for stats in pairs.values():
         assert {"n", "pearson", "spearman", "flag"} <= stats.keys()

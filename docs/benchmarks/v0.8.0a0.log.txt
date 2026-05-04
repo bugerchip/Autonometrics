@@ -1,0 +1,676 @@
+﻿class              params                       seed    closure     memory constraint persistence  coherence quadrant       notes
+------------------ ---------------------------- ---- ---------- ---------- ---------- ----------- ---------- -------------- ------------------------------
+ECASystem          rule=30                         0     1.0000     0.1645     1.0000      0.0273        n/a clockwork      
+ECASystem          rule=30                         1     1.0000     0.1735     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                         2     1.0000     0.1079     1.0000      0.0510        n/a clockwork      
+ECASystem          rule=30                         3     1.0000     0.1370     1.0000      0.0242        n/a clockwork      
+ECASystem          rule=30                         4     1.0000     0.1504     1.0000      0.0232        n/a clockwork      
+ECASystem          rule=30                         5     1.0000     0.1472     1.0000      0.0088        n/a clockwork      
+ECASystem          rule=30                         6     1.0000     0.1314     1.0000      0.0023        n/a clockwork      
+ECASystem          rule=30                         7     1.0000     0.0981     1.0000      0.0014        n/a clockwork      
+ECASystem          rule=30                         8     1.0000     0.1275     1.0000      0.0122        n/a clockwork      
+ECASystem          rule=30                         9     1.0000     0.1256     1.0000      0.0397        n/a clockwork      
+ECASystem          rule=30                        10     1.0000     0.1529     1.0000      0.0746        n/a clockwork      
+ECASystem          rule=30                        11     1.0000     0.1444     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        12     1.0000     0.1174     1.0000      0.0692        n/a clockwork      
+ECASystem          rule=30                        13     1.0000     0.1785     1.0000      0.0154        n/a clockwork      
+ECASystem          rule=30                        14     1.0000     0.1492     1.0000      0.0538        n/a clockwork      
+ECASystem          rule=30                        15     1.0000     0.1570     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        16     1.0000     0.1432     1.0000      0.0085        n/a clockwork      
+ECASystem          rule=30                        17     1.0000     0.1238     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        18     1.0000     0.1205     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        19     1.0000     0.1496     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        20     1.0000     0.1190     1.0000      0.0378        n/a clockwork      
+ECASystem          rule=30                        21     1.0000     0.1347     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        22     1.0000     0.0964     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=30                        23     1.0000     0.1515     1.0000      0.0427        n/a clockwork      
+ECASystem          rule=30                        24     1.0000     0.1415     1.0000      0.0039        n/a clockwork      
+ECASystem          rule=30                        25     1.0000     0.1633     1.0000      0.0681        n/a clockwork      
+ECASystem          rule=30                        26     1.0000     0.1794     1.0000      0.0283        n/a clockwork      
+ECASystem          rule=30                        27     1.0000     0.1494     1.0000      0.0238        n/a clockwork      
+ECASystem          rule=30                        28     1.0000     0.1538     1.0000      0.0498        n/a clockwork      
+ECASystem          rule=30                        29     1.0000     0.1356     1.0000      0.0000        n/a clockwork      
+ECASystem          rule=90                         0        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         2        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         3        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         4        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         7        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         8        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                         9        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        13        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        15        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        16        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        17        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        19        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        20        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        21        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        23        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        24        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        25        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=90                        29        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=110                        0     1.0000     0.5934     1.0000      0.0090        n/a autopoietic    
+ECASystem          rule=110                        1     1.0000     0.5483     1.0000      0.0551        n/a autopoietic    
+ECASystem          rule=110                        2     1.0000     0.5866     1.0000      0.0550        n/a autopoietic    
+ECASystem          rule=110                        3     1.0000     0.5148     1.0000      0.1282        n/a autopoietic    
+ECASystem          rule=110                        4     1.0000     0.6028     1.0000      0.1211        n/a autopoietic    
+ECASystem          rule=110                        5     1.0000     0.5557     1.0000      0.0427        n/a autopoietic    
+ECASystem          rule=110                        6     1.0000     0.5897     1.0000      0.1385        n/a autopoietic    
+ECASystem          rule=110                        7     1.0000     0.6017     1.0000      0.1438        n/a autopoietic    
+ECASystem          rule=110                        8     1.0000     0.5949     1.0000      0.0721        n/a autopoietic    
+ECASystem          rule=110                        9     1.0000     0.5775     1.0000      0.0712        n/a autopoietic    
+ECASystem          rule=110                       10     1.0000     0.5852     1.0000      0.0674        n/a autopoietic    
+ECASystem          rule=110                       11     1.0000     0.5895     1.0000      0.1111        n/a autopoietic    
+ECASystem          rule=110                       12     1.0000     0.5692     1.0000      0.1476        n/a autopoietic    
+ECASystem          rule=110                       13     1.0000     0.4988     1.0000      0.1130        n/a clockwork      
+ECASystem          rule=110                       14     1.0000     0.5997     1.0000      0.0066        n/a autopoietic    
+ECASystem          rule=110                       15     1.0000     0.5713     1.0000      0.0399        n/a autopoietic    
+ECASystem          rule=110                       16     1.0000     0.5253     1.0000      0.0822        n/a autopoietic    
+ECASystem          rule=110                       17     1.0000     0.5968     1.0000      0.1093        n/a autopoietic    
+ECASystem          rule=110                       18     1.0000     0.5757     1.0000      0.1196        n/a autopoietic    
+ECASystem          rule=110                       19     1.0000     0.5296     1.0000      0.1776        n/a autopoietic    
+ECASystem          rule=110                       20     1.0000     0.5096     1.0000      0.0000        n/a autopoietic    
+ECASystem          rule=110                       21     1.0000     0.5005     1.0000      0.0734        n/a autopoietic    
+ECASystem          rule=110                       22     1.0000     0.5595     1.0000      0.0897        n/a autopoietic    
+ECASystem          rule=110                       23     1.0000     0.6041     1.0000      0.1480        n/a autopoietic    
+ECASystem          rule=110                       24     1.0000     0.5858     1.0000      0.1265        n/a autopoietic    
+ECASystem          rule=110                       25     1.0000     0.5094     1.0000      0.0000        n/a autopoietic    
+ECASystem          rule=110                       26     1.0000     0.5037     1.0000      0.0000        n/a autopoietic    
+ECASystem          rule=110                       27     1.0000     0.5238     1.0000      0.1867        n/a autopoietic    
+ECASystem          rule=110                       28     1.0000     0.5846     1.0000      0.1895        n/a autopoietic    
+ECASystem          rule=110                       29     1.0000     0.7707     1.0000      0.3426        n/a autopoietic    
+ECASystem          rule=184                        0        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        2        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        3     1.0000     0.4224     1.0000      0.6757        n/a clockwork      
+ECASystem          rule=184                        4     1.0000     0.4292     1.0000      0.7873        n/a clockwork      
+ECASystem          rule=184                        5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        7     1.0000     0.4152     1.0000      0.6100        n/a clockwork      
+ECASystem          rule=184                        8        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                        9     1.0000     0.4634     1.0000      0.9039        n/a clockwork      
+ECASystem          rule=184                       10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       13        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       15        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       16        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       17     1.0000     0.4459     1.0000      0.8660        n/a clockwork      
+ECASystem          rule=184                       18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       19     1.0000     0.3900     1.0000      0.8708        n/a clockwork      
+ECASystem          rule=184                       20     1.0000     0.4511     1.0000      0.8481        n/a clockwork      
+ECASystem          rule=184                       21        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       23        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       24        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       25        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=184                       29     1.0000     0.3935     1.0000      0.8492        n/a clockwork      
+ECASystem          rule=250                        0        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        2        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        3        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        4        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        7        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        8        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                        9        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       13        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       15        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       16        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       17        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       19        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       20        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       21        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       23        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       24        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       25        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem          rule=250                       29        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    0        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    2        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    3        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    4        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    7        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    8        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                    9        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   13        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   15        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   16        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   17        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   19        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   20        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   21        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   23        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   24        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   25     1.0000     1.0000     0.8000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.0                   26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.0                   29        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                   0     0.9896     1.0000     0.8000      0.9863        n/a autopoietic    
+KauffmanNetwork    coupling=0.33                   1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                   2     0.2606     0.6750     0.9000      0.2553        n/a turbulence     
+KauffmanNetwork    coupling=0.33                   3     0.9121     0.0079     0.7000      1.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.33                   4     1.0000     0.9817     0.7000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.33                   5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                   6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                   7     1.0000     0.4972     0.9000      0.9238        n/a clockwork      
+KauffmanNetwork    coupling=0.33                   8     0.0001     1.0000     0.7000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.33                   9        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  13     1.0000     0.9938     0.9000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.33                  14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  15     0.0000     0.6667     0.9000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.33                  16     0.0010     0.6654     0.8000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.33                  17     1.0000     1.0000     1.0000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.33                  18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  19     0.0000     0.0000     0.8000      0.0229        n/a drift          
+KauffmanNetwork    coupling=0.33                  20     0.9924     0.3334     0.7000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.33                  21     0.0000     0.5000     0.9000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.33                  22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  23     0.9943     1.0000     0.4000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.33                  24     1.0000     0.5000     1.0000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.33                  25     0.1511     0.9797     0.9000      0.2005        n/a turbulence     
+KauffmanNetwork    coupling=0.33                  26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.33                  29        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                    0     0.9896     1.0000     0.8000      0.9863        n/a autopoietic    
+KauffmanNetwork    coupling=0.5                    1        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                    2     0.2606     0.6750     0.9000      0.2553        n/a turbulence     
+KauffmanNetwork    coupling=0.5                    3     0.9121     0.0079     0.7000      1.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.5                    4     1.0000     0.9817     0.7000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.5                    5        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                    6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                    7     1.0000     0.4972     0.9000      0.9238        n/a clockwork      
+KauffmanNetwork    coupling=0.5                    8     0.0001     1.0000     0.7000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.5                    9        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   13     1.0000     0.9938     0.9000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.5                   14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   15     0.0000     0.6667     0.9000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.5                   16     0.0010     0.6654     0.8000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.5                   17     1.0000     1.0000     1.0000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.5                   18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   19     0.0000     0.0000     0.8000      0.0229        n/a drift          
+KauffmanNetwork    coupling=0.5                   20     0.9924     0.3334     0.7000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.5                   21     0.0000     0.5000     0.9000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.5                   22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   23     0.9943     1.0000     0.4000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.5                   24     1.0000     0.5000     1.0000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.5                   25     0.1511     0.9797     0.9000      0.2005        n/a turbulence     
+KauffmanNetwork    coupling=0.5                   26        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   27        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   28        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.5                   29        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                   0        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                   1     0.3120     0.5000     1.0000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                   2     0.6195     0.2968     1.0000      0.9625        n/a clockwork      
+KauffmanNetwork    coupling=0.67                   3     0.0082     0.5008     0.9000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                   4     0.0000     0.4981     1.0000      0.1250        n/a drift          
+KauffmanNetwork    coupling=0.67                   5     1.0000     1.0000     0.8000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.67                   6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                   7        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                   8     0.5862     0.5027     0.9000      1.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.67                   9     0.1107     0.4667     0.6000      0.0000        n/a drift          
+KauffmanNetwork    coupling=0.67                  10     0.9886     0.9880     0.8000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.67                  11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  13        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  14     0.1010     0.2500     0.4000      1.0000        n/a drift          
+KauffmanNetwork    coupling=0.67                  15     0.2887     0.5026     1.0000      0.4042        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  16     0.9874     0.5005     0.7000      0.0000        n/a autopoietic    
+KauffmanNetwork    coupling=0.67                  17        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  18        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  19     0.9585     0.0234     0.8000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.67                  20        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  21     0.0000     0.5000     1.0000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  22     1.0000     0.2789     1.0000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.67                  23        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=0.67                  24     0.0000     0.5000     1.0000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  25     0.5168     0.0131     0.8000      0.0000        n/a clockwork      
+KauffmanNetwork    coupling=0.67                  26     0.0003     0.5004     1.0000      0.0584        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  27     0.3916     0.5029     0.7000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  28     0.3355     1.0000     0.8000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=0.67                  29     0.4562     0.5000     0.9000      0.0000        n/a turbulence     
+KauffmanNetwork    coupling=1.0                    0     0.0001     0.4445     0.7000      0.0000        n/a drift          
+KauffmanNetwork    coupling=1.0                    1     0.0506     0.4951     1.0000      0.5250        n/a drift          
+KauffmanNetwork    coupling=1.0                    2     0.3719     0.5023     1.0000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=1.0                    3     0.2646     0.4989     0.9000      0.0000        n/a drift          
+KauffmanNetwork    coupling=1.0                    4     0.0032     0.4991     0.7000      1.0000        n/a drift          
+KauffmanNetwork    coupling=1.0                    5     0.0694     1.0000     0.6000      0.5162        n/a turbulence     
+KauffmanNetwork    coupling=1.0                    6        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                    7        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                    8     0.3355     1.0000     0.9000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=1.0                    9     0.0000     0.5000     0.7000      1.0000        n/a drift          
+KauffmanNetwork    coupling=1.0                   10        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   11        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   12        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   13     0.0001     0.0121     0.8000      1.0000        n/a drift          
+KauffmanNetwork    coupling=1.0                   14        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   15     0.1011     1.0000     0.9000      0.4019        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   16     0.4706     0.4985     0.9000      0.3701        n/a drift          
+KauffmanNetwork    coupling=1.0                   17     0.3685     0.7143     0.9000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   18     0.0010     0.2496     0.9000      0.1916        n/a drift          
+KauffmanNetwork    coupling=1.0                   19        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   20     0.9943     1.0000     0.6000      1.0000        n/a autopoietic    
+KauffmanNetwork    coupling=1.0                   21     0.4850     0.5078     1.0000      0.4922        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   22        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   23     0.0000     0.4995     0.8000      0.0479        n/a drift          
+KauffmanNetwork    coupling=1.0                   24        n/a        n/a        n/a         n/a        n/a n/a            H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork    coupling=1.0                   25     0.1612     0.3672     1.0000      0.2679        n/a drift          
+KauffmanNetwork    coupling=1.0                   26     0.0001     0.8000     1.0000      1.0000        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   27     0.0731     0.6451     0.8000      0.4598        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   28     0.2740     0.5000     1.0000      0.5117        n/a turbulence     
+KauffmanNetwork    coupling=1.0                   29     0.0820     0.9929     1.0000      0.0400        n/a turbulence     
+PeriodicCycle      period=2                        0     1.0000     0.9559     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        1     1.0000     0.9507     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        2     1.0000     0.9624     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        3     1.0000     0.9554     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        4     1.0000     0.9515     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        5     1.0000     0.9498     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        6     1.0000     0.9578     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        7     1.0000     0.9561     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        8     1.0000     0.9495     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                        9     1.0000     0.9378     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                       10     1.0000     0.9410     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                       11     1.0000     0.9576     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                       12     1.0000     0.9655     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                       13     1.0000     0.9608     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=2                       14     1.0000     0.9558     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        0     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        1     1.0000     0.9747     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        2     1.0000     0.9808     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        3     1.0000     0.9772     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        4     1.0000     0.9752     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        5     1.0000     0.9742     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        6     1.0000     0.9784     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        7     1.0000     0.9776     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        8     1.0000     0.9741     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                        9     1.0000     0.9679     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                       10     1.0000     0.9696     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                       11     1.0000     0.9784     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                       12     1.0000     0.9824     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                       13     1.0000     0.9800     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=4                       14     1.0000     0.9774     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        0     1.0000     0.9849     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        1     1.0000     0.9830     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        2     1.0000     0.9871     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        3     1.0000     0.9847     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        4     1.0000     0.9833     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        5     1.0000     0.9827     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        6     1.0000     0.9855     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        7     1.0000     0.9849     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        8     1.0000     0.9826     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                        9     1.0000     0.9784     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                       10     1.0000     0.9795     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                       11     1.0000     0.9855     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                       12     1.0000     0.9882     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                       13     1.0000     0.9866     0.0000      0.0000        n/a autopoietic    
+PeriodicCycle      period=8                       14     1.0000     0.9848     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    self_generated                  0     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        0     0.0085     0.4467     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  1     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        1     0.0147     0.3818     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  2     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        2     0.0193     0.5043     0.0000      1.0000        n/a turbulence     
+SimpleAutomaton    self_generated                  3     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        3     0.0194     0.3911     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  4     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        4     0.0152     0.4027     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  5     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        5     0.0149     0.3355     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  6     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        6     0.0183     0.4305     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  7     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        7     0.0171     0.4020     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  8     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        8     0.0163     0.3678     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                  9     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                        9     0.0270     0.3366     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 10     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       10     0.0169     0.3979     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 11     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       11     0.0114     0.4046     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 12     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       12     0.0133     0.4710     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 13     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       13     0.0110     0.3089     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 14     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       14     0.0128     0.3435     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 15     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       15     0.0234     0.3875     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 16     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       16     0.0167     0.4078     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 17     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       17     0.0154     0.3767     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 18     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       18     0.0288     0.4067     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 19     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       19     0.0140     0.4347     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 20     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       20     0.0170     0.2911     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 21     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       21     0.0183     0.3686     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 22     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       22     0.0130     0.4233     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 23     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       23     0.0126     0.4423     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 24     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       24     0.0143     0.4901     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 25     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       25     0.0178     0.3820     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 26     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       26     0.0170     0.4147     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 27     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       27     0.0226     0.3584     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 28     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       28     0.0176     0.3829     0.0000      1.0000        n/a drift          
+SimpleAutomaton    self_generated                 29     1.0000     0.9775     0.0000      0.0000        n/a autopoietic    
+SimpleAutomaton    external                       29     0.0164     0.3622     0.0000      1.0000        n/a drift          
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    0     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    1     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    2     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    3     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    4     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    5     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    6     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    7     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    8     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0    9     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0   10     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0   11     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0   12     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0   13     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.0   14     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    0     0.2349     1.0000        n/a      1.0000     0.5827 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    1     0.2197     1.0000        n/a      1.0000     0.5548 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    2     0.2089     1.0000        n/a      1.0000     0.5439 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    3     0.1789     1.0000        n/a      1.0000     0.4986 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    4     0.2234     1.0000        n/a      1.0000     0.5744 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    5     0.2082     1.0000        n/a      1.0000     0.5429 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    6     0.2327     1.0000        n/a      1.0000     0.5611 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    7     0.2302     1.0000        n/a      1.0000     0.5678 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    8     0.2540     1.0000        n/a      1.0000     0.5928 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25    9     0.2380     1.0000        n/a      1.0000     0.5783 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25   10     0.2015     1.0000        n/a      1.0000     0.5327 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25   11     0.2257     1.0000        n/a      1.0000     0.5609 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25   12     0.2325     1.0000        n/a      1.0000     0.5662 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25   13     0.2225     1.0000        n/a      1.0000     0.5550 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.25   14     0.2213     1.0000        n/a      1.0000     0.5313 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    0     0.0521     1.0000        n/a      1.0000     0.2942 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    1     0.0500     1.0000        n/a      1.0000     0.2637 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    2     0.0540     1.0000        n/a      1.0000     0.2693 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    3     0.0483     1.0000        n/a      1.0000     0.2350 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    4     0.0408     1.0000        n/a      1.0000     0.2704 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    5     0.0422     1.0000        n/a      1.0000     0.2391 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    6     0.0427     1.0000        n/a      1.0000     0.2565 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    7     0.0495     1.0000        n/a      1.0000     0.2660 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    8     0.0479     1.0000        n/a      1.0000     0.2735 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5    9     0.0434     1.0000        n/a      1.0000     0.2698 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5   10     0.0403     1.0000        n/a      1.0000     0.2494 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5   11     0.0407     1.0000        n/a      1.0000     0.2608 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5   12     0.0513     1.0000        n/a      1.0000     0.2756 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5   13     0.0400     1.0000        n/a      1.0000     0.2441 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.5   14     0.0533     1.0000        n/a      1.0000     0.2522 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    0     0.0058     1.0000        n/a      1.0000     0.0933 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    1     0.0062     1.0000        n/a      1.0000     0.0746 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    2     0.0063     1.0000        n/a      1.0000     0.0830 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    3     0.0070     1.0000        n/a      1.0000     0.0617 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    4     0.0041     1.0000        n/a      1.0000     0.0800 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    5     0.0060     1.0000        n/a      1.0000     0.0668 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    6     0.0038     1.0000        n/a      1.0000     0.0736 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    7     0.0063     1.0000        n/a      1.0000     0.0806 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    8     0.0025     1.0000        n/a      1.0000     0.0692 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75    9     0.0036     1.0000        n/a      1.0000     0.0893 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75   10     0.0064     1.0000        n/a      1.0000     0.0933 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75   11     0.0053     1.0000        n/a      1.0000     0.0689 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75   12     0.0054     1.0000        n/a      1.0000     0.0812 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75   13     0.0037     1.0000        n/a      1.0000     0.0554 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=0.75   14     0.0056     1.0000        n/a      1.0000     0.0725 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    0     0.0008     1.0000        n/a      1.0000     0.0006 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    1     0.0041     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    2     0.0005     1.0000        n/a      1.0000     0.0006 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    3     0.0016     1.0000        n/a      1.0000     0.0007 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    4     0.0010     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    5     0.0020     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    6     0.0019     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    7     0.0015     1.0000        n/a      1.0000     0.0003 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    8     0.0025     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0    9     0.0014     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0   10     0.0018     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0   11     0.0015     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0   12     0.0007     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0   13     0.0017     1.0000        n/a      1.0000     0.0004 turbulence     
+PromisedCycle      period=2,alphabet=4,p_noise=1.0   14     0.0011     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    0     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    1     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    2     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    3     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    4     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    5     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    6     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    7     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    8     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0    9     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0   10     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0   11     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0   12     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0   13     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.0   14     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    0     0.2864     1.0000        n/a      1.0000     0.5105 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    1     0.2728     1.0000        n/a      1.0000     0.4952 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    2     0.2843     1.0000        n/a      1.0000     0.5021 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    3     0.2533     1.0000        n/a      1.0000     0.4797 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    4     0.2868     1.0000        n/a      1.0000     0.5207 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    5     0.2831     1.0000        n/a      1.0000     0.4984 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    6     0.2868     1.0000        n/a      1.0000     0.5049 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    7     0.3090     1.0000        n/a      1.0000     0.5309 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    8     0.3353     1.0000        n/a      1.0000     0.5408 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25    9     0.3039     1.0000        n/a      1.0000     0.5185 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25   10     0.2830     1.0000        n/a      1.0000     0.5031 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25   11     0.2910     1.0000        n/a      1.0000     0.5087 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25   12     0.2802     1.0000        n/a      1.0000     0.4998 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25   13     0.2740     1.0000        n/a      1.0000     0.4912 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.25   14     0.2915     1.0000        n/a      1.0000     0.5047 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    0     0.0613     1.0000        n/a      1.0000     0.2318 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    1     0.0595     1.0000        n/a      1.0000     0.2200 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    2     0.0692     1.0000        n/a      1.0000     0.2351 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    3     0.0527     1.0000        n/a      1.0000     0.2133 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    4     0.0702     1.0000        n/a      1.0000     0.2417 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    5     0.0566     1.0000        n/a      1.0000     0.2125 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    6     0.0648     1.0000        n/a      1.0000     0.2241 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    7     0.0615     1.0000        n/a      1.0000     0.2362 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    8     0.0611     1.0000        n/a      1.0000     0.2250 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5    9     0.0533     1.0000        n/a      1.0000     0.2257 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5   10     0.0508     1.0000        n/a      1.0000     0.2121 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5   11     0.0590     1.0000        n/a      1.0000     0.2172 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5   12     0.0636     1.0000        n/a      1.0000     0.2260 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5   13     0.0563     1.0000        n/a      1.0000     0.2199 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.5   14     0.0665     1.0000        n/a      1.0000     0.2279 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    0     0.0050     1.0000        n/a      1.0000     0.0684 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    1     0.0068     1.0000        n/a      1.0000     0.0599 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    2     0.0068     1.0000        n/a      1.0000     0.0671 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    3     0.0045     1.0000        n/a      1.0000     0.0539 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    4     0.0089     1.0000        n/a      1.0000     0.0725 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    5     0.0077     1.0000        n/a      1.0000     0.0581 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    6     0.0068     1.0000        n/a      1.0000     0.0592 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    7     0.0078     1.0000        n/a      1.0000     0.0698 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    8     0.0028     1.0000        n/a      1.0000     0.0578 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75    9     0.0040     1.0000        n/a      1.0000     0.0625 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75   10     0.0045     1.0000        n/a      1.0000     0.0712 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75   11     0.0054     1.0000        n/a      1.0000     0.0574 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75   12     0.0048     1.0000        n/a      1.0000     0.0626 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75   13     0.0048     1.0000        n/a      1.0000     0.0487 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=0.75   14     0.0044     1.0000        n/a      1.0000     0.0601 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    0     0.0008     1.0000        n/a      1.0000     0.0001 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    1     0.0041     1.0000        n/a      1.0000     0.0001 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    2     0.0005     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    3     0.0016     1.0000        n/a      1.0000     0.0008 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    4     0.0010     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    5     0.0020     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    6     0.0019     1.0000        n/a      1.0000     0.0001 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    7     0.0015     1.0000        n/a      1.0000     0.0005 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    8     0.0025     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0    9     0.0014     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0   10     0.0018     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0   11     0.0015     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0   12     0.0007     1.0000        n/a      1.0000     0.0003 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0   13     0.0017     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=4,p_noise=1.0   14     0.0011     1.0000        n/a      1.0000     0.0008 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    0     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    1     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    2     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    3     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    4     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    5     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    6     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    7     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    8     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0    9     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0   10     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0   11     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0   12     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0   13     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.0   14     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    0     0.2995     1.0000        n/a      1.0000     0.5931 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    1     0.2999     1.0000        n/a      1.0000     0.5870 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    2     0.2872     1.0000        n/a      1.0000     0.5755 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    3     0.2865     1.0000        n/a      1.0000     0.5724 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    4     0.3011     1.0000        n/a      1.0000     0.6015 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    5     0.2939     1.0000        n/a      1.0000     0.5821 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    6     0.3173     1.0000        n/a      1.0000     0.6052 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    7     0.3212     1.0000        n/a      1.0000     0.6109 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    8     0.3471     1.0000        n/a      1.0000     0.6248 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25    9     0.3042     1.0000        n/a      1.0000     0.5903 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25   10     0.2949     1.0000        n/a      1.0000     0.5901 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25   11     0.2946     1.0000        n/a      1.0000     0.5753 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25   12     0.2967     1.0000        n/a      1.0000     0.5844 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25   13     0.3082     1.0000        n/a      1.0000     0.5965 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.25   14     0.3010     1.0000        n/a      1.0000     0.5908 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    0     0.0723     1.0000        n/a      1.0000     0.2989 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    1     0.0800     1.0000        n/a      1.0000     0.2853 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    2     0.0839     1.0000        n/a      1.0000     0.2966 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    3     0.0780     1.0000        n/a      1.0000     0.2915 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    4     0.0792     1.0000        n/a      1.0000     0.3121 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    5     0.0695     1.0000        n/a      1.0000     0.2821 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    6     0.0913     1.0000        n/a      1.0000     0.3145 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    7     0.0760     1.0000        n/a      1.0000     0.2866 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    8     0.0837     1.0000        n/a      1.0000     0.2966 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5    9     0.0741     1.0000        n/a      1.0000     0.2815 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5   10     0.0725     1.0000        n/a      1.0000     0.2908 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5   11     0.0825     1.0000        n/a      1.0000     0.2905 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5   12     0.0776     1.0000        n/a      1.0000     0.3054 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5   13     0.0841     1.0000        n/a      1.0000     0.3124 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.5   14     0.0763     1.0000        n/a      1.0000     0.2999 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    0     0.0105     1.0000        n/a      1.0000     0.0970 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    1     0.0118     1.0000        n/a      1.0000     0.0864 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    2     0.0129     1.0000        n/a      1.0000     0.0904 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    3     0.0113     1.0000        n/a      1.0000     0.0901 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    4     0.0109     1.0000        n/a      1.0000     0.0993 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    5     0.0142     1.0000        n/a      1.0000     0.0886 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    6     0.0145     1.0000        n/a      1.0000     0.1025 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    7     0.0154     1.0000        n/a      1.0000     0.0891 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    8     0.0095     1.0000        n/a      1.0000     0.0863 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75    9     0.0140     1.0000        n/a      1.0000     0.0839 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75   10     0.0133     1.0000        n/a      1.0000     0.1119 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75   11     0.0128     1.0000        n/a      1.0000     0.0895 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75   12     0.0120     1.0000        n/a      1.0000     0.1042 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75   13     0.0106     1.0000        n/a      1.0000     0.0919 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=0.75   14     0.0103     1.0000        n/a      1.0000     0.0887 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    0     0.0050     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    1     0.0077     1.0000        n/a      1.0000     0.0007 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    2     0.0066     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    3     0.0051     1.0000        n/a      1.0000     0.0011 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    4     0.0058     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    5     0.0061     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    6     0.0061     1.0000        n/a      1.0000     0.0002 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    7     0.0042     1.0000        n/a      1.0000     0.0006 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    8     0.0070     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0    9     0.0081     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0   10     0.0059     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0   11     0.0053     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0   12     0.0073     1.0000        n/a      1.0000     0.0014 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0   13     0.0061     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      period=4,alphabet=8,p_noise=1.0   14     0.0069     1.0000        n/a      1.0000     0.0000 turbulence     
+PromisedCycle      adversarial,period=4            0     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            1     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            2     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            3     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            4     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            5     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            6     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            7     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            8     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4            9     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4           10     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4           11     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4           12     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4           13     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+PromisedCycle      adversarial,period=4           14     1.0000     1.0000        n/a      1.0000     1.0000 autopoietic    
+
+Sample size: 0/645 fully-valid points (dropped: 645)
+
+Pairwise correlations:
+  pair                      n    pearson   spearman flag  
+  ---------------------- ---- ---------- ---------- ------
+  closure-memory          487    -0.1320    -0.2936 OK    
+  closure-constraint      247    +0.0370    -0.1998 OK    
+  closure-persistence     487    -0.5847    -0.4897 OK    
+  closure-coherence       240    +0.9596    +0.9750 FAIL  
+  memory-constraint       247    -0.5219    -0.3396 OK    
+  memory-persistence      487    +0.3421    +0.7752 OK    
+  memory-coherence        240        n/a    -0.0121 N/A   
+  constraint-persistence  247    -0.0672    -0.0133 OK    
+  constraint-coherence      0        n/a        n/a N/A   
+  persistence-coherence   240        n/a    -0.0121 N/A   
+
+Aggregate diagnosis: FAIL
+
+Quadrant distribution (closure x memory only):
+  drift           44
+  clockwork       51
+  turbulence     212
+  autopoietic    180
+  n/a            158
+
+[FAIL] At least one pair has |r| >= 0.9 - engineered correlation suspected; pause and audit before adding more axes (see docs/PBA.md).
+
+CSV saved to: docs\benchmarks\v0.8.0a0.csv

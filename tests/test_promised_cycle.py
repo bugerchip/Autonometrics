@@ -115,3 +115,23 @@ def test_get_declared_executed_returns_copies() -> None:
     d2, e2 = sys.get_declared_executed()
     assert d2[0] == 0
     assert e2[0] == 0
+
+
+def test_replay_returns_unperturbed_slice() -> None:
+    """PromisedCycle is state-perturbation-insensitive by construction."""
+    sys = PromisedCycle(length=200, period=4, alphabet=4, p_noise=0.2, seed=0)
+    _, executed = sys.get_declared_executed()
+    replay = sys.replay_from_perturbation(t_star=50, n_steps=64)
+    np.testing.assert_array_equal(replay, executed[51:115])
+
+
+def test_replay_rejects_out_of_range_t_star() -> None:
+    sys = PromisedCycle(length=100, period=4, alphabet=4, p_noise=0.0, seed=0)
+    with pytest.raises(ValueError, match="t_star"):
+        sys.replay_from_perturbation(t_star=99, n_steps=10)
+
+
+def test_replay_rejects_excessive_horizon() -> None:
+    sys = PromisedCycle(length=100, period=4, alphabet=4, p_noise=0.0, seed=0)
+    with pytest.raises(ValueError, match="t_star \\+ n_steps"):
+        sys.replay_from_perturbation(t_star=50, n_steps=80)

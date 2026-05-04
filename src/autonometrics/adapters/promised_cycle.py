@@ -148,6 +148,46 @@ class PromisedCycle:
         assert self._executed is not None
         return self._declared.copy(), self._executed.copy()
 
+    def replay_from_perturbation(
+        self,
+        t_star: int,
+        n_steps: int,
+        rng: np.random.Generator | None = None,
+    ) -> np.ndarray:
+        """Return the post-perturbation focal slice for the persistence axis.
+
+        ``PromisedCycle`` generates its executed trajectory from the
+        time index alone (the next executed symbol does not depend on
+        the current one — it depends on ``t mod period`` and, in
+        ``random_noise`` mode, an independent noise draw cached at
+        construction time). A single-element perturbation of the
+        state at ``t_star`` therefore has **no effect** on the
+        subsequent executed trajectory, and the post-perturbation
+        slice equals the unperturbed slice.
+
+        This is a structural property of the adapter, not a bug:
+        ``PromisedCycle`` is by design **insensitive to state
+        perturbations**, so the persistence axis returns its upper
+        boundary on this substrate. Reporting that boundary value is
+        the honest behaviour; faking a non-trivial perturbation
+        response would launder the metric.
+        """
+        del rng
+        self._ensure_built()
+        assert self._executed is not None
+        if t_star < 0 or t_star >= self._length - 1:
+            raise ValueError(
+                f"t_star must be in [0, {self._length - 2}]; got {t_star}"
+            )
+        if n_steps < 1:
+            raise ValueError(f"n_steps must be positive; got {n_steps}")
+        if t_star + n_steps >= self._length:
+            raise ValueError(
+                f"t_star + n_steps must be < {self._length}; "
+                f"got {t_star + n_steps}"
+            )
+        return self._executed[t_star + 1 : t_star + 1 + n_steps].copy()
+
     @property
     def mode(self) -> str:
         return self._mode

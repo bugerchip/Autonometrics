@@ -1,0 +1,646 @@
+class,params,seed,closure,memory,constraint,persistence,coherence,quadrant,notes
+ECASystem,rule=30,0,1.000000,0.164460,1.000000,0.027343,,clockwork,
+ECASystem,rule=30,1,1.000000,0.173486,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,2,1.000000,0.107887,1.000000,0.050960,,clockwork,
+ECASystem,rule=30,3,1.000000,0.136980,1.000000,0.024249,,clockwork,
+ECASystem,rule=30,4,1.000000,0.150447,1.000000,0.023218,,clockwork,
+ECASystem,rule=30,5,1.000000,0.147191,1.000000,0.008813,,clockwork,
+ECASystem,rule=30,6,1.000000,0.131383,1.000000,0.002310,,clockwork,
+ECASystem,rule=30,7,1.000000,0.098124,1.000000,0.001378,,clockwork,
+ECASystem,rule=30,8,1.000000,0.127536,1.000000,0.012173,,clockwork,
+ECASystem,rule=30,9,1.000000,0.125635,1.000000,0.039655,,clockwork,
+ECASystem,rule=30,10,1.000000,0.152921,1.000000,0.074570,,clockwork,
+ECASystem,rule=30,11,1.000000,0.144419,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,12,1.000000,0.117408,1.000000,0.069153,,clockwork,
+ECASystem,rule=30,13,1.000000,0.178536,1.000000,0.015432,,clockwork,
+ECASystem,rule=30,14,1.000000,0.149226,1.000000,0.053836,,clockwork,
+ECASystem,rule=30,15,1.000000,0.157041,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,16,1.000000,0.143156,1.000000,0.008468,,clockwork,
+ECASystem,rule=30,17,1.000000,0.123845,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,18,1.000000,0.120506,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,19,1.000000,0.149579,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,20,1.000000,0.118975,1.000000,0.037808,,clockwork,
+ECASystem,rule=30,21,1.000000,0.134697,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,22,1.000000,0.096433,1.000000,0.000000,,clockwork,
+ECASystem,rule=30,23,1.000000,0.151489,1.000000,0.042724,,clockwork,
+ECASystem,rule=30,24,1.000000,0.141453,1.000000,0.003857,,clockwork,
+ECASystem,rule=30,25,1.000000,0.163315,1.000000,0.068057,,clockwork,
+ECASystem,rule=30,26,1.000000,0.179371,1.000000,0.028273,,clockwork,
+ECASystem,rule=30,27,1.000000,0.149420,1.000000,0.023828,,clockwork,
+ECASystem,rule=30,28,1.000000,0.153765,1.000000,0.049796,,clockwork,
+ECASystem,rule=30,29,1.000000,0.135552,1.000000,0.000000,,clockwork,
+ECASystem,rule=90,0,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,2,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,3,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,4,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,7,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,8,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,9,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,13,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,15,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,16,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,17,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,19,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,20,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,21,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,23,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,24,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,25,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=90,29,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=110,0,1.000000,0.593425,1.000000,0.009033,,autopoietic,
+ECASystem,rule=110,1,1.000000,0.548332,1.000000,0.055131,,autopoietic,
+ECASystem,rule=110,2,1.000000,0.586589,1.000000,0.055015,,autopoietic,
+ECASystem,rule=110,3,1.000000,0.514826,1.000000,0.128168,,autopoietic,
+ECASystem,rule=110,4,1.000000,0.602843,1.000000,0.121133,,autopoietic,
+ECASystem,rule=110,5,1.000000,0.555710,1.000000,0.042679,,autopoietic,
+ECASystem,rule=110,6,1.000000,0.589736,1.000000,0.138530,,autopoietic,
+ECASystem,rule=110,7,1.000000,0.601675,1.000000,0.143806,,autopoietic,
+ECASystem,rule=110,8,1.000000,0.594857,1.000000,0.072127,,autopoietic,
+ECASystem,rule=110,9,1.000000,0.577482,1.000000,0.071247,,autopoietic,
+ECASystem,rule=110,10,1.000000,0.585192,1.000000,0.067441,,autopoietic,
+ECASystem,rule=110,11,1.000000,0.589455,1.000000,0.111125,,autopoietic,
+ECASystem,rule=110,12,1.000000,0.569213,1.000000,0.147550,,autopoietic,
+ECASystem,rule=110,13,1.000000,0.498786,1.000000,0.112973,,clockwork,
+ECASystem,rule=110,14,1.000000,0.599684,1.000000,0.006626,,autopoietic,
+ECASystem,rule=110,15,1.000000,0.571300,1.000000,0.039912,,autopoietic,
+ECASystem,rule=110,16,1.000000,0.525299,1.000000,0.082162,,autopoietic,
+ECASystem,rule=110,17,1.000000,0.596844,1.000000,0.109340,,autopoietic,
+ECASystem,rule=110,18,1.000000,0.575743,1.000000,0.119618,,autopoietic,
+ECASystem,rule=110,19,1.000000,0.529628,1.000000,0.177616,,autopoietic,
+ECASystem,rule=110,20,1.000000,0.509596,1.000000,0.000000,,autopoietic,
+ECASystem,rule=110,21,1.000000,0.500461,1.000000,0.073375,,autopoietic,
+ECASystem,rule=110,22,1.000000,0.559530,1.000000,0.089744,,autopoietic,
+ECASystem,rule=110,23,1.000000,0.604087,1.000000,0.147995,,autopoietic,
+ECASystem,rule=110,24,1.000000,0.585754,1.000000,0.126547,,autopoietic,
+ECASystem,rule=110,25,1.000000,0.509402,1.000000,0.000000,,autopoietic,
+ECASystem,rule=110,26,1.000000,0.503701,1.000000,0.000000,,autopoietic,
+ECASystem,rule=110,27,1.000000,0.523783,1.000000,0.186661,,autopoietic,
+ECASystem,rule=110,28,1.000000,0.584601,1.000000,0.189481,,autopoietic,
+ECASystem,rule=110,29,1.000000,0.770683,1.000000,0.342624,,autopoietic,
+ECASystem,rule=184,0,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,2,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,3,1.000000,0.422365,1.000000,0.675704,,clockwork,
+ECASystem,rule=184,4,1.000000,0.429216,1.000000,0.787281,,clockwork,
+ECASystem,rule=184,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,7,1.000000,0.415189,1.000000,0.610016,,clockwork,
+ECASystem,rule=184,8,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,9,1.000000,0.463387,1.000000,0.903917,,clockwork,
+ECASystem,rule=184,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,13,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,15,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,16,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,17,1.000000,0.445881,1.000000,0.865952,,clockwork,
+ECASystem,rule=184,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,19,1.000000,0.389955,1.000000,0.870804,,clockwork,
+ECASystem,rule=184,20,1.000000,0.451052,1.000000,0.848104,,clockwork,
+ECASystem,rule=184,21,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,23,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,24,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,25,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=184,29,1.000000,0.393545,1.000000,0.849196,,clockwork,
+ECASystem,rule=250,0,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,2,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,3,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,4,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,7,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,8,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,9,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,13,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,15,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,16,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,17,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,19,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,20,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,21,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,23,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,24,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,25,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+ECASystem,rule=250,29,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,0,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,2,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,3,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,4,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,7,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,8,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,9,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,13,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,15,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,16,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,17,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,19,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,20,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,21,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,23,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,24,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,25,1.000000,1.000000,0.800000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.0,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.0,29,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,0,0.989586,1.000000,0.800000,0.986328,,autopoietic,
+KauffmanNetwork,coupling=0.33,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,2,0.260607,0.675022,0.900000,0.255313,,turbulence,
+KauffmanNetwork,coupling=0.33,3,0.912111,0.007880,0.700000,1.000000,,clockwork,
+KauffmanNetwork,coupling=0.33,4,1.000000,0.981737,0.700000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.33,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,7,1.000000,0.497198,0.900000,0.923828,,clockwork,
+KauffmanNetwork,coupling=0.33,8,0.000116,1.000000,0.700000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.33,9,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,13,1.000000,0.993837,0.900000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.33,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,15,0.000000,0.666667,0.900000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.33,16,0.000998,0.665402,0.800000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.33,17,1.000000,1.000000,1.000000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.33,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,19,0.000000,0.000000,0.800000,0.022949,,drift,
+KauffmanNetwork,coupling=0.33,20,0.992443,0.333444,0.700000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.33,21,0.000000,0.500000,0.900000,1.000000,,turbulence,
+KauffmanNetwork,coupling=0.33,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,23,0.994293,1.000000,0.400000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.33,24,1.000000,0.500000,1.000000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.33,25,0.151097,0.979735,0.900000,0.200521,,turbulence,
+KauffmanNetwork,coupling=0.33,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.33,29,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,0,0.989586,1.000000,0.800000,0.986328,,autopoietic,
+KauffmanNetwork,coupling=0.5,1,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,2,0.260607,0.675022,0.900000,0.255313,,turbulence,
+KauffmanNetwork,coupling=0.5,3,0.912111,0.007880,0.700000,1.000000,,clockwork,
+KauffmanNetwork,coupling=0.5,4,1.000000,0.981737,0.700000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.5,5,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,7,1.000000,0.497198,0.900000,0.923828,,clockwork,
+KauffmanNetwork,coupling=0.5,8,0.000116,1.000000,0.700000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.5,9,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,13,1.000000,0.993837,0.900000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.5,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,15,0.000000,0.666667,0.900000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.5,16,0.000998,0.665402,0.800000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.5,17,1.000000,1.000000,1.000000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.5,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,19,0.000000,0.000000,0.800000,0.022949,,drift,
+KauffmanNetwork,coupling=0.5,20,0.992443,0.333444,0.700000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.5,21,0.000000,0.500000,0.900000,1.000000,,turbulence,
+KauffmanNetwork,coupling=0.5,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,23,0.994293,1.000000,0.400000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.5,24,1.000000,0.500000,1.000000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.5,25,0.151097,0.979735,0.900000,0.200521,,turbulence,
+KauffmanNetwork,coupling=0.5,26,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,27,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,28,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.5,29,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,0,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,1,0.311972,0.500000,1.000000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,2,0.619534,0.296763,1.000000,0.962520,,clockwork,
+KauffmanNetwork,coupling=0.67,3,0.008241,0.500840,0.900000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,4,0.000000,0.498057,1.000000,0.125000,,drift,
+KauffmanNetwork,coupling=0.67,5,1.000000,1.000000,0.800000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.67,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,7,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,8,0.586168,0.502740,0.900000,1.000000,,autopoietic,
+KauffmanNetwork,coupling=0.67,9,0.110704,0.466674,0.600000,0.000000,,drift,
+KauffmanNetwork,coupling=0.67,10,0.988582,0.987953,0.800000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.67,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,13,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,14,0.100987,0.250022,0.400000,1.000000,,drift,
+KauffmanNetwork,coupling=0.67,15,0.288661,0.502626,1.000000,0.404194,,turbulence,
+KauffmanNetwork,coupling=0.67,16,0.987390,0.500542,0.700000,0.000000,,autopoietic,
+KauffmanNetwork,coupling=0.67,17,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,18,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,19,0.958458,0.023360,0.800000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.67,20,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,21,0.000000,0.500000,1.000000,1.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,22,1.000000,0.278943,1.000000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.67,23,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=0.67,24,0.000000,0.500000,1.000000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,25,0.516769,0.013064,0.800000,0.000000,,clockwork,
+KauffmanNetwork,coupling=0.67,26,0.000308,0.500438,1.000000,0.058415,,turbulence,
+KauffmanNetwork,coupling=0.67,27,0.391605,0.502923,0.700000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,28,0.335493,1.000000,0.800000,0.000000,,turbulence,
+KauffmanNetwork,coupling=0.67,29,0.456178,0.500000,0.900000,0.000000,,turbulence,
+KauffmanNetwork,coupling=1.0,0,0.000058,0.444452,0.700000,0.000000,,drift,
+KauffmanNetwork,coupling=1.0,1,0.050557,0.495061,1.000000,0.524959,,drift,
+KauffmanNetwork,coupling=1.0,2,0.371929,0.502336,1.000000,1.000000,,turbulence,
+KauffmanNetwork,coupling=1.0,3,0.264566,0.498926,0.900000,0.000000,,drift,
+KauffmanNetwork,coupling=1.0,4,0.003226,0.499147,0.700000,1.000000,,drift,
+KauffmanNetwork,coupling=1.0,5,0.069382,1.000000,0.600000,0.516176,,turbulence,
+KauffmanNetwork,coupling=1.0,6,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,7,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,8,0.335493,1.000000,0.900000,1.000000,,turbulence,
+KauffmanNetwork,coupling=1.0,9,0.000000,0.500000,0.700000,1.000000,,drift,
+KauffmanNetwork,coupling=1.0,10,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,11,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,12,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,13,0.000126,0.012114,0.800000,1.000000,,drift,
+KauffmanNetwork,coupling=1.0,14,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,15,0.101074,1.000000,0.900000,0.401855,,turbulence,
+KauffmanNetwork,coupling=1.0,16,0.470570,0.498522,0.900000,0.370117,,drift,
+KauffmanNetwork,coupling=1.0,17,0.368533,0.714268,0.900000,1.000000,,turbulence,
+KauffmanNetwork,coupling=1.0,18,0.001025,0.249558,0.900000,0.191623,,drift,
+KauffmanNetwork,coupling=1.0,19,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,20,0.994293,1.000000,0.600000,1.000000,,autopoietic,
+KauffmanNetwork,coupling=1.0,21,0.485036,0.507762,1.000000,0.492179,,turbulence,
+KauffmanNetwork,coupling=1.0,22,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,23,0.000000,0.499458,0.800000,0.047852,,drift,
+KauffmanNetwork,coupling=1.0,24,,,,,,n/a,H(S_{t+1} | E_t) is zero: the next state has no conditional variability given...
+KauffmanNetwork,coupling=1.0,25,0.161217,0.367249,1.000000,0.267902,,drift,
+KauffmanNetwork,coupling=1.0,26,0.000058,0.799986,1.000000,1.000000,,turbulence,
+KauffmanNetwork,coupling=1.0,27,0.073140,0.645121,0.800000,0.459811,,turbulence,
+KauffmanNetwork,coupling=1.0,28,0.274018,0.500000,1.000000,0.511694,,turbulence,
+KauffmanNetwork,coupling=1.0,29,0.081958,0.992908,1.000000,0.040039,,turbulence,
+PeriodicCycle,period=2,0,1.000000,0.955938,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,1,1.000000,0.950675,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,2,1.000000,0.962402,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,3,1.000000,0.955363,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,4,1.000000,0.951527,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,5,1.000000,0.949761,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,6,1.000000,0.957753,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,7,1.000000,0.956147,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,8,1.000000,0.949494,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,9,1.000000,0.937809,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,10,1.000000,0.941013,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,11,1.000000,0.957619,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,12,1.000000,0.965502,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,13,1.000000,0.960753,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=2,14,1.000000,0.955791,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,0,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,1,1.000000,0.974714,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,2,1.000000,0.980841,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,3,1.000000,0.977172,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,4,1.000000,0.975161,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,5,1.000000,0.974233,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,6,1.000000,0.978421,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,7,1.000000,0.977582,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,8,1.000000,0.974093,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,9,1.000000,0.967906,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,10,1.000000,0.969610,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,11,1.000000,0.978351,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,12,1.000000,0.982448,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,13,1.000000,0.979984,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=4,14,1.000000,0.977396,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,0,1.000000,0.984868,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,1,1.000000,0.982999,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,2,1.000000,0.987145,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,3,1.000000,0.984665,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,4,1.000000,0.983303,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,5,1.000000,0.982673,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,6,1.000000,0.985510,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,7,1.000000,0.984942,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,8,1.000000,0.982578,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,9,1.000000,0.978373,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,10,1.000000,0.979533,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,11,1.000000,0.985462,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,12,1.000000,0.988230,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,13,1.000000,0.986566,0.000000,0.000000,,autopoietic,
+PeriodicCycle,period=8,14,1.000000,0.984816,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,self_generated,0,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,0,0.008483,0.446693,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,1,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,1,0.014678,0.381753,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,2,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,2,0.019345,0.504297,0.000000,1.000000,,turbulence,
+SimpleAutomaton,self_generated,3,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,3,0.019416,0.391140,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,4,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,4,0.015237,0.402734,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,5,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,5,0.014877,0.335473,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,6,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,6,0.018348,0.430481,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,7,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,7,0.017086,0.401990,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,8,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,8,0.016344,0.367762,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,9,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,9,0.026963,0.336578,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,10,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,10,0.016909,0.397877,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,11,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,11,0.011380,0.404600,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,12,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,12,0.013264,0.470994,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,13,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,13,0.010977,0.308903,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,14,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,14,0.012801,0.343497,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,15,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,15,0.023394,0.387452,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,16,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,16,0.016664,0.407836,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,17,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,17,0.015412,0.376660,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,18,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,18,0.028785,0.406721,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,19,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,19,0.014023,0.434690,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,20,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,20,0.016974,0.291130,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,21,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,21,0.018321,0.368632,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,22,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,22,0.013039,0.423276,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,23,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,23,0.012634,0.442250,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,24,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,24,0.014294,0.490122,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,25,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,25,0.017764,0.382024,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,26,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,26,0.017021,0.414679,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,27,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,27,0.022634,0.358367,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,28,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,28,0.017555,0.382878,0.000000,1.000000,,drift,
+SimpleAutomaton,self_generated,29,1.000000,0.977473,0.000000,0.000000,,autopoietic,
+SimpleAutomaton,external,29,0.016404,0.362231,0.000000,1.000000,,drift,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",0,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",1,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",2,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",3,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",4,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",5,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",6,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",7,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",8,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",9,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",10,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",11,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",12,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",13,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.0",14,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",0,0.234864,1.000000,,1.000000,0.582707,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",1,0.219685,1.000000,,1.000000,0.554836,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",2,0.208943,1.000000,,1.000000,0.543936,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",3,0.178907,1.000000,,1.000000,0.498606,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",4,0.223448,1.000000,,1.000000,0.574373,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",5,0.208194,1.000000,,1.000000,0.542947,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",6,0.232664,1.000000,,1.000000,0.561093,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",7,0.230244,1.000000,,1.000000,0.567832,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",8,0.253967,1.000000,,1.000000,0.592751,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",9,0.237986,1.000000,,1.000000,0.578298,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",10,0.201532,1.000000,,1.000000,0.532723,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",11,0.225685,1.000000,,1.000000,0.560863,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",12,0.232538,1.000000,,1.000000,0.566239,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",13,0.222506,1.000000,,1.000000,0.554990,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.25",14,0.221324,1.000000,,1.000000,0.531326,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",0,0.052065,1.000000,,1.000000,0.294154,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",1,0.049996,1.000000,,1.000000,0.263746,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",2,0.054015,1.000000,,1.000000,0.269288,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",3,0.048300,1.000000,,1.000000,0.235031,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",4,0.040794,1.000000,,1.000000,0.270366,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",5,0.042203,1.000000,,1.000000,0.239121,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",6,0.042702,1.000000,,1.000000,0.256510,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",7,0.049513,1.000000,,1.000000,0.265959,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",8,0.047937,1.000000,,1.000000,0.273516,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",9,0.043373,1.000000,,1.000000,0.269847,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",10,0.040293,1.000000,,1.000000,0.249363,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",11,0.040748,1.000000,,1.000000,0.260804,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",12,0.051259,1.000000,,1.000000,0.275583,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",13,0.039975,1.000000,,1.000000,0.244118,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.5",14,0.053279,1.000000,,1.000000,0.252237,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",0,0.005820,1.000000,,1.000000,0.093312,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",1,0.006219,1.000000,,1.000000,0.074638,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",2,0.006344,1.000000,,1.000000,0.082986,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",3,0.006951,1.000000,,1.000000,0.061744,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",4,0.004050,1.000000,,1.000000,0.079971,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",5,0.006043,1.000000,,1.000000,0.066836,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",6,0.003760,1.000000,,1.000000,0.073601,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",7,0.006312,1.000000,,1.000000,0.080633,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",8,0.002486,1.000000,,1.000000,0.069194,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",9,0.003613,1.000000,,1.000000,0.089277,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",10,0.006395,1.000000,,1.000000,0.093263,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",11,0.005316,1.000000,,1.000000,0.068898,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",12,0.005414,1.000000,,1.000000,0.081203,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",13,0.003748,1.000000,,1.000000,0.055390,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=0.75",14,0.005573,1.000000,,1.000000,0.072476,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",0,0.000806,1.000000,,1.000000,0.000612,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",1,0.004051,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",2,0.000506,1.000000,,1.000000,0.000632,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",3,0.001566,1.000000,,1.000000,0.000652,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",4,0.001026,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",5,0.001981,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",6,0.001921,1.000000,,1.000000,0.000031,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",7,0.001455,1.000000,,1.000000,0.000263,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",8,0.002463,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",9,0.001359,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",10,0.001826,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",11,0.001475,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",12,0.000685,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",13,0.001748,1.000000,,1.000000,0.000395,turbulence,
+PromisedCycle,"period=2,alphabet=4,p_noise=1.0",14,0.001113,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",0,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",1,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",2,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",3,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",4,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",5,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",6,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",7,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",8,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",9,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",10,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",11,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",12,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",13,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.0",14,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",0,0.286411,1.000000,,1.000000,0.510520,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",1,0.272794,1.000000,,1.000000,0.495214,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",2,0.284307,1.000000,,1.000000,0.502096,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",3,0.253273,1.000000,,1.000000,0.479714,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",4,0.286848,1.000000,,1.000000,0.520655,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",5,0.283052,1.000000,,1.000000,0.498376,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",6,0.286762,1.000000,,1.000000,0.504896,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",7,0.309040,1.000000,,1.000000,0.530850,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",8,0.335263,1.000000,,1.000000,0.540772,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",9,0.303854,1.000000,,1.000000,0.518525,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",10,0.282975,1.000000,,1.000000,0.503137,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",11,0.290980,1.000000,,1.000000,0.508732,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",12,0.280186,1.000000,,1.000000,0.499834,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",13,0.273975,1.000000,,1.000000,0.491223,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.25",14,0.291472,1.000000,,1.000000,0.504742,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",0,0.061309,1.000000,,1.000000,0.231764,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",1,0.059547,1.000000,,1.000000,0.220016,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",2,0.069161,1.000000,,1.000000,0.235093,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",3,0.052703,1.000000,,1.000000,0.213263,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",4,0.070192,1.000000,,1.000000,0.241747,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",5,0.056572,1.000000,,1.000000,0.212496,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",6,0.064799,1.000000,,1.000000,0.224085,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",7,0.061537,1.000000,,1.000000,0.236231,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",8,0.061102,1.000000,,1.000000,0.224989,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",9,0.053255,1.000000,,1.000000,0.225699,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",10,0.050797,1.000000,,1.000000,0.212083,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",11,0.059025,1.000000,,1.000000,0.217196,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",12,0.063608,1.000000,,1.000000,0.226015,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",13,0.056256,1.000000,,1.000000,0.219885,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.5",14,0.066475,1.000000,,1.000000,0.227886,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",0,0.004953,1.000000,,1.000000,0.068368,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",1,0.006790,1.000000,,1.000000,0.059912,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",2,0.006827,1.000000,,1.000000,0.067087,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",3,0.004516,1.000000,,1.000000,0.053886,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",4,0.008942,1.000000,,1.000000,0.072531,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",5,0.007696,1.000000,,1.000000,0.058105,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",6,0.006759,1.000000,,1.000000,0.059184,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",7,0.007842,1.000000,,1.000000,0.069788,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",8,0.002849,1.000000,,1.000000,0.057801,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",9,0.003988,1.000000,,1.000000,0.062534,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",10,0.004508,1.000000,,1.000000,0.071175,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",11,0.005423,1.000000,,1.000000,0.057393,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",12,0.004781,1.000000,,1.000000,0.062619,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",13,0.004841,1.000000,,1.000000,0.048693,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=0.75",14,0.004399,1.000000,,1.000000,0.060121,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",0,0.000806,1.000000,,1.000000,0.000127,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",1,0.004051,1.000000,,1.000000,0.000053,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",2,0.000506,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",3,0.001566,1.000000,,1.000000,0.000813,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",4,0.001026,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",5,0.001981,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",6,0.001921,1.000000,,1.000000,0.000051,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",7,0.001455,1.000000,,1.000000,0.000544,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",8,0.002463,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",9,0.001359,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",10,0.001826,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",11,0.001475,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",12,0.000685,1.000000,,1.000000,0.000288,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",13,0.001748,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=4,p_noise=1.0",14,0.001113,1.000000,,1.000000,0.000831,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",0,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",1,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",2,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",3,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",4,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",5,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",6,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",7,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",8,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",9,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",10,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",11,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",12,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",13,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.0",14,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",0,0.299491,1.000000,,1.000000,0.593081,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",1,0.299925,1.000000,,1.000000,0.586968,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",2,0.287237,1.000000,,1.000000,0.575469,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",3,0.286461,1.000000,,1.000000,0.572383,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",4,0.301068,1.000000,,1.000000,0.601452,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",5,0.293865,1.000000,,1.000000,0.582071,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",6,0.317253,1.000000,,1.000000,0.605208,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",7,0.321233,1.000000,,1.000000,0.610856,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",8,0.347136,1.000000,,1.000000,0.624813,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",9,0.304238,1.000000,,1.000000,0.590296,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",10,0.294939,1.000000,,1.000000,0.590065,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",11,0.294552,1.000000,,1.000000,0.575335,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",12,0.296695,1.000000,,1.000000,0.584393,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",13,0.308163,1.000000,,1.000000,0.596543,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.25",14,0.301044,1.000000,,1.000000,0.590752,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",0,0.072275,1.000000,,1.000000,0.298935,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",1,0.080007,1.000000,,1.000000,0.285320,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",2,0.083874,1.000000,,1.000000,0.296576,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",3,0.078046,1.000000,,1.000000,0.291467,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",4,0.079210,1.000000,,1.000000,0.312135,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",5,0.069494,1.000000,,1.000000,0.282115,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",6,0.091254,1.000000,,1.000000,0.314465,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",7,0.076027,1.000000,,1.000000,0.286589,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",8,0.083722,1.000000,,1.000000,0.296565,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",9,0.074141,1.000000,,1.000000,0.281498,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",10,0.072481,1.000000,,1.000000,0.290782,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",11,0.082452,1.000000,,1.000000,0.290541,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",12,0.077645,1.000000,,1.000000,0.305376,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",13,0.084141,1.000000,,1.000000,0.312442,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.5",14,0.076266,1.000000,,1.000000,0.299927,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",0,0.010476,1.000000,,1.000000,0.097026,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",1,0.011776,1.000000,,1.000000,0.086432,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",2,0.012873,1.000000,,1.000000,0.090394,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",3,0.011303,1.000000,,1.000000,0.090065,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",4,0.010902,1.000000,,1.000000,0.099340,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",5,0.014179,1.000000,,1.000000,0.088639,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",6,0.014494,1.000000,,1.000000,0.102541,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",7,0.015419,1.000000,,1.000000,0.089121,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",8,0.009549,1.000000,,1.000000,0.086289,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",9,0.013974,1.000000,,1.000000,0.083940,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",10,0.013270,1.000000,,1.000000,0.111936,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",11,0.012812,1.000000,,1.000000,0.089462,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",12,0.012049,1.000000,,1.000000,0.104184,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",13,0.010573,1.000000,,1.000000,0.091851,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=0.75",14,0.010268,1.000000,,1.000000,0.088732,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",0,0.004976,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",1,0.007738,1.000000,,1.000000,0.000718,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",2,0.006597,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",3,0.005123,1.000000,,1.000000,0.001059,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",4,0.005812,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",5,0.006097,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",6,0.006093,1.000000,,1.000000,0.000234,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",7,0.004238,1.000000,,1.000000,0.000642,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",8,0.006960,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",9,0.008120,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",10,0.005908,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",11,0.005342,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",12,0.007288,1.000000,,1.000000,0.001422,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",13,0.006144,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"period=4,alphabet=8,p_noise=1.0",14,0.006885,1.000000,,1.000000,0.000000,turbulence,
+PromisedCycle,"adversarial,period=4",0,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",1,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",2,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",3,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",4,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",5,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",6,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",7,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",8,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",9,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",10,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",11,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",12,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",13,1.000000,1.000000,,1.000000,1.000000,autopoietic,
+PromisedCycle,"adversarial,period=4",14,1.000000,1.000000,,1.000000,1.000000,autopoietic,
