@@ -52,54 +52,125 @@ in line with the same dropout policy already used for
 
 ## What the project does *not* claim
 
-The five axes are **not** assumed to be shadows of a single
-underlying quantity. The current empirical picture
-(`v0.8.0a0`, 645-point synthetic benchmark) is honest about
-that:
+The strongest possible reading — that the five autonomy
+measures are the same quantity in different notations, the way
+`H_Shannon = S_stat / ln 2` collapses information-theoretic and
+statistical entropy into one number — was **falsified by the
+second benchmark**. The pairwise correlations observed across
+`v0.5.x` — `v0.7.x` sit at `+0.32` (closure-memory), `-0.04`
+(closure-constraint), `-0.57` (memory-constraint), `-0.44`
+(closure-persistence), `-0.38` (memory-persistence) and `+0.05`
+(constraint-persistence): six pairs below saturation, six pieces
+of evidence that we are not looking at one quantity. That is the
+**Level 1** reading and it is already dead.
 
-- All four `v0.7.x` pairwise correlations remain below
-  `|r| < 0.7` on every sub-zoo where they are jointly
-  defined, so the four prior axes still carry distinct
-  information.
-- The fifth axis (`coherence`) is empirically distinct from
-  the first four under controlled adapters: when the
-  `PromisedCycle` reference adapter is driven by **two
-  independent sources of variability** rather than one,
-  `r(closure, coherence)` falls from `+0.97` to `+0.48` and
-  `r(coherence, p_env) ≈ 0` confirms the formula's predicted
-  invariance to declarative-side noise. Details and
-  pre-registered analysis in [`docs/CBA.md`](docs/CBA.md)
-  and the diagnostic snapshots under `docs/benchmarks/`.
-- The full five-axis cloud **does not exist on the current
-  zoo**: each adapter class implements either
-  `get_causal_graph` (so `constraint_closure` is defined)
-  or `get_declared_executed` (so `coherence` is defined),
-  but never both, leaving `n_valid_full = 0/645`. The atlas
-  is therefore best read as a **mosaic / archipelago** of
-  overlapping four-axis sub-charts rather than a single
-  five-dimensional cloud. The verdict is documented in the
-  v0.8.0a0 follow-up of
-  [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md).
+The intermediate hypothesis — that there is **one
+multidimensional object** and each axis is a different coordinate
+of it, the way RGB and HSV are views of the same perceptual
+colour space, or the Big Five personality dimensions are
+factor-analytic coordinates of a non-scalar object — is what the
+package implements and tests. The prediction is sharp: the
+correlations should sit in a sweet spot, non-zero (they share an
+object) and sub-saturating (they are not redundant). That is the
+**Level 2** reading, the one the `v0.7.2a0` atlas-geometry
+pre-registration put on trial.
 
-So the package ships a measurement framework, a benchmark,
-the dropouts, and a falsifiable working hypothesis — not a
-definitive theory of autonomy. The level question (one
-object or many?) is **pulled toward Level 3 (mosaic) by the
-v0.8.0a0 cycle but not yet decided**; the strong validation
-against behavioural / RAI-style data is deferred to v0.9.0,
-which is also the natural candidate for a substrate that
-finally closes the five-axis hole.
+The `v0.8.0a0` cycle pulled the verdict downward. The fifth axis
+(`coherence`, CBA / Theil's U) was added expecting to triangulate
+the same underlying object from a sixth angle; instead the data
+showed three things. The four prior pairwise correlations remain
+below `|r| < 0.7` (the axes still carry distinct information).
+The fifth axis is empirically independent under causal control:
+`r(closure, coherence)` falls from `+0.97` to `+0.48` when
+`PromisedCycle` is driven by **two independent sources of
+variability** rather than one, and `r(coherence, p_env) ≈ 0`
+confirms the formula's predicted invariance to declarative-side
+noise. And the full five-dimensional cloud **does not exist on
+the current zoo**: `n_valid_full = 0/645`, because no adapter
+exposes `get_causal_graph` and `get_declared_executed`
+simultaneously.
 
-The full conceptual statement and the falsification
-criteria live in [`docs/PBA.md`](docs/PBA.md) (English) and
-[`docs/PBA.es.md`](docs/PBA.es.md) (Spanish). The
-pre-registered geometry analysis is in
-[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md); per-axis
-design notes in
+The atlas therefore reads as a **mosaic / archipelago** of
+overlapping four-axis sub-charts rather than a single
+five-dimensional cloud. The underlying question — one
+multidimensional object or many? — is pulled toward **Level 3**
+by this cycle but **not yet decided**: structural geometry alone
+cannot arbitrate it. Only the validation against behavioural
+data, external to this repository, can — and that is deferred to
+studies built on top of the LLM adapter shipped in `v0.9.0a0`.
+
+So the package ships a **measurement framework, a benchmark,
+the dropouts, and a falsifiable working hypothesis** — not a
+definitive theory of autonomy. The full conceptual statement
+and the falsification criteria live in
+[`docs/PBA.md`](docs/PBA.md) (English) and
+[`docs/PBA.es.md`](docs/PBA.es.md) (Spanish); per-axis design
+notes in
 [`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md),
 [`docs/RAI.md`](docs/RAI.md) and
-[`docs/CBA.md`](docs/CBA.md). The release log lives in
+[`docs/CBA.md`](docs/CBA.md); the release log in
 [`CHANGELOG.md`](CHANGELOG.md).
+
+## Swiss army knife or fruit salad? — Self-evaluation
+
+A reasonable critic could ask: are these five axes one coherent
+instrument or a collection of unrelated metrics with a shared
+logo? This section answers honestly.
+
+### Why we believe it's a coherent instrument
+
+- Unified mathematical shape: every axis lives in `[0, 1]` with
+  the same "internal / total" form.
+- Single protocol (`AutonomySystem`); any substrate enters
+  through one door.
+- Pre-registered falsification thresholds for every axis; the
+  project is committed to being able to fail.
+- Each axis is anchored in a published research tradition with at
+  least one explicit reference: `closure` from Albantakis &
+  Bertschinger (with Tononi's IIT lineage); `memory` from
+  Crutchfield's excess-entropy programme; `constraint` from
+  Montévil & Mossio; `persistence` from Lee & McShea (with
+  Deci & Ryan / SDT as the deferred behavioural reference);
+  `coherence` from Festinger's cognitive-dissonance tradition
+  (with the Chain-of-Thought faithfulness literature in AI
+  alignment as the contemporary application). None is invented
+  from scratch.
+
+### Where the critique has merit
+
+- The five traditions behind the axes are genuinely different
+  fields. Combining them is a methodological bet, not a
+  settled fact.
+- The v0.8.0a0 atlas-geometry verdict was "mosaic, not
+  manifold" (`n_valid_full = 0/645`). The five axes do not
+  jointly span a clean 5D cloud on the current zoo.
+- `rai_proxy_persistence` is a structural proxy whose strong
+  validation against behavioural RAI is deferred to external
+  studies. Until that happens, the "RAI" label is provisional.
+- Vocabulary like "PBA", "mosaic atlas" or "five-axis hole" is
+  internal to this project and requires reading the docs to
+  make sense.
+- We do not yet have a peer-reviewed paper describing the
+  package as a whole.
+
+### What this implies for the prospective user
+
+If you work in:
+- IIT / consciousness / structural autonomy → the axes you'll
+  recognise (`closure`, `constraint_closure`) are
+  well-implemented and well-grounded.
+- AI alignment / agentic LLMs → `coherence` (CBA / Theil's U
+  on declared vs executed trajectories) maps directly onto
+  Chain-of-Thought faithfulness questions.
+- Pure SDT motivational research → treat
+  `rai_proxy_persistence` as a structural candidate pending
+  validation; do not equate it with C-RAI yet.
+- Cross-tradition synthesis → this is exactly the bet the
+  package makes; you'll find the ingredients pre-assembled.
+
+If none of the above fits your work, this package is probably
+not your tool — and we'd rather you know that in 90 seconds
+than after installing.
 
 ## Installation
 

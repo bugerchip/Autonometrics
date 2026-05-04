@@ -52,56 +52,134 @@ ya se usa para `constraint_closure` (solo grafo) y
 
 ## Lo que el proyecto *no* afirma
 
-Los cinco ejes **no** se asumen como sombras de una única
-cantidad subyacente. La fotografía empírica actual
-(`v0.8.0a0`, benchmark sintético de 645 puntos) es honesta al
-respecto:
+La hipótesis más fuerte posible — que las cinco medidas de
+autonomía son la misma cantidad en distintas notaciones, al
+estilo `H_Shannon = S_stat / ln 2` — quedó **falsada por el
+segundo benchmark**. Las correlaciones pareadas observadas en
+`v0.5.x` — `v0.7.x` se sientan en `+0.32` (closure-memory),
+`-0.04` (closure-constraint), `-0.57` (memory-constraint),
+`-0.44` (closure-persistence), `-0.38` (memory-persistence) y
+`+0.05` (constraint-persistence): seis pares por debajo de la
+saturación, seis piezas de evidencia de que no estamos mirando
+una sola cantidad. Es la lectura de **Nivel 1** (Level 1) y ya
+cayó.
 
-- Las correlaciones pareadas de los cuatro ejes de `v0.7.x`
-  permanecen bajo `|r| < 0.7` en todos los sub-zoos donde
-  están conjuntamente definidas, así que los cuatro ejes
-  previos siguen cargando información distinta.
-- El quinto eje (`coherence`) es empíricamente distinto de
-  los primeros cuatro bajo adaptadores controlados: cuando
-  el adaptador de referencia `PromisedCycle` se conduce con
-  **dos fuentes independientes de variabilidad** en lugar de
-  una, `r(closure, coherence)` cae de `+0.97` a `+0.48` y
-  `r(coherence, p_env) ≈ 0` confirma la invariancia
-  predicha de la fórmula al ruido del lado declarativo.
-  Detalles y análisis pre-registrado en
-  [`docs/CBA.md`](docs/CBA.md) y los snapshots diagnósticos
-  bajo `docs/benchmarks/`.
-- La nube completa de cinco ejes **no existe en el zoo
-  actual**: cada clase de adaptador implementa o
-  `get_causal_graph` (de modo que `constraint_closure`
-  está definido) o `get_declared_executed` (de modo que
-  `coherence` está definido), pero **nunca ambos**, dejando
-  `n_valid_full = 0/645`. Por lo tanto, el atlas se lee
-  mejor como un **mosaico / archipiélago** de subcartas de
-  cuatro ejes superpuestas que como una nube única de cinco
-  dimensiones. El veredicto está documentado en el
-  follow-up de `v0.8.0a0` de
-  [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md).
+La hipótesis intermedia — que existe **un objeto
+multidimensional** y que cada eje es una coordenada distinta
+del mismo, al modo en que RGB y HSV son vistas del mismo
+espacio de color, o el Big Five recupera coordenadas de la
+personalidad por análisis factorial — sí es lo que el paquete
+implementa y prueba. La predicción es nítida: las correlaciones
+deberían sentarse en un punto óptimo, distintas de cero
+(comparten objeto) y bajo saturación (no son redundantes). Esa
+es la lectura de **Nivel 2** (Level 2) que el pre-registro de
+geometría del atlas en `v0.7.2a0` puso a prueba.
 
-Por eso el paquete entrega un marco de medición, un benchmark,
-los dropouts y una hipótesis de trabajo falsable — no una
-teoría definitiva de la autonomía. La pregunta de nivel
-(¿un objeto o varios?) está **siendo empujada hacia Nivel 3
-(mosaico) por el ciclo `v0.8.0a0` pero todavía sin decidir**;
-la validación fuerte contra datos conductuales / tipo RAI se
-difiere a `v0.9.0`, ciclo que también es el candidato natural
-para un sustrato que finalmente cierre el hueco de cinco ejes.
+El ciclo `v0.8.0a0` empujó el veredicto hacia abajo. El quinto
+eje (`coherence`, CBA / U de Theil) se sumó esperando
+triangular el mismo objeto desde un sexto ángulo; en cambio,
+los datos mostraron tres cosas. Las cuatro correlaciones
+previas siguen bajo `|r| < 0.7` (los ejes aún cargan
+información distinta). El quinto eje es empíricamente
+independiente bajo control causal: `r(closure, coherence)` cae
+de `+0.97` a `+0.48` cuando `PromisedCycle` se alimenta con
+**dos fuentes independientes de variabilidad** en lugar de
+una, y `r(coherence, p_env) ≈ 0` confirma la invariancia
+predicha por la fórmula respecto al ruido del canal
+declarativo. Y la nube completa cinco-dimensional **no existe
+sobre el zoológico actual**: `n_valid_full = 0/645`, porque
+ningún adapter expone simultáneamente `get_causal_graph` y
+`get_declared_executed`.
 
-El enunciado conceptual completo y los criterios de
-falsación están en [`docs/PBA.es.md`](docs/PBA.es.md)
-(español) y [`docs/PBA.md`](docs/PBA.md) (inglés). El
-análisis pre-registrado de geometría del atlas en
-[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md); notas de
-diseño por eje en
+El atlas se lee entonces mejor como un **mosaico / archipiélago**
+(mosaic / archipelago) de sub-cartas de cuatro ejes superpuestas
+que como una nube unificada cinco-dimensional. La pregunta de
+fondo — un objeto multidimensional o varios — está empujada
+hacia **Nivel 3** (Level 3) por este ciclo, pero **aún no
+decidida**: la geometría estructural sola no puede arbitrarlo.
+Solo la validación contra datos conductuales, externa al
+repositorio, puede hacerlo, y queda diferida a estudios
+construidos sobre el adapter LLM (LLM adapter) entregado en
+`v0.9.0a0`.
+
+Así el paquete entrega un **marco de medición, un benchmark,
+los dropouts, y una hipótesis de trabajo falsable** — no una
+teoría definitiva de la autonomía. El planteamiento conceptual
+completo y los criterios de falsación viven en
+[`docs/PBA.md`](docs/PBA.md) (inglés) y
+[`docs/PBA.es.md`](docs/PBA.es.md) (español); las notas de
+diseño por eje, en
 [`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md),
 [`docs/RAI.md`](docs/RAI.md) y
-[`docs/CBA.md`](docs/CBA.md). El log de releases en
+[`docs/CBA.md`](docs/CBA.md); el log de releases, en
 [`CHANGELOG.md`](CHANGELOG.md).
+
+## ¿Navaja suiza o ensalada? — Auto-evaluación
+
+Un crítico razonable podría preguntar: ¿son estos cinco ejes
+un instrumento coherente o una colección de métricas inconexas
+con un mismo logo? Esta sección responde honestamente.
+
+### Por qué creemos que es un instrumento coherente
+
+- Forma matemática unificada: cada eje vive en `[0, 1]` con la
+  misma firma "interno / total".
+- Protocolo único (`AutonomySystem`); cualquier sustrato entra
+  por una sola puerta.
+- Umbrales de falsación pre-registrados para cada eje; el
+  proyecto se compromete a poder fallar.
+- Cada eje está anclado en una tradición de investigación
+  publicada con al menos una referencia explícita: `closure` de
+  Albantakis & Bertschinger (con el linaje IIT de Tononi);
+  `memory` del programa de entropía en exceso (excess entropy)
+  de Crutchfield; `constraint` de Montévil & Mossio;
+  `persistence` de Lee & McShea (con Deci & Ryan / SDT como la
+  referencia conductual diferida); `coherence` de la tradición
+  de disonancia cognitiva (cognitive dissonance) de Festinger
+  (con la literatura de fidelidad de Chain-of-Thought en AI
+  alignment como aplicación contemporánea). Ninguno se inventa
+  desde cero.
+
+### Dónde la crítica tiene mérito
+
+- Las cinco tradiciones detrás de los ejes pertenecen a campos
+  genuinamente distintos. Combinarlas es una apuesta
+  metodológica, no un hecho establecido.
+- El veredicto de la geometría del atlas en `v0.8.0a0` fue
+  "mosaico, no variedad" (mosaic, not manifold;
+  `n_valid_full = 0/645`). Los cinco ejes no abarcan
+  conjuntamente una nube 5D limpia en el zoológico actual.
+- `rai_proxy_persistence` es un proxy estructural cuya
+  validación fuerte contra RAI conductual queda diferida a
+  estudios externos. Hasta que eso ocurra, la etiqueta "RAI"
+  es provisional.
+- Vocabulario como "PBA", "atlas mosaico" (mosaic atlas) o
+  "agujero de cinco ejes" (five-axis hole) es interno a este
+  proyecto y requiere leer la documentación para tener
+  sentido.
+- Aún no contamos con un paper revisado por pares que
+  describa el paquete como un todo.
+
+### Qué implica esto para el usuario potencial
+
+Si trabajas en:
+- IIT / consciencia / autonomía estructural → los ejes que
+  reconocerás (`closure`, `constraint_closure`) están bien
+  implementados y bien fundamentados.
+- AI alignment / agentes LLM → `coherence` (CBA / U de Theil
+  sobre trayectorias declaradas vs ejecutadas) mapea
+  directamente sobre las preguntas de fidelidad de
+  Chain-of-Thought.
+- Investigación SDT motivacional pura → trata
+  `rai_proxy_persistence` como un candidato estructural
+  pendiente de validación; no lo equipares aún con C-RAI.
+- Síntesis cross-tradicional → esta es exactamente la apuesta
+  que hace el paquete; encontrarás los ingredientes
+  pre-ensamblados.
+
+Si nada de lo anterior encaja con tu trabajo, este paquete
+probablemente no es tu herramienta — y preferimos que lo
+sepas en 90 segundos antes que después de instalarlo.
 
 ## Instalación
 
