@@ -19,7 +19,7 @@ from autonometrics.metrics import (
 )
 from autonometrics.profile import AutonomyProfile
 
-__version__ = "0.7.2a0"
+__version__ = "0.8.0a0"
 
 __all__ = [
     "Autonometer",

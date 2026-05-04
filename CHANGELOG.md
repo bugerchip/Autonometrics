@@ -7,6 +7,228 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.8.0a0] - 2026-05-03
+
+> Fifth-axis cycle. Adds the **coherence-based axis (CBA)**
+> pre-registered in `docs/CBA.md`, completes the five-axis
+> benchmark, runs the Session B diagnostic block (independence
+> audit, conditional correlations, geometry audit) and ships
+> the honest verdict on the level question. **One new metric,
+> one new adapter, one new optional protocol method**;
+> backwards compatible with `0.7.2a0` for all four prior axes.
+
+### Added
+
+- **Fifth axis: `coherence` (CBA, Coherence-Based Alignment).**
+  New metric module `src/autonometrics/metrics/coherence.py`
+  implementing `compute_cba_theil_u(declared, executed)` —
+  Theil's U with Miller-Madow bias correction on the joint
+  entropy. The axis quantifies the predictability of an
+  executed trajectory from its declared trajectory, so a
+  system whose actions follow its stated intentions scores
+  high regardless of whether the two trajectories agree
+  pointwise. Diagnostic companion `_match_rate` is
+  intentionally *not* exported as a public metric; it lives
+  alongside the formula for sanity-check use only. Design,
+  scientific lineage (akrasia → cognitive dissonance →
+  intention-behaviour gap → AI alignment's CoT faithfulness),
+  candidate formulations weighed and rejected, and
+  pre-registered falsification thresholds are documented in
+  `docs/CBA.md`.
+- **`AutonomyProfile.cba_theil_u: float | None`.** New optional
+  field on the profile dataclass. Populated when the system
+  exposes a declarative layer; left as `None` for adapters
+  that do not (e.g. autómata celulares, redes booleanas).
+- **`AutonomySystem.get_declared_executed`.** New optional
+  protocol method returning a parallel `(declared, executed)`
+  pair of `np.int64` arrays. Adapters that declare an
+  *intended* trajectory in addition to their *realised* one
+  implement it; everything else is unaffected. The
+  orchestrator drops `coherence` to `None` whenever the
+  method is absent, mirroring the existing dropout policy
+  for `constraint_closure` and `persistence`.
+- **New adapter: `PromisedCycle`.** Periodic *declared* schedule
+  paired with a noisy or shifted *executed* trajectory; ships
+  in `src/autonometrics/adapters/promised_cycle.py` and is
+  re-exported from `autonometrics`. Two modes: `random_noise`
+  (per-step replacement of the executed symbol with a uniform
+  draw on the **full alphabet**, so `executed ⟂ declared` at
+  `p_noise = 1.0`) and `adversarial_shift` (deterministic
+  `(declared + 1) mod alphabet`, the textbook bijection where
+  `cba_theil_u ≈ 1` and `cba_match_rate ≈ 0`). The adapter
+  also implements `replay_from_perturbation` (returning the
+  unperturbed slice by design — `PromisedCycle` is
+  state-perturbation-insensitive, so persistence saturates)
+  and `get_state_history` / `get_env_history` (so closure /
+  memory remain measurable on the same instance). It does
+  **not** implement `get_causal_graph`, so
+  `constraint_closure` is `None` on this substrate.
+- **`PromisedCycle.p_env`.** Optional per-step replacement
+  probability on the *declared* channel (default `0.0`,
+  byte-for-byte equivalent to the prior version). Drawn from
+  a separate sub-stream of the same seed, so the env and
+  noise processes are statistically independent. Exists so
+  the adapter can be driven by **two independent sources of
+  variability** — the diagnostic that powers the causal test
+  in this cycle's Session B.
+- **Five-axis benchmark snapshot
+  `docs/benchmarks/v0.8.0a0.{csv,log.txt}`.** Same zoo as
+  `v0.7.2a0` plus the new `PromisedCycle` sub-zoo (period ×
+  alphabet × `p_noise` × seed grid plus the
+  `adversarial_shift` slice). 645 valid systems measured. Of
+  those, **`n_valid_full = 0/645`**: every row has at least
+  one axis missing because `get_causal_graph` and
+  `get_declared_executed` are not implemented by the same
+  adapter class. This is a structural, not statistical,
+  finding (see Session B step 7 below).
+- **Session B step 5–6 diagnostic — independence audit.**
+  `examples/cba_independence_audit.py` is a numpy-only
+  analyser that ingests `docs/benchmarks/v0.8.0a0.csv`,
+  restricts to the `PromisedCycle` rows, and computes (i)
+  global pairwise correlations, (ii) the same correlations
+  with a partial-Pearson controlling for `p_noise`, (iii)
+  per-cell correlations stratified by
+  `(period, alphabet, p_noise)`, and (iv) a `(closure,
+  coherence)` scatter coloured by `p_noise`. Snapshot at
+  `docs/benchmarks/cba_independence_v0.8.0a0.{json,png,log.txt}`.
+  Smoke tests at
+  `tests/benchmarks/test_cba_independence_audit_smoke.py`.
+- **Session B step 6 — causal experiment with `p_env`.**
+  `examples/cba_env_decouple_experiment.py` sweeps
+  `(p_noise × p_env)` on `PromisedCycle`, computes
+  `closure / coherence` per cell with multiple seeds, and
+  reports global, single-axis and per-cell correlations.
+  Snapshot at
+  `docs/benchmarks/cba_env_decouple_v0.8.0a0.{json,png,log.txt}`.
+  Smoke tests at
+  `tests/benchmarks/test_cba_env_decouple_smoke.py`.
+- **Session B step 7 — five-axis geometry follow-up.**
+  Documentation-only addendum at the end of
+  `docs/ATLAS_GEOMETRY.md` (locked content above untouched).
+  Records why PCA / k-means / silhouette cannot be run on a
+  matrix with `n_valid_full = 0`, the three substitute
+  analyses considered (imputation, per-adapter four-axis
+  PCA, structural-infeasibility report) and the choice made,
+  the verdict in level-question terms, and the explicit
+  deviation log. Cross-referenced from the new `v0.8.0a0`
+  entry in `docs/PBA.md` *Current evidence status*.
+- **Tests:** 27 new tests added.
+  `tests/test_coherence.py` (15) covers the metric formula:
+  identical / independent / constant trajectories, systematic
+  bijection (Theil's U high, match rate low — the textbook
+  case), shape and dtype errors, low-N warnings,
+  reproducibility, alphabet invariance, and a static
+  import audit enforcing independence-by-design (no imports
+  from other metric modules or external IT toolkits).
+  `tests/test_promised_cycle.py` (25 total, +18 new) covers
+  shape, both noise modes, reproducibility, validation
+  errors, the `p_env` regression and bounds suite (7
+  dedicated tests), `get_state_history` / `get_env_history`
+  semantics, copy semantics, and `replay_from_perturbation`
+  behaviour.
+  `tests/test_coherence_integration.py` (6) verifies the
+  end-to-end wiring of the fifth axis through `Autonometer`
+  on `PromisedCycle` (boundary noise, adversarial shift,
+  five-axis profile) and the dropout to `None` on adapters
+  without a declarative layer.
+  Smoke suites for the two new diagnostic scripts (7 + 7).
+  Suite total: **281 tests passing** (vs. `254` in
+  `0.7.2a0`).
+- **Dependencies, packaging.** No new runtime deps; `numpy`
+  remains the only required dependency. `matplotlib` stays
+  in `[viz]` extras and is only used by the diagnostic
+  examples; the metric and the adapter are matplotlib-free.
+
+### Findings
+
+- **The five-axis atlas is empty by construction.**
+  `n_valid_full = 0/645` on the v0.8.0a0 benchmark. Every
+  shipped adapter exposes either `get_causal_graph` (so
+  `constraint_closure` is defined) or `get_declared_executed`
+  (so `coherence` is defined) but **never both**. The
+  expected five-dimensional point cloud does not exist on
+  the current zoo. This is the verdict of Session B step 7
+  and is recorded in `docs/ATLAS_GEOMETRY.md` *v0.8.0a0
+  follow-up* and `docs/PBA.md` *Current evidence status*.
+- **Hard gate triggered, then overridden on causal grounds.**
+  The headline pairwise figure on the 240 PromisedCycle
+  rows was `r(closure, coherence) = +0.96`, which sits
+  above the `|r| ≥ 0.9` hard gate pre-registered in
+  `docs/CBA.md`.
+  - Stratified audit (commit `8e66c82`): the per-cell
+    correlation decays smoothly with `p_noise`
+    (`+0.93 → −0.18`); the
+    `cba_independence_v0.8.0a0.png` scatter shows five
+    `p_noise` islands aligned diagonally (between-cluster
+    variance) but roughly circular internally (within-cluster
+    near-independence). The visual signature is a textbook
+    Simpson's paradox.
+  - Causal experiment (commit `eefce9d`): with the new
+    `p_env` introducing an independent declared-channel
+    driver, the headline figure drops from `+0.97` (single
+    driver) to `+0.48` (two drivers); within fixed `p_noise`
+    cells it oscillates around zero;
+    `r(coherence, p_env) = +0.0007` confirms the invariance
+    property `docs/CBA.md` predicted *before* the data were
+    collected (Theil's U numerator and denominator scale
+    parallel under env-side noise, leaving the ratio
+    essentially fixed).
+  - Verdict: the `+0.96` was an **artefact of
+    PromisedCycle's single-driver design**, not a
+    redundancy between the two metrics. The hard gate is
+    overridden with this evidence; the override is recorded
+    in the post-mortem section of `docs/CBA.md` and
+    referenced from this entry.
+- **Theil's U invariance, predicted then verified.** The
+  most important *positive* finding: the fifth axis's
+  formula was chosen for an invariance property
+  (`H(E | D)` depends only on the executed channel for the
+  random-noise model, so the ratio `I(D;E) / H(D)` is
+  insensitive to perturbations of `H(D)`). The causal
+  experiment measured `r(coherence, p_env) = +0.0007` over
+  200 systems spanning the full `(p_noise × p_env)` grid.
+  This is the kind of pre-registered prediction whose
+  empirical confirmation is normally invisible because no
+  one runs it; it is run here on the record.
+- **Five axes remain individually distinct on the zoo where
+  each is defined.** Pairwise `|r| < 0.7` on the soft gate
+  for the four `v0.7.x` axes is preserved in the v0.8.0a0
+  benchmark on all sub-zoos that share those axes.
+
+### Atlas-shape verdict at this checkpoint
+
+PBA's level question (`docs/PBA.md` Section *What kind of
+unification PBA proposes*) was last left
+*inconclusive with a Level-3-suggestive overlay* at the end of
+`v0.7.2a0`. The v0.8.0a0 cycle pulls the prior **further
+toward Level 3**:
+
+- A single-object reading (Level 2) requires *some* substrate
+  on which all coordinates are simultaneously observable. No
+  substrate in the v0.8.0a0 zoo is that substrate.
+- The package's atlas is best read as a **mosaic / archipelago**
+  of overlapping four-axis sub-charts that share most axes
+  but never share all five.
+- The strong validation check is still pending; the level
+  question will be decided (or stay open) by the v0.9.0
+  behavioural / RAI-style cycle, which is also the natural
+  candidate for a substrate that closes the five-axis hole
+  by exposing both `get_causal_graph` and
+  `get_declared_executed` together.
+
+### Notes for downstream
+
+- **No breaking change** for code written against `0.7.x`. The
+  four prior axes are unchanged, the protocol additions are
+  optional, and `AutonomyProfile.cba_theil_u` is a new field
+  rather than a renamed one.
+- Code that imports the new helpers should use
+  `from autonometrics import compute_cba_theil_u, PromisedCycle`.
+- The diagnostic scripts (`cba_independence_audit.py`,
+  `cba_env_decouple_experiment.py`) live under `examples/`,
+  outside the installable package, in line with the existing
+  policy on benchmarks and analyses.
+
 ## [0.7.2a0] - 2026-05-02
 
 > Maintenance and analysis cycle. **No new metric, no API

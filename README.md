@@ -16,18 +16,20 @@
 
 `autonometrics` is a Python instrument that takes a discrete
 trajectory — a cellular automaton, a Boolean network, an agent
-log, a simulation — and returns four normalised readings of how
-*self-determined* its structure looks. Each reading comes from a
-different scientific tradition; together they form a small
-**atlas of autonomy**: a few charts that cover the same territory
-from different operational angles.
+log, a simulation, and as of `v0.8.0a0` also a system that
+publishes its own *intended* trajectory alongside its realised
+one — and returns up to **five normalised readings** of how
+*self-determined* its structure looks. Each reading comes from
+a different scientific tradition; together they form a small
+**atlas of autonomy**: a few charts that cover the same
+territory from different operational angles.
 
 It is a measurement tool, not a new theory of autonomy. The
-package collects existing measures, normalises them to a shared
-`[0, 1]` scale, and lets you compare points from very different
-substrates in the same space.
+package collects existing measures, normalises them to a
+shared `[0, 1]` scale, and lets you compare points from very
+different substrates in the same space.
 
-## The four axes
+## The five axes
 
 | Axis | Question it answers | Tradition | Reference |
 |---|---|---|---|
@@ -35,33 +37,69 @@ substrates in the same space.
 | **`memory`** | How much of the system's predictability is carried *by its own past*? | Computational mechanics | Crutchfield & Young (1989); Feldman & Crutchfield (2002) |
 | **`constraint`** | How tightly do the system's constraints enable *each other*? | Theoretical biology | Montévil & Mossio (2015) |
 | **`persistence`** | How well does the system's structure resist a small perturbation? | Operational goal-directedness | Lee & McShea (2020) |
+| **`coherence`** | How well does the system's *executed* trajectory follow its *declared* one? | Akrasia → cognitive dissonance → AI alignment | Festinger (1957); Sheeran (2002); Lanham (2023); Turpin (2023) |
 
-All four readings live in `[0, 1]` and can be plotted, correlated
-and compared across substrates in the same space.
+All five readings live in `[0, 1]` and can be plotted,
+correlated and compared across substrates that expose the
+relevant capability. The first four require only a state /
+environment trajectory; the fifth additionally requires a
+parallel `(declared, executed)` pair, which only adapters
+with an explicit declarative layer expose. Adapters that do
+not implement that layer report `coherence = None` honestly,
+in line with the same dropout policy already used for
+`constraint_closure` (graph-only) and `persistence`
+(replay-only).
 
 ## What the project does *not* claim
 
-The four axes are **not** assumed to be shadows of a single
+The five axes are **not** assumed to be shadows of a single
 underlying quantity. The current empirical picture
-(`v0.7.2a0`, 247-point synthetic benchmark) is honest about
-that: pairwise correlations are all below `|r| < 0.7`, the
-first principal component explains only `~47%` of the variance,
-and clusters in the 4-D atlas track the *substrate class* more
-than any latent autonomy dimension.
+(`v0.8.0a0`, 645-point synthetic benchmark) is honest about
+that:
 
-So the package ships a measurement framework, a benchmark, the
-dropouts, and a falsifiable working hypothesis — not a
-definitive theory of autonomy. The level question (one object
-or many?) is left as an empirical matter, not a postulate.
+- All four `v0.7.x` pairwise correlations remain below
+  `|r| < 0.7` on every sub-zoo where they are jointly
+  defined, so the four prior axes still carry distinct
+  information.
+- The fifth axis (`coherence`) is empirically distinct from
+  the first four under controlled adapters: when the
+  `PromisedCycle` reference adapter is driven by **two
+  independent sources of variability** rather than one,
+  `r(closure, coherence)` falls from `+0.97` to `+0.48` and
+  `r(coherence, p_env) ≈ 0` confirms the formula's predicted
+  invariance to declarative-side noise. Details and
+  pre-registered analysis in [`docs/CBA.md`](docs/CBA.md)
+  and the diagnostic snapshots under `docs/benchmarks/`.
+- The full five-axis cloud **does not exist on the current
+  zoo**: each adapter class implements either
+  `get_causal_graph` (so `constraint_closure` is defined)
+  or `get_declared_executed` (so `coherence` is defined),
+  but never both, leaving `n_valid_full = 0/645`. The atlas
+  is therefore best read as a **mosaic / archipelago** of
+  overlapping four-axis sub-charts rather than a single
+  five-dimensional cloud. The verdict is documented in the
+  v0.8.0a0 follow-up of
+  [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md).
 
-The full conceptual statement and the falsification criteria
-live in [`docs/PBA.md`](docs/PBA.md) (English) and
+So the package ships a measurement framework, a benchmark,
+the dropouts, and a falsifiable working hypothesis — not a
+definitive theory of autonomy. The level question (one
+object or many?) is **pulled toward Level 3 (mosaic) by the
+v0.8.0a0 cycle but not yet decided**; the strong validation
+against behavioural / RAI-style data is deferred to v0.9.0,
+which is also the natural candidate for a substrate that
+finally closes the five-axis hole.
+
+The full conceptual statement and the falsification
+criteria live in [`docs/PBA.md`](docs/PBA.md) (English) and
 [`docs/PBA.es.md`](docs/PBA.es.md) (Spanish). The
 pre-registered geometry analysis is in
-[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md);
-per-axis design notes in
-[`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md)
-and [`docs/RAI.md`](docs/RAI.md).
+[`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md); per-axis
+design notes in
+[`docs/CONSTRAINT_CLOSURE.md`](docs/CONSTRAINT_CLOSURE.md),
+[`docs/RAI.md`](docs/RAI.md) and
+[`docs/CBA.md`](docs/CBA.md). The release log lives in
+[`CHANGELOG.md`](CHANGELOG.md).
 
 ## Installation
 
