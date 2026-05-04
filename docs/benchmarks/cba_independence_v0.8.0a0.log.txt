@@ -1,0 +1,235 @@
+﻿CBA Î closure independence audit (v0.8.0a0)
+================================================================
+
+PromisedCycle rows: 240 (random_noise: 225, adversarial: 15)
+
+--- Global pairwise (all PromisedCycle rows) ---
+  pair                        n    pearson   spearman   partial|p
+  ------------------------ ---- ---------- ---------- -----------
+  closure-coherence         240    +0.9596    +0.9750         n/a
+  closure-memory            240        n/a    +0.0725         n/a
+  closure-persistence       240        n/a    +0.0725         n/a
+  memory-coherence          240        n/a    -0.0121         n/a
+  persistence-coherence     240        n/a    -0.0121         n/a
+  memory-persistence        240        n/a    +1.0000         n/a
+
+--- Random-noise mode only (adversarial excluded) ---
+  pair                        n    pearson   spearman   partial|p
+  ------------------------ ---- ---------- ---------- -----------
+  closure-coherence         225    +0.9525    +0.9697     +0.9424
+  closure-memory            225        n/a    -0.1256         n/a
+  closure-persistence       225        n/a    -0.1256         n/a
+  memory-coherence          225        n/a    -0.2284         n/a
+  persistence-coherence     225        n/a    -0.2284         n/a
+  memory-persistence        225        n/a    +1.0000         n/a
+
+--- Stratified by (period, alphabet, p_noise) ---
+  pair: closure-coherence
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15    +0.9277    +0.9107
+    random_noise          2     4     0.50   15    +0.4144    +0.4179
+    random_noise          2     4     0.75   15    +0.1728    +0.1821
+    random_noise          2     4     1.00   15    -0.3653    -0.2857
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15    +0.9422    +0.9143
+    random_noise          4     4     0.50   15    +0.7891    +0.8071
+    random_noise          4     4     0.75   15    +0.3933    +0.2964
+    random_noise          4     4     1.00   15    -0.2002    -0.0179
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15    +0.9369    +0.9321
+    random_noise          4     8     0.50   15    +0.5935    +0.5214
+    random_noise          4     8     0.75   15    +0.0877    +0.0714
+    random_noise          4     8     1.00   15    +0.0200    +0.2214
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+  pair: closure-memory
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15        n/a    +0.1321
+    random_noise          2     4     0.50   15        n/a    -0.3286
+    random_noise          2     4     0.75   15        n/a    -0.4036
+    random_noise          2     4     1.00   15        n/a    -0.0214
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15        n/a    +0.2286
+    random_noise          4     4     0.50   15        n/a    -0.1393
+    random_noise          4     4     0.75   15        n/a    -0.4893
+    random_noise          4     4     1.00   15        n/a    -0.0214
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15        n/a    +0.2607
+    random_noise          4     8     0.50   15        n/a    +0.0679
+    random_noise          4     8     0.75   15        n/a    -0.0714
+    random_noise          4     8     1.00   15        n/a    +0.2643
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+  pair: closure-persistence
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15        n/a    +0.1321
+    random_noise          2     4     0.50   15        n/a    -0.3286
+    random_noise          2     4     0.75   15        n/a    -0.4036
+    random_noise          2     4     1.00   15        n/a    -0.0214
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15        n/a    +0.2286
+    random_noise          4     4     0.50   15        n/a    -0.1393
+    random_noise          4     4     0.75   15        n/a    -0.4893
+    random_noise          4     4     1.00   15        n/a    -0.0214
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15        n/a    +0.2607
+    random_noise          4     8     0.50   15        n/a    +0.0679
+    random_noise          4     8     0.75   15        n/a    -0.0714
+    random_noise          4     8     1.00   15        n/a    +0.2643
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+  pair: memory-coherence
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15        n/a    -0.1000
+    random_noise          2     4     0.50   15        n/a    -0.1964
+    random_noise          2     4     0.75   15        n/a    -0.2464
+    random_noise          2     4     1.00   15        n/a    -0.1214
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15        n/a    +0.0286
+    random_noise          4     4     0.50   15        n/a    -0.1821
+    random_noise          4     4     0.75   15        n/a    -0.2214
+    random_noise          4     4     1.00   15        n/a    +0.1071
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15        n/a    +0.1143
+    random_noise          4     8     0.50   15        n/a    +0.1786
+    random_noise          4     8     0.75   15        n/a    +0.0464
+    random_noise          4     8     1.00   15        n/a    +0.2821
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+  pair: persistence-coherence
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15        n/a    -0.1000
+    random_noise          2     4     0.50   15        n/a    -0.1964
+    random_noise          2     4     0.75   15        n/a    -0.2464
+    random_noise          2     4     1.00   15        n/a    -0.1214
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15        n/a    +0.0286
+    random_noise          4     4     0.50   15        n/a    -0.1821
+    random_noise          4     4     0.75   15        n/a    -0.2214
+    random_noise          4     4     1.00   15        n/a    +0.1071
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15        n/a    +0.1143
+    random_noise          4     8     0.50   15        n/a    +0.1786
+    random_noise          4     8     0.75   15        n/a    +0.0464
+    random_noise          4     8     1.00   15        n/a    +0.2821
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+  pair: memory-persistence
+    mode             period alpha  p_noise    n    pearson   spearman
+    ---------------- ------ ----- -------- ---- ---------- ----------
+    random_noise          2     4     0.00   15        n/a    +1.0000
+    random_noise          2     4     0.25   15        n/a    +1.0000
+    random_noise          2     4     0.50   15        n/a    +1.0000
+    random_noise          2     4     0.75   15        n/a    +1.0000
+    random_noise          2     4     1.00   15        n/a    +1.0000
+    random_noise          4     4     0.00   15        n/a    +1.0000
+    random_noise          4     4     0.25   15        n/a    +1.0000
+    random_noise          4     4     0.50   15        n/a    +1.0000
+    random_noise          4     4     0.75   15        n/a    +1.0000
+    random_noise          4     4     1.00   15        n/a    +1.0000
+    random_noise          4     8     0.00   15        n/a    +1.0000
+    random_noise          4     8     0.25   15        n/a    +1.0000
+    random_noise          4     8     0.50   15        n/a    +1.0000
+    random_noise          4     8     0.75   15        n/a    +1.0000
+    random_noise          4     8     1.00   15        n/a    +1.0000
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+    adversarial           4     0      n/a    1        n/a        n/a
+
+Thresholds and verdict are NOT applied here.
+See docs/CBA.md to interpret these numbers.
+
+JSON saved to: C:\Users\Usuario\Documents\GitHub\Autonometrics\docs\benchmarks\cba_independence_v0.8.0a0.json
+PNG saved to:  C:\Users\Usuario\Documents\GitHub\Autonometrics\docs\benchmarks\cba_independence_v0.8.0a0.png

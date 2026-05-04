@@ -1,0 +1,1727 @@
+{
+  "n_total": 240,
+  "n_random_noise": 225,
+  "n_adversarial": 15,
+  "global_correlations": {
+    "closure-coherence": {
+      "n": 240,
+      "pearson": 0.9595559847494518,
+      "spearman": 0.9750099828122016,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "closure-memory": {
+      "n": 240,
+      "pearson": null,
+      "spearman": 0.07249952256115558,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "closure-persistence": {
+      "n": 240,
+      "pearson": null,
+      "spearman": 0.07249952256115558,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "memory-coherence": {
+      "n": 240,
+      "pearson": null,
+      "spearman": -0.01213823156652025,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "persistence-coherence": {
+      "n": 240,
+      "pearson": null,
+      "spearman": -0.01213823156652025,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "memory-persistence": {
+      "n": 240,
+      "pearson": null,
+      "spearman": 0.9999999999999998,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    }
+  },
+  "random_noise_correlations": {
+    "closure-coherence": {
+      "n": 225,
+      "pearson": 0.9525224156931981,
+      "spearman": 0.9696713021491783,
+      "partial_pearson_controlling_p_noise": 0.9423675190565507,
+      "n_random_noise": 225
+    },
+    "closure-memory": {
+      "n": 225,
+      "pearson": null,
+      "spearman": -0.1256447534766119,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "closure-persistence": {
+      "n": 225,
+      "pearson": null,
+      "spearman": -0.1256447534766119,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "memory-coherence": {
+      "n": 225,
+      "pearson": null,
+      "spearman": -0.22836388537715974,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "persistence-coherence": {
+      "n": 225,
+      "pearson": null,
+      "spearman": -0.22836388537715974,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    },
+    "memory-persistence": {
+      "n": 225,
+      "pearson": null,
+      "spearman": 1.0,
+      "partial_pearson_controlling_p_noise": null,
+      "n_random_noise": 225
+    }
+  },
+  "stratified_correlations": {
+    "closure-coherence": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": 0.9276943550182284,
+        "spearman": 0.9107142857142855
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": 0.41441788645012845,
+        "spearman": 0.41785714285714276
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": 0.1728084785998625,
+        "spearman": 0.18214285714285713
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": -0.365258699620328,
+        "spearman": -0.28571428571428564
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": 0.9421917943688636,
+        "spearman": 0.914285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": 0.789113400068987,
+        "spearman": 0.807142857142857
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": 0.3933026234062058,
+        "spearman": 0.2964285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": -0.20024530358170076,
+        "spearman": -0.017857142857142853
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": 0.9368555414374022,
+        "spearman": 0.932142857142857
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": 0.59348674071117,
+        "spearman": 0.5214285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": 0.08768239703074625,
+        "spearman": 0.07142857142857141
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": 0.02004306839768692,
+        "spearman": 0.22142857142857136
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ],
+    "closure-memory": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.13214285714285715
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.3285714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.4035714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.021428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2285714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.13928571428571426
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.4892857142857142
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.021428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2607142857142857
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.06785714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.07142857142857141
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2642857142857143
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ],
+    "closure-persistence": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.13214285714285715
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.3285714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.4035714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.021428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2285714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.13928571428571426
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.4892857142857142
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.021428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2607142857142857
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.06785714285714285
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.07142857142857141
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2642857142857143
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ],
+    "memory-coherence": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.09999999999999999
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.1964285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.24642857142857136
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.12142857142857141
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.028571428571428564
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.18214285714285713
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.22142857142857136
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.10714285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.11428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.17857142857142855
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.04642857142857142
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2821428571428571
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ],
+    "persistence-coherence": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.09999999999999999
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.1964285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.24642857142857136
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.12142857142857141
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.028571428571428564
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.18214285714285713
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": -0.22142857142857136
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.10714285714285714
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.11428571428571425
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.17857142857142855
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.04642857142857142
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 0.2821428571428571
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ],
+    "memory-persistence": [
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 2,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 4,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.25,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.5,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 0.75,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "random_noise",
+        "period": 4,
+        "alphabet": 8,
+        "p_noise": 1.0,
+        "n": 15,
+        "pearson": null,
+        "spearman": 1.0
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      },
+      {
+        "mode": "adversarial",
+        "period": 4,
+        "alphabet": 0,
+        "p_noise": null,
+        "n": 1,
+        "pearson": null,
+        "spearman": null
+      }
+    ]
+  }
+}
