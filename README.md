@@ -174,14 +174,10 @@ The full list of canonical axis names lives in `anm.AXES`:
 ### Measuring a synthetic automaton
 
 ```python
-import numpy as np
 import autonometrics as anm
 
-rng = np.random.default_rng(0)
-env = rng.integers(0, 3, size=3000).astype(np.int64)
-
-system_a = anm.SimpleAutomaton.from_self_generated_rules(n_states=4, env=env, seed=0)
-system_b = anm.SimpleAutomaton.from_external_rules(n_states=4, env=env, seed=0)
+system_a = anm.SimpleAutomaton.demo(mode="self_generated")
+system_b = anm.SimpleAutomaton.demo(mode="external")
 
 profile_a = anm.measure(system_a, axes=["closure", "memory"])
 profile_b = anm.measure(system_b, axes=["closure", "memory"])
@@ -190,14 +186,21 @@ print(profile_a.closure, profile_a.memory)
 print(profile_b.closure, profile_b.memory)
 ```
 
+The verbose constructors `SimpleAutomaton(...)`,
+`SimpleAutomaton.from_self_generated_rules(...)` and
+`SimpleAutomaton.from_external_rules(...)` are still available when
+you need to supply your own environment array or non-default noise.
+
 ### Measuring a CSV trajectory you already have
 
 ```python
 import autonometrics as anm
 
-trajectory = anm.CSVTrajectory.from_path("my_log.csv")  # header: state,env
+trajectory = anm.CSVTrajectory.from_file("my_log.csv")  # header: state,env
 profile = anm.measure(trajectory, axes=["closure", "memory"])
 ```
+
+`CSVTrajectory.from_path(...)` remains supported as a legacy alias.
 
 `my_log.csv` is a two-column file with discrete integer labels:
 
@@ -215,6 +218,27 @@ state,env
 python examples/automaton_demo.py   # clockwork vs mixed vs noise-driven automata
 python examples/csv_demo.py         # round-trip through a CSV file
 ```
+
+### Minimum trajectory length per axis
+
+Each axis ships with a hard floor below which the underlying estimator
+refuses to run, and a soft floor below which the estimator is
+mathematically valid but statistically noisy. Use these as a sizing
+guide when generating synthetic trajectories or recording experimental
+ones; the convenience factories (`PromisedCycle.simple()`,
+`SimpleAutomaton.demo()`) already pick defaults that clear every floor.
+
+| Axis           | Hard floor | Soft floor (recommended) | Notes                                                                 |
+| :------------- | :--------- | :----------------------- | :-------------------------------------------------------------------- |
+| `closure`      | 2          | ~200                     | Estimator works on any 2-step transition; ~200 stabilises the conditional MI. |
+| `memory`       | **500**    | 1000+                    | Hard limit; raises `ValueError` below 500. Crutchfield excess-entropy needs the block-saturation regime. |
+| `constraint`   | n/a        | n/a                      | Reads the causal graph, not the trajectory. No timestep requirement.  |
+| `persistence`  | `horizon + 2` (66 with defaults) | 200+ | Soft floor scales with the chosen replay `horizon`; defaults assume `horizon = 64`, `n_perturbations = 32`. |
+| `coherence`    | 2          | ~100                     | Below 100 the Theil-U estimator emits a low-sample-size warning but still returns a value. |
+
+When in doubt, generate **at least 600 timesteps**: that clears every
+hard floor and matches the `length=600` default of
+`PromisedCycle.simple()`.
 
 ## Metrics
 
