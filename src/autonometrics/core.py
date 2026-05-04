@@ -9,6 +9,7 @@ import numpy as np
 
 from autonometrics.metrics import (
     compute_albantakis,
+    compute_cba_theil_u,
     compute_constraint_closure,
     compute_memory_endo_ratio,
     compute_rai_proxy_persistence,
@@ -22,12 +23,14 @@ _MetricFn = Callable[..., float]
 _INPUT_TRAJECTORY = "states_env"
 _INPUT_GRAPH = "causal_graph"
 _INPUT_REPLAY = "states_env_replay"
+_INPUT_DECLARED_EXECUTED = "declared_executed"
 
 _METRIC_REGISTRY: dict[str, _MetricFn] = {
     "albantakis": compute_albantakis,
     "memory": compute_memory_endo_ratio,
     "constraint_closure": compute_constraint_closure,
     "persistence": compute_rai_proxy_persistence,
+    "coherence": compute_cba_theil_u,
 }
 
 _METRIC_INPUT: dict[str, str] = {
@@ -35,6 +38,7 @@ _METRIC_INPUT: dict[str, str] = {
     "memory": _INPUT_TRAJECTORY,
     "constraint_closure": _INPUT_GRAPH,
     "persistence": _INPUT_REPLAY,
+    "coherence": _INPUT_DECLARED_EXECUTED,
 }
 
 _PROFILE_FIELD: dict[str, str] = {
@@ -42,6 +46,7 @@ _PROFILE_FIELD: dict[str, str] = {
     "memory": "memory_endo_ratio",
     "constraint_closure": "constraint_closure",
     "persistence": "rai_proxy_persistence",
+    "coherence": "cba_theil_u",
 }
 
 SUPPORTED_METRICS: frozenset[str] = frozenset(_METRIC_REGISTRY)
@@ -75,6 +80,19 @@ class AutonomySystem(Protocol):
     the orchestrator records ``None`` for the corresponding metric
     field. The same fail-loudly contract used for ``get_causal_graph``
     applies here.
+
+    Adapters that want to be eligible for the coherence axis (CBA)
+    additionally expose ``get_declared_executed()`` returning a
+    tuple ``(declared, executed)`` of 1-D integer ``np.ndarray`` of
+    the same length, where ``declared`` is the system's *announced*
+    trajectory (plan, prediction, declared intention) and
+    ``executed`` is the *actually realised* trajectory. Adapters
+    that have no declarative layer (e.g. cellular automata, Boolean
+    networks, periodic cycles, ``SimpleAutomaton``) must not expose
+    the method, or may return ``None``; the orchestrator records
+    ``None`` for the corresponding metric field in those cases. The
+    CBA axis is by design the narrowest in the atlas — only systems
+    with a meaningful declarative layer are scored.
     """
 
     def get_state_history(self) -> np.ndarray: ...
@@ -157,6 +175,7 @@ class Autonometer:
             memory_endo_ratio=field_values.get("memory_endo_ratio"),
             constraint_closure=field_values.get("constraint_closure"),
             rai_proxy_persistence=field_values.get("rai_proxy_persistence"),
+            cba_theil_u=field_values.get("cba_theil_u"),
             metadata=metadata,
         )
 
@@ -189,4 +208,16 @@ class Autonometer:
                 return float(fn(states, env, replay_fn))
             except NotImplementedError:
                 return None
+        if kind == _INPUT_DECLARED_EXECUTED:
+            de_fn = getattr(system, "get_declared_executed", None)
+            if de_fn is None:
+                return None
+            try:
+                pair = de_fn()
+            except NotImplementedError:
+                return None
+            if pair is None:
+                return None
+            declared, executed = pair
+            return float(fn(np.asarray(declared), np.asarray(executed)))
         raise RuntimeError(f"Unknown metric input kind for {name!r}: {kind!r}")

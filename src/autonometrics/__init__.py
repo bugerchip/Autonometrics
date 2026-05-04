@@ -8,10 +8,11 @@ information theory, self-determination theory, and related traditions.
 Status: alpha, API unstable.
 """
 
-from autonometrics.adapters import CSVTrajectory, SimpleAutomaton
+from autonometrics.adapters import CSVTrajectory, PromisedCycle, SimpleAutomaton
 from autonometrics.core import Autonometer, AutonomySystem
 from autonometrics.metrics import (
     compute_albantakis,
+    compute_cba_theil_u,
     compute_constraint_closure,
     compute_memory_endo_ratio,
     compute_rai_proxy_persistence,
@@ -25,9 +26,11 @@ __all__ = [
     "AutonomyProfile",
     "AutonomySystem",
     "CSVTrajectory",
+    "PromisedCycle",
     "SimpleAutomaton",
     "__version__",
     "compute_albantakis",
+    "compute_cba_theil_u",
     "compute_constraint_closure",
     "compute_memory_endo_ratio",
     "compute_rai_proxy_persistence",

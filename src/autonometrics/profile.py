@@ -82,6 +82,24 @@ class AutonomyProfile:
         proxy* for the autonomous-vs-controlled motivation
         distinction; strong validation against transcript-based
         RAI scoring is deferred to ``v0.9.0``.
+    cba_theil_u:
+        Information-theoretic CBA proxy (Theil-U style). In
+        ``[0.0, 1.0]`` when computed; ``None`` when the adapter
+        does not expose a declarative layer. Computed as
+        ``I(D; E) / H(D)`` with Miller-Madow bias correction,
+        where ``D`` is the system's *declared* trajectory and
+        ``E`` is its *executed* trajectory. ``1.0`` means knowing
+        the executed trajectory removes all uncertainty about the
+        declared one (the declaration is fully informative about
+        the execution); ``0.0`` means execution is statistically
+        independent of declaration. Operationalises the
+        intention–execution gap (Aristotle's *akrasia*; Festinger
+        1957; Sheeran 2002; Lanham 2023; PhilArchive 2024) as a
+        structural ratio. The design rationale, candidate
+        alternatives and validation plan live in ``docs/CBA.md``;
+        validation against external behavioural data
+        (FAITHCOT-BENCH, Sheeran-style intention–behaviour
+        regressions) is deferred to ``v0.9.0``.
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -92,4 +110,5 @@ class AutonomyProfile:
     memory_endo_ratio: float | None = None
     constraint_closure: float | None = None
     rai_proxy_persistence: float | None = None
+    cba_theil_u: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
