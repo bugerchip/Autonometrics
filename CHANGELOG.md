@@ -7,6 +7,110 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.8.1a0] - 2026-05-04
+
+> API-pulido cycle. Strictly backward-compatible. Introduces the
+> canonical public vocabulary the package will freeze at `v1.0`,
+> changes a handful of legacy defaults that silently dropped data,
+> and adds the convenience helpers (`measure()`, `to_dict()`,
+> `defined_axes()`) that applied users were re-implementing
+> by hand. **No metric definition changes; no benchmark reruns; no
+> hypothesis updates**. The five canonical axes (`closure`, `memory`,
+> `constraint`, `persistence`, `coherence`) are now the recommended
+> access path everywhere.
+
+### Added
+
+- **Canonical axis names exported at the top level.**
+  `autonometrics.AXES = ("closure", "memory", "constraint",
+  "persistence", "coherence")` (and its alias `ALL_AXES`) is now part
+  of the public surface, frozen forward to `v1.0` and beyond. New
+  user-facing code should use these names exclusively.
+- **`Autonometer(metrics=...)` accepts canonical names.** Both the
+  canonical names above and the legacy internal identifiers
+  (`albantakis`, `constraint_closure`, ...) work, and can be mixed in
+  the same call. Translation is handled by a single private helper,
+  `_resolve_metric_name`.
+- **`AutonomyProfile` canonical accessors.** Five `@property` aliases
+  (`closure`, `memory`, `constraint`, `persistence`, `coherence`)
+  return the same values as the legacy `ratio_endo_total`,
+  `memory_endo_ratio`, `constraint_closure`, `rai_proxy_persistence`,
+  `cba_theil_u` fields. Dict-style lookup `profile["closure"]` and
+  `profile["albantakis"]` both work.
+- **`AutonomyProfile.to_dict()`.** Returns a flat
+  `{canonical_axis: value_or_None}` dictionary using only the
+  canonical public names. Trivially JSON-serialisable.
+- **`AutonomyProfile.defined_axes()`.** Returns the list of canonical
+  axes that were actually computed (i.e. whose value is not `None`).
+- **`AutonomyProfile.__repr__` rewritten.** Multi-line, human-readable
+  summary with adapter, sample size, and only the axes that have a
+  value; the absent axes are listed compactly under a `missing:` line.
+- **`autonometrics.measure(adapter, axes=None)` convenience function.**
+  One-line entry point for applied users:
+  ```python
+  import autonometrics as anm
+  profile = anm.measure(some_adapter)         # all five axes
+  profile = anm.measure(some_adapter, axes=["closure", "coherence"])
+  ```
+  Equivalent to `Autonometer(metrics=axes).measure(adapter)`.
+- **Canonical `compute_*` aliases.** `compute_closure`,
+  `compute_memory`, `compute_constraint`, `compute_persistence`,
+  `compute_coherence` are exported at the top level as identity
+  aliases of the legacy-named functions. The legacy names continue
+  to work unchanged.
+- **`profile.metadata["axes"]` field.** Mirrors `metadata["metrics"]`
+  but uses canonical public names. Convenient for downstream
+  reporting that should not leak the legacy vocabulary.
+- **`docs/API_FREEZE.md`.** New design document recording the
+  canonical public surface, the deprecation timeline for the legacy
+  names, and what is **not** covered by the freeze (adapter
+  constructors, metadata layout, private members).
+- **`tests/test_canonical_api.py`.** 23 new tests pinning the
+  canonical surface: constants, accessors, `to_dict`, `defined_axes`,
+  `__repr__`, the new `measure()` top-level helper, and the canonical
+  `compute_*` aliases.
+
+### Changed
+
+- **`Autonometer()` default is now all five axes.** Previously the
+  default was the v0.1.x legacy `metrics=["albantakis"]`, which
+  silently dropped four of the five canonical readings. The new
+  default is `metrics=AXES`. Adapters that do not support a given
+  axis continue to report `None` for that field (mosaic-dropout
+  policy), so the change is purely additive on the consumer side.
+  The two `tests/test_core.py` tests that documented the legacy
+  default are updated accordingly.
+- **`profile.metadata["metrics"]`** continues to use internal
+  identifiers (`["albantakis", "memory", ...]`) for backward
+  compatibility; the new `profile.metadata["axes"]` field exposes
+  the same list under canonical names.
+- **`tests/test_smoke.py`** asserts on `__version__ == "0.8.1a0"`.
+
+### Deprecation timeline
+
+| Release   | Behaviour for legacy names                                   |
+| :-------- | :----------------------------------------------------------- |
+| `v0.8.1a0`| Soft alias. Legacy and canonical names both work; no warning.|
+| `v0.10.x` | `DeprecationWarning` emitted when legacy names are used.     |
+| `v1.0.0`  | Active warning continues; documentation removes legacy names.|
+| `v2.0.0`  | Legacy public names are removed.                             |
+
+Internal symbols (`_METRIC_REGISTRY` keys, private helpers) are not
+covered by this timeline and may move freely between minor releases.
+
+### Notes for downstream users
+
+- **Nothing breaks.** All `v0.8.0a0` code keeps working without
+  changes; the suite has 304 passing tests, of which 281 are the
+  pre-existing tests untouched in this release.
+- **Migration is incremental.** New code can use canonical names from
+  day one; legacy callers can migrate axis-by-axis or never (until
+  `v2.0`). A one-line migration is `profile.ratio_endo_total ->
+  profile.closure`.
+- **No benchmarks were rerun.** The geometry/independence/correlation
+  numbers and verdicts in `docs/CBA.md`, `docs/ATLAS_GEOMETRY.md` and
+  `docs/PBA.md` are unchanged.
+
 ## [0.8.0a0] - 2026-05-03
 
 > Fifth-axis cycle. Adds the **coherence-based axis (CBA)**
