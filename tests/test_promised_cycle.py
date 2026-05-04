@@ -135,3 +135,75 @@ def test_replay_rejects_excessive_horizon() -> None:
     sys = PromisedCycle(length=100, period=4, alphabet=4, p_noise=0.0, seed=0)
     with pytest.raises(ValueError, match="t_star \\+ n_steps"):
         sys.replay_from_perturbation(t_star=50, n_steps=80)
+
+
+# --- p_env (independent declared-channel noise) ----------------------------
+
+
+def test_p_env_zero_default_preserves_pure_cycle() -> None:
+    """With p_env=0 (default) the declared channel is exactly the cycle."""
+    sys = PromisedCycle(length=120, period=4, alphabet=4, p_noise=0.5, seed=7)
+    declared, _ = sys.get_declared_executed()
+    expected = (np.arange(120) % 4).astype(np.int64)
+    np.testing.assert_array_equal(declared, expected)
+
+
+def test_p_env_zero_explicit_matches_default() -> None:
+    """Passing p_env=0 explicitly is byte-for-byte identical to the default."""
+    a = PromisedCycle(length=300, period=3, alphabet=5, p_noise=0.4, seed=9)
+    b = PromisedCycle(length=300, period=3, alphabet=5, p_noise=0.4, p_env=0.0, seed=9)
+    da, ea = a.get_declared_executed()
+    db, eb = b.get_declared_executed()
+    np.testing.assert_array_equal(da, db)
+    np.testing.assert_array_equal(ea, eb)
+
+
+def test_p_env_one_yields_uniform_declared() -> None:
+    """With p_env=1 every step is replaced; declared ≈ uniform on alphabet."""
+    sys = PromisedCycle(
+        length=4000, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=0
+    )
+    declared, _ = sys.get_declared_executed()
+    counts = np.bincount(declared, minlength=4)
+    freqs = counts / counts.sum()
+    assert np.all(np.abs(freqs - 0.25) < 0.03)
+
+
+def test_p_env_one_p_noise_zero_executed_tracks_declared() -> None:
+    """With p_noise=0 the executed channel still equals declared
+    even when declared has been fully randomised by p_env=1."""
+    sys = PromisedCycle(
+        length=500, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=3
+    )
+    declared, executed = sys.get_declared_executed()
+    np.testing.assert_array_equal(declared, executed)
+
+
+def test_p_env_and_p_noise_are_independent_streams() -> None:
+    """The env and noise masks come from independent draws of the same RNG.
+
+    Specifically, with p_env=0.5 we expect declared to differ from the
+    base cycle on roughly half the steps, regardless of p_noise.
+    """
+    rng_seed = 11
+    base = (np.arange(2000) % 4).astype(np.int64)
+    sys = PromisedCycle(
+        length=2000, period=4, alphabet=4, p_noise=0.0, p_env=0.5, seed=rng_seed
+    )
+    declared, _ = sys.get_declared_executed()
+    diff_rate = float(np.mean(declared != base))
+    # Half the positions touched by env_mask, of which 1 - 1/alphabet differ
+    # from the base cycle on average → ~0.5 * 0.75 = 0.375.
+    assert 0.30 < diff_rate < 0.45
+
+
+def test_p_env_property_is_exposed() -> None:
+    sys = PromisedCycle(length=100, period=4, alphabet=4, p_env=0.25, seed=0)
+    assert sys.p_env == pytest.approx(0.25)
+
+
+def test_rejects_invalid_p_env() -> None:
+    with pytest.raises(ValueError, match="p_env"):
+        PromisedCycle(length=100, period=4, alphabet=4, p_env=-0.1, seed=0)
+    with pytest.raises(ValueError, match="p_env"):
+        PromisedCycle(length=100, period=4, alphabet=4, p_env=1.5, seed=0)

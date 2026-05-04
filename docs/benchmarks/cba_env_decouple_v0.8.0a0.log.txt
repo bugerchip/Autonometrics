@@ -1,0 +1,67 @@
+﻿CBA Î closure causal decouple experiment (v0.8.0a0)
+====================================================================
+
+Total measurements: 200
+
+  global r(closure, coherence)             = +0.4801
+  r(closure, p_noise)                      = -0.4416
+  r(closure, p_env)                        = -0.4616
+  r(coherence, p_noise)                    = -0.9694
+  r(coherence, p_env)                      = +0.0007
+
+--- r(closure, coherence) at fixed p_env ---
+     p_env     n    pearson
+  -------- ----- ----------
+     0.000    40    +0.9693
+     0.250    40    +0.9727
+     0.500    40    +0.9653
+     0.750    40    +0.8105
+     1.000    40    -0.0474
+
+--- r(closure, coherence) at fixed p_noise ---
+   p_noise     n    pearson
+  -------- ----- ----------
+     0.100    40    -0.1493
+     0.300    40    -0.0768
+     0.500    40    -0.0915
+     0.700    40    -0.0785
+     0.900    40    -0.3123
+
+--- per-cell mean(closure) and mean(coherence) ---
+   p_noise  p_env    n  mean_clos   mean_coh         r
+  -------- ------ ---- ---------- ---------- ---------
+     0.100  0.000    8    +0.5800    +0.7402   +0.9859
+     0.100  0.250    8    +0.1827    +0.7503   +0.7657
+     0.100  0.500    8    +0.0397    +0.7476   -0.1131
+     0.100  0.750    8    +0.0034    +0.7467   -0.1491
+     0.100  1.000    8    +0.0008    +0.7454   +0.4399
+     0.300  0.000    8    +0.2098    +0.4324   +0.9217
+     0.300  0.250    8    +0.0719    +0.4402   +0.5964
+     0.300  0.500    8    +0.0165    +0.4367   +0.0035
+     0.300  0.750    8    +0.0016    +0.4353   -0.8477
+     0.300  1.000    8    +0.0008    +0.4355   -0.4306
+     0.500  0.000    8    +0.0579    +0.2228   +0.8445
+     0.500  0.250    8    +0.0208    +0.2315   +0.8476
+     0.500  0.500    8    +0.0054    +0.2298   +0.2699
+     0.500  0.750    8    +0.0011    +0.2278   -0.6575
+     0.500  1.000    8    +0.0009    +0.2260   -0.0850
+     0.700  0.000    8    +0.0082    +0.0846   +0.5307
+     0.700  0.250    8    +0.0033    +0.0906   +0.6355
+     0.700  0.500    8    +0.0014    +0.0889   +0.0131
+     0.700  0.750    8    +0.0009    +0.0867   -0.6817
+     0.700  1.000    8    +0.0009    +0.0849   -0.4365
+     0.900  0.000    8    +0.0008    +0.0104   +0.2735
+     0.900  0.250    8    +0.0009    +0.0127   -0.4915
+     0.900  0.500    8    +0.0008    +0.0118   -0.7998
+     0.900  0.750    8    +0.0007    +0.0111   -0.5144
+     0.900  1.000    8    +0.0008    +0.0106   -0.5770
+
+Interpretation rule (decided pre-run):
+  - If global r drops to |r| < 0.9 (the hard gate), the artefact
+    hypothesis is causally supported: the +0.96 in the v0.8.0a0
+    benchmark was due to PromisedCycle having a single driver.
+  - If global r stays >= 0.9, the structural-coupling hypothesis
+    is reinforced and the hard gate stands.
+
+JSON saved to: C:\Users\Usuario\Documents\GitHub\Autonometrics\docs\benchmarks\cba_env_decouple_v0.8.0a0.json
+PNG saved to:  C:\Users\Usuario\Documents\GitHub\Autonometrics\docs\benchmarks\cba_env_decouple_v0.8.0a0.png

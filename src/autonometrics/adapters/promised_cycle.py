@@ -25,6 +25,18 @@ The adapter has two modes:
   textbook case where ``cba_theil_u ≈ 1`` and
   ``cba_match_rate ≈ 0``.
 
+In addition to ``p_noise``, the adapter optionally accepts
+``p_env`` — an **independent** per-step replacement probability
+that perturbs the *declared* trajectory itself before the
+executed channel is built. ``p_env`` exists so a single
+``PromisedCycle`` instance can be driven by **two independent
+sources of variability** (one on the declaration, one on the
+execution). Sweeping both axes is the cleanest way to test
+whether observed correlations between trajectory- and
+declaration-based metrics (e.g. closure × coherence) come from
+shared structure or merely from a single shared driver. When
+``p_env = 0`` the adapter behaves byte-for-byte as before.
+
 The class also implements the standard ``AutonomySystem``
 methods (``get_state_history``, ``get_env_history``) so that
 the same instance is a valid input to the four shipped
@@ -63,11 +75,21 @@ class PromisedCycle:
         Either ``"random_noise"`` (default) or
         ``"adversarial_shift"``. See module docstring.
     p_noise:
-        Per-step replacement probability in ``random_noise``
-        mode. Ignored in ``adversarial_shift`` mode. Must lie
-        in ``[0.0, 1.0]``.
+        Per-step replacement probability on the **executed**
+        channel in ``random_noise`` mode. Ignored in
+        ``adversarial_shift`` mode. Must lie in ``[0.0, 1.0]``.
+    p_env:
+        Per-step replacement probability on the **declared**
+        channel, sampled from a separate sub-stream of the same
+        seed so it is statistically independent of the executed
+        noise. With probability ``p_env`` the declared symbol at
+        a given step is replaced by a uniformly drawn alphabet
+        symbol; otherwise the periodic cycle value is kept.
+        ``p_env = 0`` (the default) preserves the original pure
+        cycle and the byte-for-byte behaviour of older versions.
+        Must lie in ``[0.0, 1.0]``.
     seed:
-        Reproducibility seed for the noise process.
+        Reproducibility seed for both noise processes.
     """
 
     def __init__(
@@ -78,6 +100,7 @@ class PromisedCycle:
         alphabet: int,
         mode: str = _MODE_RANDOM,
         p_noise: float = 0.0,
+        p_env: float = 0.0,
         seed: int = 0,
     ) -> None:
         if mode not in _VALID_MODES:
@@ -92,12 +115,15 @@ class PromisedCycle:
             )
         if not 0.0 <= p_noise <= 1.0:
             raise ValueError(f"p_noise must lie in [0.0, 1.0]; got {p_noise}")
+        if not 0.0 <= p_env <= 1.0:
+            raise ValueError(f"p_env must lie in [0.0, 1.0]; got {p_env}")
 
         self._length = int(length)
         self._period = int(period)
         self._alphabet = int(alphabet)
         self._mode = mode
         self._p_noise = float(p_noise)
+        self._p_env = float(p_env)
         self._seed = int(seed)
 
         self._declared: np.ndarray | None = None
@@ -106,7 +132,16 @@ class PromisedCycle:
     def _build(self) -> None:
         rng = np.random.default_rng(self._seed)
         idx = np.arange(self._length, dtype=np.int64) % self._period
-        declared = idx.astype(np.int64)
+        base_declared = idx.astype(np.int64)
+
+        if self._p_env > 0.0:
+            env_mask = rng.random(self._length) < self._p_env
+            env_alts = rng.integers(0, self._alphabet, size=self._length).astype(
+                np.int64
+            )
+            declared = np.where(env_mask, env_alts, base_declared).astype(np.int64)
+        else:
+            declared = base_declared
 
         if self._mode == _MODE_ADVERSARIAL:
             executed = ((declared + 1) % self._alphabet).astype(np.int64)
@@ -195,6 +230,10 @@ class PromisedCycle:
     @property
     def p_noise(self) -> float:
         return self._p_noise
+
+    @property
+    def p_env(self) -> float:
+        return self._p_env
 
     @property
     def alphabet(self) -> int:
