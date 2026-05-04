@@ -38,7 +38,7 @@ compute_coherence = compute_cba_theil_u
 # a same-named alias for symmetry with the rest of the canonical set.
 compute_memory = compute_memory_endo_ratio
 
-__version__ = "0.8.1a0"
+__version__ = "0.8.2a0"
 
 __all__ = [
     "ALL_AXES",

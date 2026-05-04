@@ -7,6 +7,68 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.8.2a0] - 2026-05-04
+
+> API-pulido cycle, block 2. Strictly backward-compatible. Lowers
+> the friction of getting a first measurement out of the door for
+> casual users: every reference adapter now ships a one-line
+> convenience factory that picks defaults clearing every per-axis
+> hard floor, and the README documents those floors explicitly so
+> the next user does not hit the 500-timestep `memory` wall the way
+> the v0.8.1a0 smoke test did. **No metric definition changes; no
+> benchmark reruns; no hypothesis updates.**
+
+### Added
+
+- **`PromisedCycle.simple(p_noise=0.1, seed=0, length=600)` factory.**
+  One-knob convenience constructor for the canonical CBA-positive
+  adapter. Picks `period = alphabet = 4` and `length = 600`
+  (clearing the 500-step `memory` floor) so all four
+  trajectory-based axes (`closure`, `memory`, `persistence`,
+  `coherence`) yield non-trivial scores on the first try. The
+  verbose 7-argument constructor is unchanged.
+- **`SimpleAutomaton.demo(mode="self_generated", n_states=4, n_steps=3000, seed=0)` factory.**
+  Mirror of the above for the self-generated-vs-external automaton
+  story used in the README. Generates a uniform random environment
+  internally so the caller never has to import `numpy` or
+  pre-build an array. Verbose constructor and the existing
+  `from_self_generated_rules` / `from_external_rules` factories
+  are unchanged.
+- **`CSVTrajectory.from_file(path, state_col="state", env_col="env")`.**
+  New canonical name matching the `pandas.read_csv` /
+  `np.loadtxt` / `json.load` ecosystem convention.
+  `CSVTrajectory.from_path(...)` becomes a one-line delegating
+  alias and remains supported until at least `v2.0`.
+- **README "Minimum trajectory length per axis" subsection.**
+  Five-row table listing hard floor, soft floor and a per-axis
+  note. Sits between the Quickstart and the Metrics deep-dive so
+  new users can size their data without grep-ing the source.
+- **`Autonometer.__init__` and `measure()` docstrings** grow a
+  compact "Notes" block with the same per-axis floors, pointing
+  callers at the README table.
+
+### Changed
+
+- **README Quickstart examples** now lead with the convenience
+  factories: `SimpleAutomaton.demo()` for the synthetic automaton
+  block (no more `numpy` import in the first code box) and
+  `CSVTrajectory.from_file()` for the CSV block. The verbose
+  constructors and the `from_path` alias are mentioned in
+  one-line follow-ups so the legacy paths remain discoverable.
+
+### Notes for downstream users
+
+- **Nothing breaks.** All `v0.8.1a0` code keeps working. The suite
+  has **325 passing tests**, of which 21 are new in this release
+  (7 + 9 + 5 across PRs #1–#3) and 304 are pre-existing tests
+  untouched.
+- **No benchmarks were rerun.** Hard-gate verdict, mosaic atlas
+  geometry, independence audit, `p_env` causal experiment — all
+  the v0.8.0a0 results stand untouched.
+- **Migration is purely opt-in.** New code can use the factories
+  and the canonical `from_file` name from day one; legacy callers
+  may keep their verbose constructors and `from_path` indefinitely.
+
 ## [0.8.1a0] - 2026-05-04
 
 > API-pulido cycle. Strictly backward-compatible. Introduces the
