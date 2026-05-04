@@ -124,3 +124,60 @@ def test_roundtrip_through_csv_matches_direct_measurement(tmp_path: Path) -> Non
     assert profile_direct.ratio_endo_total == pytest.approx(profile_csv.ratio_endo_total)
     assert profile_direct.memory_endo_ratio == pytest.approx(profile_csv.memory_endo_ratio)
     assert profile_csv.metadata["adapter"] == "CSVTrajectory"
+
+
+# --------------------------------------------------------------------- #
+# .from_file() canonical name (since v0.8.2a0)
+# --------------------------------------------------------------------- #
+
+
+def test_from_file_with_header(tmp_path: Path) -> None:
+    """``from_file`` is the canonical entry point introduced in v0.8.2a0."""
+    csv_path = _write_csv(
+        tmp_path / "traj.csv",
+        "state,env\n0,1\n1,0\n2,1\n",
+    )
+    traj = CSVTrajectory.from_file(csv_path)
+    np.testing.assert_array_equal(traj.get_state_history(), np.array([0, 1, 2]))
+    np.testing.assert_array_equal(traj.get_env_history(), np.array([1, 0, 1]))
+
+
+def test_from_file_and_from_path_yield_equal_trajectories(tmp_path: Path) -> None:
+    """Both names must produce byte-for-byte identical results."""
+    csv_path = _write_csv(
+        tmp_path / "traj.csv",
+        "state,env\n0,1\n1,0\n2,1\n3,0\n",
+    )
+    via_file = CSVTrajectory.from_file(csv_path)
+    via_path = CSVTrajectory.from_path(csv_path)
+    np.testing.assert_array_equal(
+        via_file.get_state_history(), via_path.get_state_history()
+    )
+    np.testing.assert_array_equal(
+        via_file.get_env_history(), via_path.get_env_history()
+    )
+
+
+def test_from_path_still_works_unchanged(tmp_path: Path) -> None:
+    """Backward compatibility: ``from_path`` is a delegating alias."""
+    csv_path = _write_csv(
+        tmp_path / "traj.csv",
+        "state,env\n0,1\n1,0\n2,1\n",
+    )
+    traj = CSVTrajectory.from_path(csv_path)
+    assert traj.get_state_history().shape == (3,)
+
+
+def test_from_file_supports_custom_column_names(tmp_path: Path) -> None:
+    csv_path = _write_csv(
+        tmp_path / "traj.csv",
+        "a,b\n5,7\n6,8\n7,9\n",
+    )
+    traj = CSVTrajectory.from_file(csv_path, state_col="b", env_col="a")
+    np.testing.assert_array_equal(traj.get_state_history(), np.array([7, 8, 9]))
+    np.testing.assert_array_equal(traj.get_env_history(), np.array([5, 6, 7]))
+
+
+def test_from_file_missing_file_raises(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError):
+        CSVTrajectory.from_file(tmp_path / "nope.csv")
