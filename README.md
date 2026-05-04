@@ -761,9 +761,18 @@ diagnostic mapped the `closure = 1.0` saturation wall,
 preserving pairwise independence, `v0.6.1a0` mapped the two
 saturating regions of `constraint_closure`, `v0.7.0a0` added
 the fourth axis (`rai_proxy_persistence`) and revealed its U-
-shaped domain of applicability, and `v0.7.2a0` ran a
+shaped domain of applicability, `v0.7.2a0` ran a
 pre-registered geometric audit of the four-axis cloud whose
-verdict pushed the Level 2 vs Level 3 question to `v0.9.0`.
+verdict pushed the Level 2 vs Level 3 question to `v0.9.0`,
+and `v0.8.0a0` added the fifth axis (`coherence` / Theil's U)
+together with its reference adapter `PromisedCycle`, ran the
+Session B diagnostic block (independence audit + causal
+experiment with `p_env`) that overrode the pre-registered hard
+gate on causal grounds, and shipped the **mosaic-atlas
+verdict** (`n_valid_full = 0/645`: no system in the current
+zoo has all five axes simultaneously, so the atlas is best
+read as overlapping four-axis sub-charts rather than a single
+five-dimensional cloud).
 
 - `v0.5.0-alpha`: benchmark suite + scatter plot. Reference
   systems (`ECASystem`, `KauffmanNetwork`, `PeriodicCycle`) wired
@@ -799,15 +808,39 @@ verdict pushed the Level 2 vs Level 3 question to `v0.9.0`.
   the prior axes already enjoy. Intentionally **skipped** in
   the chronological release order; the boundary theorems and
   the magnitude sweep land here.
-- `v0.7.2-alpha` *(current)*: pre-registered atlas-geometry
-  analysis. PCA + k-means + silhouette + conditional
-  correlations on the extended four-axis benchmark
-  (`n_valid = 247`). Pre-registered in
+- `v0.7.2-alpha`: pre-registered atlas-geometry analysis. PCA
+  + k-means + silhouette + conditional correlations on the
+  extended four-axis benchmark (`n_valid = 247`).
+  Pre-registered in
   [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md). Verdict:
   inconclusive on the level question (PCA reading), with a
   Level-3-suggestive overlay (clustering reading); the level
   question is pushed to `v0.9.0`'s behavioural validation.
-- `v0.8.0-alpha`: fifth axis — coherence-based alignment ratio.
+- `v0.8.0-alpha` *(current)*: fifth axis —
+  **coherence-based alignment** (`cba_theil_u`, Theil's U on
+  declared vs executed trajectories with Miller-Madow bias
+  correction). New reference adapter `PromisedCycle` with
+  optional independent declared-channel noise (`p_env`); new
+  optional protocol method `get_declared_executed`; new
+  `AutonomyProfile.cba_theil_u` field. Pre-registered in
+  [`docs/CBA.md`](docs/CBA.md). Five-axis benchmark snapshot
+  at `docs/benchmarks/v0.8.0a0.{csv,log.txt}`. Session B ships
+  three diagnostic snapshots:
+  `cba_independence_v0.8.0a0.{json,png,log.txt}` (stratified
+  audit, Simpson's-paradox visualisation),
+  `cba_env_decouple_v0.8.0a0.{json,png,log.txt}` (causal
+  experiment with `p_env`, `r(closure, coherence)` falls from
+  `+0.97` to `+0.48` and `r(coherence, p_env) = +0.0007`
+  confirms Theil's U invariance), and the
+  [v0.8.0a0 follow-up](docs/ATLAS_GEOMETRY.md#v080a0-follow-up--five-axis-geometry-atlas-as-a-mosaic)
+  of `ATLAS_GEOMETRY.md` (Step 7 verdict:
+  `n_valid_full = 0/645`, atlas is a mosaic of overlapping
+  four-axis sub-charts). Pre-registered hard gate
+  (`|r| ≥ 0.9`) was triggered by the headline `+0.96` and
+  then **overridden on causal grounds** with the override
+  documented in the post-mortem section of
+  [`docs/CBA.md`](docs/CBA.md). Level question pulled toward
+  Level 3, decided (or stays open) at `v0.9.0`.
 - `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
   and additional public-dataset benchmarks. **Behavioural
   validation pass**: arbitrates Level 2 vs Level 3 against
