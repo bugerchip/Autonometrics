@@ -178,9 +178,15 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Cursor  
-#  Cursor is an AI-powered code editor.`.cursorignore` specifies files/directories to 
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
+# Cursor
+#  Cursor is an AI-powered code editor. `.cursorignore` /
+#  `.cursorindexingignore` exclude files from indexing.
+#  `.cursor/` (rules, prompts, modes, hooks) is excluded as a
+#  whole because its contents are typically per-developer
+#  preferences (output language, personal style, chat history)
+#  rather than project conventions. If a project-wide rule
+#  needs to be shared, commit it explicitly with `git add -f`.
+#  Refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+.cursor/
