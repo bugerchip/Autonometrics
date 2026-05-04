@@ -5,6 +5,26 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+# Canonical public axis names used by the user-facing API. Mirrors
+# ``autonometrics.core.AXES`` (declared here too to avoid an import
+# cycle between ``core`` and ``profile``).
+_CANONICAL_AXES: tuple[str, ...] = (
+    "closure",
+    "memory",
+    "constraint",
+    "persistence",
+    "coherence",
+)
+
+# Translation: canonical public name -> internal field on AutonomyProfile.
+_CANONICAL_TO_FIELD: dict[str, str] = {
+    "closure": "ratio_endo_total",
+    "memory": "memory_endo_ratio",
+    "constraint": "constraint_closure",
+    "persistence": "rai_proxy_persistence",
+    "coherence": "cba_theil_u",
+}
+
 
 @dataclass(frozen=True)
 class AutonomyProfile:
@@ -112,3 +132,111 @@ class AutonomyProfile:
     rai_proxy_persistence: float | None = None
     cba_theil_u: float | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    # ------------------------------------------------------------------
+    # Canonical public API (since v0.8.1a0).
+    # The five named properties below mirror the canonical axes exposed
+    # in ``autonometrics.AXES`` and the README. Internal field names
+    # (``ratio_endo_total`` etc.) are kept untouched for backward
+    # compatibility but are no longer the recommended access path.
+    # ------------------------------------------------------------------
+
+    @property
+    def closure(self) -> float | None:
+        """Canonical alias for :attr:`ratio_endo_total` (Albantakis closure)."""
+        return self.ratio_endo_total
+
+    @property
+    def memory(self) -> float | None:
+        """Canonical alias for :attr:`memory_endo_ratio`."""
+        return self.memory_endo_ratio
+
+    @property
+    def constraint(self) -> float | None:
+        """Canonical alias for :attr:`constraint_closure` (Mossio)."""
+        return self.constraint_closure
+
+    @property
+    def persistence(self) -> float | None:
+        """Canonical alias for :attr:`rai_proxy_persistence`."""
+        return self.rai_proxy_persistence
+
+    @property
+    def coherence(self) -> float | None:
+        """Canonical alias for :attr:`cba_theil_u` (CBA / Theil's U)."""
+        return self.cba_theil_u
+
+    def __getitem__(self, name: str) -> float | None:
+        """Look up an axis value by canonical or internal name.
+
+        Examples
+        --------
+        >>> profile["closure"]   # canonical
+        >>> profile["albantakis"]  # internal (still works)
+        """
+        if name in _CANONICAL_TO_FIELD:
+            return getattr(self, _CANONICAL_TO_FIELD[name])
+        if hasattr(self, name) and name in {
+            "ratio_endo_total",
+            "memory_endo_ratio",
+            "constraint_closure",
+            "rai_proxy_persistence",
+            "cba_theil_u",
+        }:
+            return getattr(self, name)
+        # Tolerate the internal metric identifier "albantakis" too.
+        if name == "albantakis":
+            return self.ratio_endo_total
+        raise KeyError(
+            f"Unknown axis {name!r}. "
+            f"Canonical axes: {_CANONICAL_AXES}."
+        )
+
+    def to_dict(self) -> dict[str, float | None]:
+        """Return a flat ``{canonical_axis: value_or_None}`` dictionary.
+
+        The output uses canonical public names only (``closure``,
+        ``memory``, ``constraint``, ``persistence``, ``coherence``),
+        making the result trivially JSON-serialisable and stable
+        against future renames of internal fields.
+        """
+        return {axis: getattr(self, _CANONICAL_TO_FIELD[axis]) for axis in _CANONICAL_AXES}
+
+    def defined_axes(self) -> list[str]:
+        """List the canonical axes that were actually computed.
+
+        An axis is considered *defined* iff its value is not ``None``.
+        Mirrors the mosaic-dropout policy: adapters that do not support
+        a given axis report ``None`` for that field, and this method
+        filters those out.
+        """
+        return [axis for axis, value in self.to_dict().items() if value is not None]
+
+    def __repr__(self) -> str:
+        """Multi-line, human-readable summary using canonical names.
+
+        Only axes with a non-``None`` value are listed in the body.
+        Adapter and key metadata are summarised in a compact header.
+        """
+        adapter = self.metadata.get("adapter", "?")
+        n_steps = self.metadata.get("n_timesteps")
+        defined = self.to_dict()
+        defined_lines = [
+            f"  {axis:<12s} = {value:.4f}"
+            for axis, value in defined.items()
+            if value is not None
+        ]
+        missing = [axis for axis, value in defined.items() if value is None]
+
+        header = f"AutonomyProfile(adapter={adapter!r}"
+        if n_steps is not None:
+            header += f", n_timesteps={n_steps}"
+        header += ")"
+
+        body = "\n".join(defined_lines) if defined_lines else "  (no axes computed)"
+        footer = f"  missing: {missing}" if missing else ""
+
+        parts = [header, body]
+        if footer:
+            parts.append(footer)
+        return "\n".join(parts)

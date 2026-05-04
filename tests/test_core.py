@@ -25,10 +25,24 @@ def _make_system(seed: int = 0, n: int = 1500) -> _StaticSystem:
     return _StaticSystem(states=states, env=env)
 
 
-def test_default_metric_is_albantakis() -> None:
+def test_default_metric_is_all_five_axes() -> None:
+    """Since v0.8.1a0, ``Autonometer()`` defaults to all five axes.
+
+    The legacy default of ``["albantakis"]`` only — kept from v0.1.x —
+    silently dropped four of the five canonical readings, which made
+    the orchestrator surprising for new users. The default now matches
+    the canonical public surface (``AXES``), keeping the mosaic-dropout
+    policy (axes the adapter does not support are reported as ``None``).
+    """
     meter = Autonometer()
-    assert meter.metrics == ["albantakis"]
-    assert meter.metric == "albantakis"
+    assert meter.metrics == [
+        "albantakis",
+        "memory",
+        "constraint_closure",
+        "persistence",
+        "coherence",
+    ]
+    assert meter.metric == "albantakis"  # property still returns first entry
 
 
 def test_explicit_single_metric_backward_compat() -> None:
@@ -91,7 +105,20 @@ def test_metadata_is_populated() -> None:
     profile = Autonometer().measure(system)
 
     assert profile.metadata["metric"] == "albantakis"
-    assert profile.metadata["metrics"] == ["albantakis"]
+    assert profile.metadata["metrics"] == [
+        "albantakis",
+        "memory",
+        "constraint_closure",
+        "persistence",
+        "coherence",
+    ]
+    assert profile.metadata["axes"] == [
+        "closure",
+        "memory",
+        "constraint",
+        "persistence",
+        "coherence",
+    ]
     assert profile.metadata["n_timesteps"] == 1500
     assert profile.metadata["adapter"] == "_StaticSystem"
 

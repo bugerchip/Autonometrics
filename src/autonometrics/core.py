@@ -49,6 +49,44 @@ _PROFILE_FIELD: dict[str, str] = {
     "coherence": "cba_theil_u",
 }
 
+# Canonical public axis names exposed in README and user-facing API.
+# Internal metric identifiers are kept for backward compatibility and
+# translated transparently through ``_CANONICAL_ALIAS`` below.
+AXES: tuple[str, ...] = ("closure", "memory", "constraint", "persistence", "coherence")
+ALL_AXES: tuple[str, ...] = AXES
+
+# Translation table: canonical public name -> internal metric identifier.
+# Entries that map to themselves are still listed for explicitness.
+_CANONICAL_ALIAS: dict[str, str] = {
+    "closure": "albantakis",
+    "memory": "memory",
+    "constraint": "constraint_closure",
+    "persistence": "persistence",
+    "coherence": "coherence",
+}
+
+# Reverse lookup: internal metric identifier -> canonical public name.
+_INTERNAL_TO_CANONICAL: dict[str, str] = {v: k for k, v in _CANONICAL_ALIAS.items()}
+
+
+def _resolve_metric_name(name: str) -> str:
+    """Translate a metric identifier to its internal form.
+
+    Accepts both canonical public names (``closure``, ``constraint``)
+    and internal identifiers (``albantakis``, ``constraint_closure``).
+    Returns the internal identifier used by ``_METRIC_REGISTRY``.
+
+    Raises ``ValueError`` if neither a canonical alias nor a registered
+    internal name matches.
+    """
+    if name in _CANONICAL_ALIAS:
+        return _CANONICAL_ALIAS[name]
+    if name in _METRIC_REGISTRY:
+        return name
+    valid = sorted(set(AXES) | set(_METRIC_REGISTRY))
+    raise ValueError(f"Unknown metric {name!r}. Supported: {valid}")
+
+
 SUPPORTED_METRICS: frozenset[str] = frozenset(_METRIC_REGISTRY)
 
 
@@ -107,12 +145,18 @@ class Autonometer:
     metric:
         Single-metric convenience argument, kept for backward
         compatibility with ``v0.1.x``. Ignored when ``metrics`` is
-        provided.
+        provided. Accepts canonical public names (e.g. ``"closure"``)
+        and internal identifiers (e.g. ``"albantakis"``).
     metrics:
-        Preferred argument. A list of metric identifiers; each entry
-        must be in :data:`SUPPORTED_METRICS`. Defaults to
-        ``["albantakis"]`` when neither ``metric`` nor ``metrics`` is
-        given.
+        Preferred argument. An iterable of metric identifiers. Each
+        entry may be a canonical public name from :data:`AXES`
+        (``"closure"``, ``"memory"``, ``"constraint"``,
+        ``"persistence"``, ``"coherence"``) or an internal identifier
+        from :data:`SUPPORTED_METRICS`. When neither ``metric`` nor
+        ``metrics`` is provided, defaults to all five canonical axes.
+        Adapters that do not support a given axis report ``None`` for
+        that field instead of aborting the measurement (mosaic
+        dropout policy).
     """
 
     def __init__(
@@ -121,18 +165,16 @@ class Autonometer:
         metrics: list[str] | None = None,
     ) -> None:
         if metrics is not None:
-            resolved = list(metrics)
+            requested = list(metrics)
         elif metric is not None:
-            resolved = [metric]
+            requested = [metric]
         else:
-            resolved = ["albantakis"]
+            requested = list(AXES)
 
-        if not resolved:
+        if not requested:
             raise ValueError("metrics must contain at least one metric identifier")
 
-        for name in resolved:
-            if name not in _METRIC_REGISTRY:
-                raise ValueError(f"Unknown metric {name!r}. Supported: {sorted(_METRIC_REGISTRY)}")
+        resolved = [_resolve_metric_name(name) for name in requested]
 
         self.metrics: list[str] = resolved
 
@@ -163,8 +205,10 @@ class Autonometer:
         for name in self.metrics:
             field_values[_PROFILE_FIELD[name]] = self._score(name, system, states, env)
 
+        canonical_axes = [_INTERNAL_TO_CANONICAL[name] for name in self.metrics]
         metadata: dict[str, Any] = {
             "metrics": list(self.metrics),
+            "axes": canonical_axes,
             "metric": self.metrics[0],
             "n_timesteps": int(states.size),
             "adapter": type(system).__name__,
@@ -221,3 +265,45 @@ class Autonometer:
             declared, executed = pair
             return float(fn(np.asarray(declared), np.asarray(executed)))
         raise RuntimeError(f"Unknown metric input kind for {name!r}: {kind!r}")
+
+
+def measure(
+    system: AutonomySystem,
+    axes: list[str] | tuple[str, ...] | None = None,
+) -> AutonomyProfile:
+    """One-line convenience entry point: measure a system across axes.
+
+    Parameters
+    ----------
+    system:
+        Any object implementing the :class:`AutonomySystem` protocol.
+        Adapters provided by the package (``CSVTrajectory``,
+        ``PromisedCycle``, ``SimpleAutomaton``) all qualify.
+    axes:
+        Iterable of canonical axis names from :data:`AXES` or internal
+        identifiers from :data:`SUPPORTED_METRICS`. Defaults to all
+        five canonical axes when ``None``. Axes the adapter does not
+        support are reported as ``None`` (mosaic dropout).
+
+    Returns
+    -------
+    AutonomyProfile
+        Profile with one float per measured axis and ``None`` for
+        unsupported axes. Use ``profile.to_dict()`` for a flat
+        canonical-name dictionary, ``profile.defined_axes()`` for the
+        list of axes that were successfully computed.
+
+    Examples
+    --------
+    >>> import autonometrics as anm
+    >>> sys = anm.PromisedCycle(length=600, period=4, alphabet=4, p_noise=0.1)
+    >>> profile = anm.measure(sys)  # doctest: +SKIP
+    >>> profile["closure"]  # doctest: +SKIP
+    0.74...
+
+    Notes
+    -----
+    Equivalent to ``Autonometer(metrics=axes).measure(system)``.
+    """
+    selected = list(axes) if axes is not None else list(AXES)
+    return Autonometer(metrics=selected).measure(system)
