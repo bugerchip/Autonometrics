@@ -133,33 +133,70 @@ benchmark plotting scripts.
 
 ## Quickstart
 
+### One-line measurement (recommended)
+
+Since `v0.8.1a0` the package exposes the canonical axis names
+(`closure`, `memory`, `constraint`, `persistence`, `coherence`) and a
+top-level `measure()` helper. The shortest possible end-to-end
+measurement reads:
+
+```python
+import autonometrics as anm
+
+system = anm.PromisedCycle(length=600, period=4, alphabet=4, p_noise=0.1)
+profile = anm.measure(system)
+
+print(profile)
+print(profile.to_dict())
+print(profile.defined_axes())
+```
+
+`anm.measure(system)` defaults to all five canonical axes. Axes the
+adapter does not support are reported as `None` (mosaic-dropout
+policy) instead of aborting the measurement.
+
+### Asking for a subset of axes
+
+```python
+import autonometrics as anm
+
+profile = anm.measure(system, axes=["closure", "coherence"])
+print(profile["closure"], profile["coherence"])
+```
+
+The full list of canonical axis names lives in `anm.AXES`:
+
+```python
+>>> anm.AXES
+('closure', 'memory', 'constraint', 'persistence', 'coherence')
+```
+
 ### Measuring a synthetic automaton
 
 ```python
 import numpy as np
-from autonometrics import Autonometer, SimpleAutomaton
+import autonometrics as anm
 
 rng = np.random.default_rng(0)
 env = rng.integers(0, 3, size=3000).astype(np.int64)
 
-system_a = SimpleAutomaton.from_self_generated_rules(n_states=4, env=env, seed=0)
-system_b = SimpleAutomaton.from_external_rules(n_states=4, env=env, seed=0)
+system_a = anm.SimpleAutomaton.from_self_generated_rules(n_states=4, env=env, seed=0)
+system_b = anm.SimpleAutomaton.from_external_rules(n_states=4, env=env, seed=0)
 
-meter = Autonometer(metrics=["albantakis", "memory"])
-profile_a = meter.measure(system_a)
-profile_b = meter.measure(system_b)
+profile_a = anm.measure(system_a, axes=["closure", "memory"])
+profile_b = anm.measure(system_b, axes=["closure", "memory"])
 
-print(profile_a.ratio_endo_total, profile_a.memory_endo_ratio)
-print(profile_b.ratio_endo_total, profile_b.memory_endo_ratio)
+print(profile_a.closure, profile_a.memory)
+print(profile_b.closure, profile_b.memory)
 ```
 
 ### Measuring a CSV trajectory you already have
 
 ```python
-from autonometrics import Autonometer, CSVTrajectory
+import autonometrics as anm
 
-trajectory = CSVTrajectory.from_path("my_log.csv")  # header: state,env
-profile = Autonometer(metrics=["albantakis", "memory"]).measure(trajectory)
+trajectory = anm.CSVTrajectory.from_path("my_log.csv")  # header: state,env
+profile = anm.measure(trajectory, axes=["closure", "memory"])
 ```
 
 `my_log.csv` is a two-column file with discrete integer labels:
