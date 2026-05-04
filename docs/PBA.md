@@ -599,6 +599,44 @@ As of `v0.7.2a0`:
   pre-registered thresholds are in
   [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md) and summarised
   in the *Atlas geometry* subsection above.
+- The `v0.8.0a0` cycle adds the fifth axis `coherence`
+  (Theil's U on declared vs executed trajectories; design in
+  [`docs/CBA.md`](CBA.md)) and runs the extended five-axis
+  benchmark (snapshot under
+  `docs/benchmarks/v0.8.0a0.{csv,log.txt}`). The full sweep
+  produces **645 measured systems with `n_valid_full = 0/645`**
+  — no system in the current zoo has all five axes
+  simultaneously defined, because each adapter class implements
+  exactly one of `get_causal_graph` or `get_declared_executed`,
+  not both. The pre-registered Step 7 PCA on the five-axis
+  cloud is therefore **structurally inapplicable** and the
+  honest verdict is recorded in the
+  [v0.8.0a0 follow-up](ATLAS_GEOMETRY.md#v080a0-follow-up--five-axis-geometry-atlas-as-a-mosaic)
+  of `ATLAS_GEOMETRY.md`. Independent diagnostic evidence from
+  the same cycle:
+  - Headline pairwise correlation
+    `r(closure, coherence) = +0.96` on the 240 PromisedCycle
+    rows triggered the pre-registered hard gate of
+    `docs/CBA.md` (`|r| ≥ 0.9 → release blocked`).
+  - The stratified audit
+    (`docs/benchmarks/cba_independence_v0.8.0a0.{json,png,log.txt}`,
+    commit `8e66c82`) shows the within-cell correlation decays
+    smoothly with `p_noise` (`+0.93 → −0.18`), consistent with
+    a Simpson-style between-cluster artefact rather than a
+    structural coupling.
+  - The causal experiment
+    (`docs/benchmarks/cba_env_decouple_v0.8.0a0.{json,png,log.txt}`,
+    commit `eefce9d`) introduces an independent
+    declared-channel noise `p_env`, drops the headline
+    correlation from `+0.97` to `+0.48`, and confirms
+    `r(coherence, p_env) = +0.0007` — the invariance property
+    `docs/CBA.md` predicted before the data were collected.
+  - Both diagnostics together support overriding the hard gate
+    on causal grounds: the `+0.96` was an artefact of
+    PromisedCycle's single-driver design, not a redundancy
+    between the two metrics. The override is documented in
+    [`docs/CBA.md`](CBA.md) and in the `v0.8.0a0` entry of
+    `CHANGELOG.md`.
 
 PBA is therefore at the stage of *plausible working hypothesis
 with diagnostic-grade limitations mapped on three of the four
@@ -618,18 +656,28 @@ Documents and demos in the package phrase it accordingly.
   theorems analogous to Theorem A / Theorem B for
   `constraint_closure`, and ships the perturbation-magnitude
   sweep deferred from `v0.7.0a0` in `docs/RAI.md`.
-- `v0.7.2a0` (this release) ships the atlas-geometry analysis
-  pre-registered in [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md).
-  Verdict above.
-- `v0.8.0a0` adds the coherence-based axis (CBA); completing
-  the five lets the prediction above be evaluated for the first
-  time.
+- `v0.7.2a0` ships the atlas-geometry analysis pre-registered
+  in [`docs/ATLAS_GEOMETRY.md`](ATLAS_GEOMETRY.md). Verdict
+  recorded in the *Atlas geometry* subsection above.
+- `v0.8.0a0` (this release) adds the coherence-based axis
+  (CBA) pre-registered in [`docs/CBA.md`](CBA.md), runs the
+  five-axis benchmark, executes the diagnostic Session B
+  analyses, and closes Step 7 with the honest "no five-axis
+  cloud" verdict recorded above. The level question is
+  *further pushed* toward Level 3 by the structural-mosaic
+  finding, but is not yet decided.
 - `v0.9.0a0` adds the LLM transcript adapter and the strong
   validation pass against behavioural / RAI-style data, the
   formal home of the falsification test that builds on the
-  `v0.5.x`, `v0.6.x` and `v0.7.x` baselines. **The Level 2 vs
-  Level 3 question, currently under-determined on the
-  structural domain, is decided here or stays open.**
+  `v0.5.x`, `v0.6.x`, `v0.7.x` and `v0.8.x` baselines. The
+  same cycle is also the natural candidate for closing the
+  five-axis hole (a substrate that exposes both
+  `get_causal_graph` and `get_declared_executed` would
+  re-enable Step 7's pre-registered PCA in its original form).
+  **The Level 2 vs Level 3 question, currently
+  under-determined on the structural domain and pulled toward
+  Level 3 by the v0.8.0a0 mosaic finding, is decided here or
+  stays open.**
 
 If at any of these checkpoints the prediction starts failing,
 this document is updated honestly: PBA's status is downgraded

@@ -669,3 +669,215 @@ v0.9.0".
 
 *End of v0.7.2a0 cycle. Locked decisions remain read-only;
 this implementation report and verdict close the cycle.*
+
+---
+
+## v0.8.0a0 follow-up — five-axis geometry (atlas as a mosaic)
+
+**Status**: implementation report. Closes Step 7 of the
+Session B plan pre-registered for the `v0.8.0a0` release cycle
+(see commits `4c5ab1d`, `8e66c82`, `eefce9d` and the entry in
+`CHANGELOG.md` for the same release).
+
+The pre-registered Step 7 read, in plain terms, *"rerun the
+PCA + clustering + silhouette analysis above on the new
+five-axis benchmark and report the verdict"*. That instruction
+assumed the five-axis benchmark would produce a five-dimensional
+point cloud whose geometry could be analysed with the same
+machinery as the four-axis cloud of `v0.7.2a0`.
+
+The benchmark produced a different reality. This section
+documents that reality, why it is the **honest** outcome of
+Step 7, and what it implies for the level question.
+
+### The empirical fact
+
+The full five-axis sweep ships in
+`docs/benchmarks/v0.8.0a0.{csv,log.txt}`. After the standard
+quality filter, the snapshot contains **645 measured systems**.
+Of those, the count of systems with **all five axes
+simultaneously defined** is
+
+```
+n_valid_full = 0  /  645
+```
+
+Zero. Not "small", not "underpowered" — structurally **none**.
+Every row in the benchmark CSV has at least one axis missing.
+
+### Why none, and why the pattern is structural rather than
+accidental
+
+Each shipped axis is **gated by an adapter capability**. The
+gating is documented in `core.AutonomySystem` and reproduced
+here for the record:
+
+- `closure` and `memory` need only `get_state_history` /
+  `get_env_history`. Every adapter ships these.
+- `constraint_closure` requires `get_causal_graph`, returning
+  a square boolean adjacency matrix.
+- `persistence` requires `replay_from_perturbation`, returning
+  the post-perturbation focal slice.
+- `coherence` requires `get_declared_executed`, returning a
+  parallel `(declared, executed)` pair.
+
+The four shipped non-`PromisedCycle` adapters (`SimpleAutomaton`,
+`ECASystem`, `BooleanNetwork`, `CSVTrajectory`) all expose the
+first three families above and therefore fill the four `v0.7.2a0`
+axes; **none of them ship a declarative layer**, so the
+`coherence` column is always `None` on those rows. Conversely,
+`PromisedCycle` was designed for the coherence axis and has no
+exogenous causal graph to expose, so its `constraint_closure`
+column is always `None`.
+
+The intersection of "rows with `coherence` defined" and "rows
+with `constraint_closure` defined" is therefore **empty by
+construction**, not by chance. No additional sampling, no larger
+zoo, and no different seed setting will fix it. The hole is a
+property of which adapter classes ship in v0.8.0a0, not of
+which subset of them was actually run.
+
+### Why this defeats Step 7 in its pre-registered form
+
+PCA / k-means / silhouette all need a **rectangular complete
+matrix**: rows are observations, columns are axes, every cell
+must contain a number. Standard practice (Jolliffe 2002,
+Rousseeuw 1987) assumes complete-case input, with imputation
+flagged as a separate methodological commitment.
+
+The five-axis dataset has **no complete row**. There is therefore
+no five-dimensional point cloud over which to run PCA. There is
+no `λ_1` to compare with the pre-registered `λ_1 ≥ 0.65` floor
+(itself adapted from the `v0.7.2a0` cycle's `λ_1 ≥ 0.70`). There
+is no five-dimensional silhouette score to compute.
+
+Three options were considered. They are recorded here in line
+with the deviation-policy of Decision 2 above.
+
+1. **Run PCA on the union with imputation.** Replace each
+   missing cell with a column-mean, a regression fit, or a
+   multiple-imputation draw. Rejected: imputing systematically
+   missing axes (every PromisedCycle row imputes a
+   `constraint_closure`, every ECA row imputes a `coherence`)
+   propagates the imputation choice into the principal
+   components and generates a low-dimensional artefact whose
+   slope is determined by the imputer, not the data. The
+   resulting `λ_1` would be uninterpretable in level-question
+   terms.
+2. **Run PCA per sub-cluster (per-adapter four-axis
+   geometries).** For each adapter class with four valid axes,
+   fit a four-dimensional PCA. This is technically sound but is
+   **not Step 7** — Step 7 asked about the global five-axis
+   cloud. Running it per sub-cluster reports four separate
+   four-dimensional geometries, which is interesting but is a
+   **different question**: it tests whether the four-axis
+   structure is stable across substrates rather than whether
+   the five-axis structure is one object. Recorded for v0.8.0a1
+   or later as a follow-up; not promoted to Step 7's
+   replacement.
+3. **Report the structural infeasibility as the verdict of
+   Step 7.** Adopted. The five-axis benchmark *did* answer
+   Step 7's underlying question — "is the five-axis cloud one
+   object?" — but with a stronger answer than PCA could give:
+   *the cloud does not exist as a single object on the current
+   adapter zoo*. That is a Level-3-style answer in the
+   pre-registered ontology of `## What this cycle is *not*`
+   (read across cycles): the four / five axes do not co-inhabit
+   a shared coordinate system because no system instantiates
+   all of them at once.
+
+### What the verdict actually is
+
+Combining the result of `v0.7.2a0` (Level 2 plausible on
+structural geometry, Level-3-suggestive on the cluster overlay,
+inconclusive overall) with the new structural infeasibility:
+
+- The atlas of autonomy that the package ships is best read,
+  on the current zoo, as a **mosaic / archipelago**: a small
+  number of overlapping four-axis sub-charts that share most
+  axes but never share all five.
+- The Level 2 reading ("one multidimensional object viewed
+  through several coordinate systems") becomes **harder** to
+  defend purely on structural data: a single object should
+  have a consistent rank, a consistent set of coordinates, and
+  in particular *some* substrate where all coordinates are
+  observable. None of the substrates in v0.8.0a0 is that
+  substrate.
+- The Level 3 reading ("several phenomena bundled under a
+  shared label") becomes **easier** to defend, in the soft
+  sense the v0.7.2a0 verdict already opened: the four / five
+  metrics behave coherently inside their respective sub-charts
+  and do not stitch into a single object across them.
+- Crucially, the prediction window is **not collapsed**: it is
+  pushed forward. The `v0.9.0` adapter step (LLM transcripts
+  with `get_declared_executed` and an explicit causal graph
+  exported alongside) is now the natural candidate for a
+  substrate that closes the five-axis hole. If such a substrate
+  exists and produces a non-degenerate five-axis cloud, PCA
+  Step 7 can be re-run there in its pre-registered form. If it
+  does not, the mosaic reading hardens.
+
+### Independent corroboration from the diagnostic audits
+
+Two diagnostics were run alongside Step 7 (commits `8e66c82`
+and `eefce9d`) and bear on the same level question:
+
+- **Stratified audit (correlational).** The headline pairwise
+  finding `r(closure, coherence) = +0.96` on the 240
+  PromisedCycle rows was decomposed by configuration. The
+  per-cell correlations decay smoothly with `p_noise`
+  (`+0.93 → −0.18`), and the scatter shows five `p_noise`
+  islands in the (closure, coherence) plane. The visual
+  signature is a textbook Simpson's paradox: a between-cluster
+  correlation that disappears within clusters.
+- **Causal experiment (interventional).** The PromisedCycle
+  adapter was extended with an independent declared-channel
+  noise `p_env`, then swept across the (`p_noise`, `p_env`)
+  grid. The headline correlation falls from `+0.97` (single
+  driver) to `+0.48` (two drivers); within fixed `p_noise`
+  cells it oscillates around zero; `r(coherence, p_env) =
+  +0.0007` confirms that Theil's U is invariant to declarative-
+  side perturbations, exactly as `docs/CBA.md` predicted.
+
+Neither diagnostic is a substitute for the pre-registered
+five-axis PCA. Both reinforce the qualitative reading recorded
+above: cross-axis correlations that look strong on the global
+five-axis dataset are partly substrate-induced, partly
+adapter-degeneracy-induced, and not partly five-dimensional
+intrinsic structure — because there is no five-dimensional
+intrinsic structure to point to in this release.
+
+### Deviations from Step 7's pre-registration
+
+- **Technique not run.** PCA / k-means / silhouette were not
+  computed on the five-axis matrix. Justification: the matrix
+  has no complete row (`n_valid_full = 0/645`). The relevant
+  pre-registered escape clause is the deviation policy of
+  Decision 2: "Any deviation from [the locked decisions] in
+  the implementation phase has to be flagged explicitly and
+  justified in the verdict section". This is the explicit
+  flag.
+- **Threshold not applied.** No `λ_1` measurement exists; the
+  `λ_1 ≥ 0.65` floor is therefore not a pass/fail marker on
+  this cycle. The interpretive band-table from Decision 3 is
+  inapplicable. This deviation is benign in the sense that
+  Step 7 was *prepared* to declare a verdict if the data
+  permitted, and the data did not permit; it was *not*
+  prepared for the structural-infeasibility outcome, which
+  predates any threshold check.
+- **Substitute analysis declined.** Two substitute analyses
+  (per-adapter four-axis PCA, imputed-matrix five-axis PCA)
+  were considered and rejected for the reasons recorded
+  above. They are appropriate research-grade follow-ups for
+  a future release, not appropriate substitutes for Step 7
+  itself.
+
+*End of v0.8.0a0 follow-up. Step 7 closes here, with the
+verdict that "no five-dimensional cloud" is the empirical
+answer to the geometric question the cycle posed. The
+package's external behaviour is unchanged; the documentation
+moves from "five-axis atlas to be analysed geometrically" to
+"five-axis mosaic, with the geometry of each four-axis
+sub-chart available individually and the unified five-axis
+geometry deferred to whichever future adapter closes the
+hole".*
