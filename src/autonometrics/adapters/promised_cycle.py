@@ -129,6 +129,67 @@ class PromisedCycle:
         self._declared: np.ndarray | None = None
         self._executed: np.ndarray | None = None
 
+    @classmethod
+    def simple(
+        cls,
+        *,
+        p_noise: float = 0.1,
+        seed: int = 0,
+        length: int = 600,
+    ) -> PromisedCycle:
+        """Build a typical ``PromisedCycle`` with one knob (``p_noise``).
+
+        Convenience factory for casual use. Picks defaults that:
+
+        - keep ``length`` above the 500-timestep floor required by the
+          ``memory`` axis, so all four trajectory-based axes (closure,
+          memory, persistence, coherence) yield non-trivial scores;
+        - use a small alphabet (``alphabet = 4``) and matching cycle
+          period (``period = 4``) so the declared trajectory walks
+          through every symbol exactly once per period;
+        - default to ``p_noise = 0.1``, a mid-low noise level where
+          ``cba_theil_u`` is well below 1 but well above the noise
+          floor — useful as a sanity-check baseline.
+
+        The verbose ``PromisedCycle(...)`` constructor remains the
+        only path for non-default ``period``, ``alphabet``, ``mode``
+        or ``p_env`` values.
+
+        Parameters
+        ----------
+        p_noise:
+            Per-step replacement probability on the executed channel.
+            Defaults to ``0.1``.
+        seed:
+            Reproducibility seed. Defaults to ``0``.
+        length:
+            Total number of timesteps. Defaults to ``600``, which
+            comfortably clears the 500-timestep minimum the
+            ``memory`` axis requires.
+
+        Returns
+        -------
+        PromisedCycle
+            A configured instance ready to be passed to
+            :class:`autonometrics.Autonometer` or
+            :func:`autonometrics.measure`.
+
+        Examples
+        --------
+        >>> import autonometrics as anm
+        >>> sys = anm.PromisedCycle.simple()
+        >>> profile = anm.measure(sys)  # doctest: +SKIP
+        >>> profile.coherence  # doctest: +SKIP
+        0.92...
+        """
+        return cls(
+            length=length,
+            period=4,
+            alphabet=4,
+            p_noise=p_noise,
+            seed=seed,
+        )
+
     def _build(self) -> None:
         rng = np.random.default_rng(self._seed)
         idx = np.arange(self._length, dtype=np.int64) % self._period
