@@ -2,6 +2,7 @@
 
 from autonometrics.adapters.automaton import SimpleAutomaton
 from autonometrics.adapters.csv_trajectory import CSVTrajectory
+from autonometrics.adapters.llm_transcript import LLMTranscriptAdapter
 from autonometrics.adapters.promised_cycle import PromisedCycle
 
-__all__ = ["CSVTrajectory", "PromisedCycle", "SimpleAutomaton"]
+__all__ = ["CSVTrajectory", "LLMTranscriptAdapter", "PromisedCycle", "SimpleAutomaton"]

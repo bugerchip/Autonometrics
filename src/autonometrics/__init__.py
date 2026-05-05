@@ -8,7 +8,12 @@ information theory, self-determination theory, and related traditions.
 Status: alpha, API unstable.
 """
 
-from autonometrics.adapters import CSVTrajectory, PromisedCycle, SimpleAutomaton
+from autonometrics.adapters import (
+    CSVTrajectory,
+    LLMTranscriptAdapter,
+    PromisedCycle,
+    SimpleAutomaton,
+)
 from autonometrics.core import (
     ALL_AXES,
     AXES,
@@ -47,6 +52,7 @@ __all__ = [
     "AutonomyProfile",
     "AutonomySystem",
     "CSVTrajectory",
+    "LLMTranscriptAdapter",
     "PromisedCycle",
     "SUPPORTED_METRICS",
     "SimpleAutomaton",
