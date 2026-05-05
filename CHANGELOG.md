@@ -7,11 +7,11 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
-## [Unreleased] — LLM transcript adapter
+## [0.9.0a0] - 2026-05-04
 
 > Off-line LLM transcript support. Strictly additive; nothing in
-> `v0.8.2a0` changes. Closes the `v0.9.0` cycle once the
-> version-bump PR lands. **Ships the instrument, not the
+> `v0.8.2a0` changes. Closes the `v0.9.0` cycle.
+> **Ships the instrument, not the
 > validation**: the behavioural validation against C-RAI,
 > goal-directedness scoring on transcripts and CoT-faithfulness,
 > and the empirical arbitration of the Level 2 vs Level 3
