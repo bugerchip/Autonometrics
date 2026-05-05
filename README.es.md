@@ -219,3 +219,31 @@ técnicos, ver el README en inglés: [`README.md`](README.md).
 Esta versión en español mantiene sincronizada la sección
 introductoria y la de instalación; el resto de la documentación
 se irá traduciendo progresivamente.
+
+### Disponible desde `v0.9.0a0`: `LLMTranscriptAdapter`
+
+Adapter para medir transcripts conversacionales de agentes LLM
+en formato estándar OpenAI / Anthropic Messages (JSONL o lista
+en memoria). Habilita los ejes `closure`, `memory` y
+`coherence`; reporta `None` para `constraint` (un transcript
+no expone el grafo causal interno del modelo) y `persistence`
+(la versión off-line no puede re-correr el modelo desde un
+estado perturbado), bajo la política existente de
+mosaic dropout.
+
+```python
+import autonometrics as anm
+
+adapter = anm.LLMTranscriptAdapter.from_jsonl("session.jsonl")
+profile = anm.measure(adapter)
+```
+
+La validación contra referencias conductuales (C-RAI,
+goal-directedness, CoT-faithfulness) y la arbitración empírica
+de la pregunta Nivel 2 vs Nivel 3 quedan **fuera de este
+paquete**: se realizan en estudios externos que importan
+`autonometrics` como dependencia. El paquete entrega el
+instrumento; los estudios entregan los hallazgos.
+
+Contrato completo del adapter en
+[`docs/LLM_TRANSCRIPT.md`](docs/LLM_TRANSCRIPT.md).

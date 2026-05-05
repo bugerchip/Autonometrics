@@ -7,6 +7,81 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [Unreleased] — LLM transcript adapter
+
+> Off-line LLM transcript support. Strictly additive; nothing in
+> `v0.8.2a0` changes. Closes the `v0.9.0` cycle once the
+> version-bump PR lands. **Ships the instrument, not the
+> validation**: the behavioural validation against C-RAI,
+> goal-directedness scoring on transcripts and CoT-faithfulness,
+> and the empirical arbitration of the Level 2 vs Level 3
+> question, are explicitly deferred to external studies that
+> import `autonometrics` as a dependency.
+
+### Added
+
+- **`LLMTranscriptAdapter`** (off-line). Translates standard
+  OpenAI / Anthropic Messages format into the `AutonomySystem`
+  protocol. Three construction paths: verbose constructor
+  (`executed`, `env`, `declared`, `to_state_id`),
+  `LLMTranscriptAdapter.from_messages(messages)` for in-memory
+  lists of dicts, and `LLMTranscriptAdapter.from_jsonl(path)`
+  for one-message-per-line files. Field-to-axis mapping and
+  the rest of the input contract are fixed by
+  `docs/LLM_TRANSCRIPT.md`.
+- **Top-level export.** `anm.LLMTranscriptAdapter` is exposed
+  in `autonometrics.__all__` and re-exported through
+  `autonometrics.adapters`.
+- **`docs/LLM_TRANSCRIPT.md`.** Pre-implementation contract
+  for the adapter: input format, role-to-axis mapping,
+  discretisation policy (pre-encoded → built-in label encoder
+  → callable), mosaic-dropout policy when `declared` is empty,
+  multi-session handling, axis coverage and validation
+  boundary.
+- **README Quickstart section "Measuring an LLM transcript"**
+  with a JSONL example and an axis-coverage table.
+- **CHANGELOG entry** (this one).
+
+### Changed
+
+- **README narrative aligned with instrument-vs-study cut.**
+  The Roadmap entry for `v0.9.0` and a handful of body lines
+  in the "What does not claim" / Benchmark / Roadmap sections
+  no longer describe `v0.9.0` as performing the behavioural
+  validation; they describe it as **shipping the instrument**
+  that downstream studies use to perform the validation
+  themselves. This brings the Roadmap into line with the
+  framing already established in the
+  "What the project does *not* claim" and Self-evaluation
+  sections.
+- **`docs/API_FREEZE.md`** lists `LLMTranscriptAdapter` and its
+  factories alongside the other adapter constructors as
+  out-of-scope for the v1.0 freeze, and adds a new
+  "Adapter-specific contracts" section pointing at
+  `docs/LLM_TRANSCRIPT.md` as the single source of truth for
+  the LLM adapter's input handling.
+
+### Notes for downstream users
+
+- **Axes enabled off-line**: `closure`, `memory`, `coherence`.
+- **Axes reported as `None`** (mosaic dropout): `constraint`
+  (a transcript does not expose a causal graph) and
+  `persistence` (off-line cannot replay a model from a
+  perturbed state).
+- **`LLMLiveAdapter`** (on-line replay enabling `persistence`
+  on live API endpoints) is deferred to `v0.9.1` / `v0.10.0`.
+- **No metric definition changes; no benchmark reruns; no
+  hypothesis updates.** The mosaic-atlas verdict of
+  `v0.8.0a0` (`n_valid_full = 0/645`) stands untouched: the
+  off-line LLM adapter raises `n_valid_full` for the
+  three-axis sub-charts it covers, but does not close the
+  five-axis hole, which would require an on-line counterpart.
+- **354 tests passing** (was 325): 29 new tests covering
+  parsing of OpenAI / Anthropic tool-call formats, JSONL
+  round-trip, blank-line / invalid-JSON / empty-file errors,
+  mosaic dropout when reasoning is missing, and an
+  end-to-end `anm.measure(adapter)` assertion.
+
 ## [0.8.2a0] - 2026-05-04
 
 > API-pulido cycle, block 2. Strictly backward-compatible. Lowers
