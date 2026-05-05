@@ -115,10 +115,26 @@ The following are explicitly **not** part of the frozen public surface
 yet and may change without notice up to `v1.0`:
 
 * Adapter constructors (`PromisedCycle`, `SimpleAutomaton`,
-  `CSVTrajectory`). Verbose constructor signatures may be paired with
-  factory methods (`PromisedCycle.simple(...)`) before freeze.
+  `CSVTrajectory`, `LLMTranscriptAdapter`). Verbose constructor
+  signatures may be paired with factory methods
+  (`PromisedCycle.simple(...)`, `SimpleAutomaton.demo(...)`,
+  `CSVTrajectory.from_file(...)`,
+  `LLMTranscriptAdapter.from_jsonl(...)`,
+  `LLMTranscriptAdapter.from_messages(...)`) before freeze.
 * Metadata dictionary contents (`profile.metadata`). The keys
   `metric`, `metrics`, `axes`, `n_timesteps`, `adapter` are stable;
   additional keys may be added freely.
 * Internal modules: `autonometrics.core._*`, `autonometrics.metrics._*`
   and similar private members.
+
+## Adapter-specific contracts
+
+The Messages-format input contract for `LLMTranscriptAdapter`
+(role-to-axis mapping, discretisation policy, mosaic-dropout
+behaviour, multi-session handling, validation boundary) is
+fixed by [`docs/LLM_TRANSCRIPT.md`](LLM_TRANSCRIPT.md), not by
+this freeze. That document is the single source of truth for
+what the adapter does with its input; this freeze only governs
+the canonical names and the orchestrator surface. The same
+separation will apply to future adapters that ship their own
+domain contracts (LLM live, biological recordings, etc.).

@@ -283,6 +283,47 @@ state,env
 1,0
 ```
 
+### Measuring an LLM transcript
+
+```python
+import autonometrics as anm
+
+adapter = anm.LLMTranscriptAdapter.from_jsonl("session.jsonl")
+profile = anm.measure(adapter)
+```
+
+`session.jsonl` follows the standard OpenAI / Anthropic
+**Messages format** every chat-style provider already emits.
+One JSON object per line, no proprietary schema:
+
+```jsonl
+{"role": "user", "content": "Read the file then summarize."}
+{"role": "assistant", "reasoning": "I will read the file first.", "tool_calls": [{"type": "function", "function": {"name": "read_file"}}]}
+{"role": "tool", "content": "<contents of file>"}
+{"role": "assistant", "reasoning": "Now I summarize.", "content": "Summary: ..."}
+```
+
+The adapter is **off-line**: it consumes a recorded transcript.
+It therefore enables three of the five axes and reports `None`
+for the other two under the package's mosaic-dropout policy:
+
+| Axis           | Status | Reason                                               |
+| :------------- | :----: | :--------------------------------------------------- |
+| `closure`      | ✓      | Reads `state` / `env` from the assistant turn stream. |
+| `memory`       | ✓      | Same; needs corpus length ≥ 500 turns.                |
+| `coherence`    | ✓      | Reads `(declared, executed)` from `reasoning` and `tool_calls`. |
+| `constraint`   | None   | A transcript does not expose the model's internal causal graph. |
+| `persistence`  | None   | Off-line cannot replay the model from a perturbed state. |
+
+For a live-API counterpart that additionally enables
+`persistence` (single-token / single-message perturbations
+replayed through the live endpoint), see the planned
+`LLMLiveAdapter` in a later alpha. The full design contract
+of the off-line adapter — input schema, field-to-axis
+mapping, discretisation policy, multi-session handling and
+validation boundary — lives in
+[`docs/LLM_TRANSCRIPT.md`](docs/LLM_TRANSCRIPT.md).
+
 ### Running the bundled demos
 
 ```bash
@@ -572,8 +613,10 @@ composition of the zoo (the most extreme case is
 `SimpleAutomaton` alone). The level question — Level 2 (one
 multidimensional object) vs Level 3 (several objects sharing a
 label) — is therefore genuinely *under-determined* on the
-structural domain and is pushed to `v0.9.0`'s behavioural
-validation against transcript-based RAI for a clean arbitration.
+structural domain and is **deferred to external studies built
+on the `v0.9.0` LLM adapter** for a clean arbitration. The
+package ships the instrument; the arbitration runs in studies
+that import it.
 
 Reproducing the analysis:
 
@@ -786,7 +829,15 @@ planned content of the `v0.7.1` maintenance cycle.
   toy systems.
 - **`CSVTrajectory`** — loads a user-supplied two-column CSV with
   discrete integer `state` and `env` columns.
-- **LLM transcript** — planned for a later alpha.
+- **`LLMTranscriptAdapter`** — off-line transcripts in OpenAI /
+  Anthropic Messages format (JSONL via `from_jsonl`, in-memory
+  via `from_messages`). Enables `closure`, `memory` and
+  `coherence`; reports `None` for `constraint` (no causal graph
+  in transcripts) and `persistence` (off-line cannot replay)
+  under mosaic dropout. Contract:
+  [`docs/LLM_TRANSCRIPT.md`](docs/LLM_TRANSCRIPT.md). The on-line
+  counterpart enabling `persistence` on LLMs (`LLMLiveAdapter`)
+  is planned for a later alpha.
 
 Any object implementing `get_state_history()` and `get_env_history()`
 (both returning 1D integer `np.ndarray`) satisfies the
@@ -884,7 +935,8 @@ that ever happens, the heavy dependency will be opt-in via
 Each future alpha adds one more `[0, 1]`-valued ratio drawn from
 the structural self-determination literature, keeping the same
 PBA convention so all axes remain comparable. The order below
-prioritises empirical validation of the existing axes before
+prioritises **enabling** empirical validation of the existing
+axes (the validation itself runs in external studies) before
 broadening them: the first benchmark run shipped in `v0.5.0a0`
 established that `closure` and `memory` carry distinct
 information on the current adapter zoo, the `v0.5.1a0`
@@ -895,7 +947,8 @@ saturating regions of `constraint_closure`, `v0.7.0a0` added
 the fourth axis (`rai_proxy_persistence`) and revealed its U-
 shaped domain of applicability, `v0.7.2a0` ran a
 pre-registered geometric audit of the four-axis cloud whose
-verdict pushed the Level 2 vs Level 3 question to `v0.9.0`,
+verdict pushed the Level 2 vs Level 3 question to studies built
+on `v0.9.0`'s LLM adapter,
 and `v0.8.0a0` added the fifth axis (`coherence` / Theil's U)
 together with its reference adapter `PromisedCycle`, ran the
 Session B diagnostic block (independence audit + causal
@@ -947,7 +1000,8 @@ five-dimensional cloud).
   [`docs/ATLAS_GEOMETRY.md`](docs/ATLAS_GEOMETRY.md). Verdict:
   inconclusive on the level question (PCA reading), with a
   Level-3-suggestive overlay (clustering reading); the level
-  question is pushed to `v0.9.0`'s behavioural validation.
+  question is deferred to external behavioural-validation
+  studies built on `v0.9.0`'s LLM adapter.
 - `v0.8.0-alpha` *(current)*: fifth axis —
   **coherence-based alignment** (`cba_theil_u`, Theil's U on
   declared vs executed trajectories with Miller-Madow bias
@@ -972,12 +1026,25 @@ five-dimensional cloud).
   then **overridden on causal grounds** with the override
   documented in the post-mortem section of
   [`docs/CBA.md`](docs/CBA.md). Level question pulled toward
-  Level 3, decided (or stays open) at `v0.9.0`.
-- `v0.9.0-alpha`: LLM transcript adapter (bring-your-own labels)
-  and additional public-dataset benchmarks. **Behavioural
-  validation pass**: arbitrates Level 2 vs Level 3 against
-  transcript-based RAI, the test the structural geometry
-  cannot run alone.
+  Level 3, decided (or kept open) by external studies built on
+  `v0.9.0`'s LLM adapter.
+- `v0.9.0-alpha` *(current cycle)*: **LLM transcript adapter**
+  (off-line). `LLMTranscriptAdapter` translates standard OpenAI /
+  Anthropic Messages format into the `AutonomySystem` protocol.
+  Enables `closure`, `memory` and `coherence` on real
+  conversational data; reports `None` for `constraint` (no
+  causal graph in transcripts) and `persistence` (off-line
+  cannot replay) under the mosaic-dropout policy. This release
+  ships the **instrument**, not the validation: the behavioural
+  validation against C-RAI, goal-directedness scoring on
+  transcripts and CoT-faithfulness, and the empirical
+  arbitration of the Level 2 vs Level 3 question, are **deferred
+  to external studies** that import `autonometrics` as a
+  dependency. The package's job here is to make those studies
+  possible. Contract: [`docs/LLM_TRANSCRIPT.md`](docs/LLM_TRANSCRIPT.md).
+  An on-line counterpart (`LLMLiveAdapter`) enabling
+  `persistence` on live API endpoints is planned for a later
+  cycle.
 - `v1.0.0` (without alpha marker): PyPI publication once five
   ratios, three adapters, and the full benchmark battery are
   stable.
