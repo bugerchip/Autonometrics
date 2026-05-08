@@ -120,6 +120,56 @@ class AutonomyProfile:
         validation against external behavioural data
         (FAITHCOT-BENCH, Sheeran-style intention–behaviour
         regressions) is deferred to ``v0.9.0``.
+
+    Optional diagnostic fields
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    The following ``Optional[float]`` fields surface intermediate
+    magnitudes that the underlying metrics already compute
+    internally. They are populated by ``Autonometer.measure`` (and
+    the top-level ``measure`` convenience function) for axes whose
+    metric supports a ``return_diagnostics=True`` path; ``None``
+    otherwise (axis not requested, adapter does not support the
+    axis, or metric does not yet expose diagnostics). All values
+    are dimensionless and consistent with the ratio definitions
+    documented for each axis. Added in ``v0.9.0a1``;
+    backwards-compatible (default ``None``).
+
+    cba_match_rate:
+        Fraction of timesteps with pointwise equality between the
+        declared and executed trajectories, ``mean(D_t == E_t)``.
+        Companion to ``cba_theil_u``. Useful when the score has
+        already been normalised and a downstream consumer also
+        wants the raw match magnitude.
+    cba_h_d:
+        Miller-Madow-corrected Shannon entropy of the declared
+        marginal in bits. Denominator of ``cba_theil_u``.
+    cba_h_e:
+        Miller-Madow-corrected Shannon entropy of the executed
+        marginal in bits.
+    cba_mi:
+        Mutual information ``I(D; E)`` in bits, computed as
+        ``H(D) + H(E) - H(D, E)`` with Miller-Madow correction
+        applied to each entropy. Numerator of ``cba_theil_u``.
+    memory_e_states:
+        Crutchfield excess entropy of the system trajectory in
+        bits. Numerator of ``memory_endo_ratio``. ``0.0`` when the
+        sequence is too short for the block-length cap or has no
+        block-level structure.
+    memory_e_env:
+        Crutchfield excess entropy of the environment trajectory
+        in bits. Component of the denominator of
+        ``memory_endo_ratio``.
+    persistence_mean_hamming:
+        Mean post-perturbation Hamming mismatch between perturbed
+        and unperturbed focal trajectories, averaged over
+        ``n_perturbations`` independent perturbation times.
+        Empirical numerator of the persistence score.
+    persistence_d_ref:
+        Empirical chance-baseline Hamming distance,
+        ``1 - sum(p_a ** 2)``, computed from the focal marginal
+        distribution. Denominator used to normalise the persistence
+        score against a same-alphabet random baseline.
+
     metadata:
         Free-form dictionary with contextual information about the
         measurement: which metrics were used, which adapter produced
@@ -131,6 +181,18 @@ class AutonomyProfile:
     constraint_closure: float | None = None
     rai_proxy_persistence: float | None = None
     cba_theil_u: float | None = None
+
+    # Optional diagnostic quantities (since v0.9.0a1). All default to
+    # ``None`` so that existing consumers see no behavioural change.
+    cba_match_rate: float | None = None
+    cba_h_d: float | None = None
+    cba_h_e: float | None = None
+    cba_mi: float | None = None
+    memory_e_states: float | None = None
+    memory_e_env: float | None = None
+    persistence_mean_hamming: float | None = None
+    persistence_d_ref: float | None = None
+
     metadata: dict[str, Any] = field(default_factory=dict)
 
     # ------------------------------------------------------------------

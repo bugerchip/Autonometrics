@@ -141,7 +141,8 @@ def compute_rai_proxy_persistence(
     n_perturbations: int = _DEFAULT_N_PERTURBATIONS,
     horizon: int = _DEFAULT_HORIZON,
     rng: np.random.Generator | None = None,
-) -> float:
+    return_diagnostics: bool = False,
+) -> float | tuple[float, dict[str, float]]:
     """Compute the Lee & McShea-style perturbation-persistence proxy.
 
     Parameters
@@ -173,6 +174,12 @@ def compute_rai_proxy_persistence(
     rng:
         Optional ``numpy.random.Generator`` for reproducibility.
         Defaults to ``np.random.default_rng(0)``.
+    return_diagnostics:
+        When ``True``, also returns a dictionary with the component
+        magnitudes (``mean_hamming``, ``d_ref``) used to form the
+        score. Useful when downstream tooling needs to inspect the
+        empirical perturbation response and the chance baseline
+        separately from the normalised ratio.
 
     Returns
     -------
@@ -182,6 +189,8 @@ def compute_rai_proxy_persistence(
         the unperturbed trajectory at every step beyond ``t_star``).
         ``0.0`` means perturbations propagate as much as two
         independent random trajectories of the same focal alphabet.
+    tuple[float, dict[str, float]]
+        When ``return_diagnostics`` is ``True``.
 
     Raises
     ------
@@ -269,4 +278,12 @@ def compute_rai_proxy_persistence(
 
     d_bar = float(np.mean(distances))
     score = 1.0 - d_bar / d_ref
-    return float(np.clip(score, 0.0, 1.0))
+    score = float(np.clip(score, 0.0, 1.0))
+
+    if return_diagnostics:
+        diagnostics = {
+            "mean_hamming": float(d_bar),
+            "d_ref": float(d_ref),
+        }
+        return score, diagnostics
+    return score

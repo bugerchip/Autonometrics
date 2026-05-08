@@ -434,6 +434,34 @@ Adapters that cannot expose a causal graph (e.g.
 orchestrator record `None` for `constraint_closure` rather than
 abort the whole measurement.
 
+### Optional diagnostic fields (since `v0.9.0a1`)
+
+`AutonomyProfile` also exposes the intermediate magnitudes that
+`coherence`, `memory` and `persistence` already compute internally,
+so consumers can inspect a profile without re-running the metric to
+recover its component quantities. All eight fields are
+`Optional[float]`, default to `None`, and follow the same
+mosaic-dropout rule as their parent axis (`None` whenever the
+parent score is `None`):
+
+| Parent axis   | Field                       | Meaning                                                                |
+| ------------- | --------------------------- | ---------------------------------------------------------------------- |
+| `coherence`   | `cba_match_rate`            | Fraction of timesteps with `D_t == E_t`.                               |
+| `coherence`   | `cba_h_d`                   | Miller-Madow Shannon entropy of declared marginal (bits).              |
+| `coherence`   | `cba_h_e`                   | Miller-Madow Shannon entropy of executed marginal (bits).              |
+| `coherence`   | `cba_mi`                    | Mutual information `I(D; E)` (bits).                                   |
+| `memory`      | `memory_e_states`           | Crutchfield excess entropy of the system trajectory (bits).            |
+| `memory`      | `memory_e_env`              | Crutchfield excess entropy of the environment trajectory (bits).      |
+| `persistence` | `persistence_mean_hamming`  | Mean post-perturbation Hamming mismatch over `n_perturbations` trials. |
+| `persistence` | `persistence_d_ref`         | Empirical chance-baseline Hamming distance from the focal marginal.    |
+
+The headline axis fields keep their existing meaning and population
+semantics. Direct callers of `compute_cba_theil_u`,
+`compute_memory_endo_ratio` and `compute_rai_proxy_persistence` can
+also opt into the same dictionary by passing
+`return_diagnostics=True`; without the flag the functions still
+return a single `float`, exactly as before.
+
 ## The autonomy plane
 
 Thinking of the two metrics together, rather than reducing autonomy

@@ -247,3 +247,33 @@ instrumento; los estudios entregan los hallazgos.
 
 Contrato completo del adapter en
 [`docs/LLM_TRANSCRIPT.md`](docs/LLM_TRANSCRIPT.md).
+
+### Disponible desde `v0.9.0a1`: campos diagnósticos en `AutonomyProfile`
+
+`AutonomyProfile` ahora expone también las magnitudes intermedias
+que las métricas `coherence`, `memory` y `persistence` ya
+calculaban internamente, para que un consumidor pueda inspeccionar
+un perfil sin volver a correr la métrica para recuperar sus
+componentes. Son ocho campos `Optional[float]` que llegan como
+`None` por defecto y siguen la misma regla de mosaic dropout que
+su eje matriz (`None` cuando el eje matriz también es `None`):
+
+| Eje matriz    | Campo                       | Significado                                                                |
+| ------------- | --------------------------- | -------------------------------------------------------------------------- |
+| `coherence`   | `cba_match_rate`            | Fracción de pasos con `D_t == E_t`.                                        |
+| `coherence`   | `cba_h_d`                   | Entropía de Shannon Miller-Madow del marginal declarado (bits).            |
+| `coherence`   | `cba_h_e`                   | Entropía de Shannon Miller-Madow del marginal ejecutado (bits).            |
+| `coherence`   | `cba_mi`                    | Información mutua `I(D; E)` (bits).                                        |
+| `memory`      | `memory_e_states`           | Entropía en exceso (Crutchfield) de la trayectoria del sistema (bits).     |
+| `memory`      | `memory_e_env`              | Entropía en exceso (Crutchfield) de la trayectoria del ambiente (bits).    |
+| `persistence` | `persistence_mean_hamming`  | Distancia de Hamming media tras perturbación promediada en `n_perturbations`. |
+| `persistence` | `persistence_d_ref`         | Distancia de Hamming de referencia (azar) según el marginal focal.         |
+
+Los cinco campos titulares (`ratio_endo_total`, `memory_endo_ratio`,
+`constraint_closure`, `rai_proxy_persistence`, `cba_theil_u`)
+mantienen su significado y su semántica de poblamiento. Los
+llamadores directos de `compute_cba_theil_u`,
+`compute_memory_endo_ratio` y `compute_rai_proxy_persistence`
+pueden activar el mismo diccionario pasando
+`return_diagnostics=True`; sin el flag las funciones siguen
+devolviendo un único `float`, exactamente como antes.

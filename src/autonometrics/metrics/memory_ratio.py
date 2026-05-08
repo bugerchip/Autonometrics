@@ -94,7 +94,9 @@ def compute_memory_endo_ratio(
     env: np.ndarray,
     max_block_length: int = 8,
     min_length: int = 500,
-) -> float:
+    *,
+    return_diagnostics: bool = False,
+) -> float | tuple[float, dict[str, float]]:
     """Fraction of joint structural memory carried by the system.
 
     Parameters
@@ -113,6 +115,11 @@ def compute_memory_endo_ratio(
         Minimum number of timesteps below which the estimator is
         considered unreliable and a ``ValueError`` is raised. Default
         ``500``.
+    return_diagnostics:
+        When ``True``, also returns a dictionary with the component
+        excess-entropies (``e_states``, ``e_env``) used to form the
+        ratio. Useful when downstream tooling needs to distinguish
+        the magnitudes that produced a given ratio.
 
     Returns
     -------
@@ -123,6 +130,8 @@ def compute_memory_endo_ratio(
         memory at all). ``1.0`` means it lives entirely in the
         system. Intermediate values report the fraction carried by
         the system.
+    tuple[float, dict[str, float]]
+        When ``return_diagnostics`` is ``True``.
 
     Raises
     ------
@@ -152,5 +161,14 @@ def compute_memory_endo_ratio(
 
     total = e_states + e_env
     if total <= EPS:
-        return 0.0
-    return float(np.clip(e_states / total, 0.0, 1.0))
+        score = 0.0
+    else:
+        score = float(np.clip(e_states / total, 0.0, 1.0))
+
+    if return_diagnostics:
+        diagnostics = {
+            "e_states": float(e_states),
+            "e_env": float(e_env),
+        }
+        return score, diagnostics
+    return score

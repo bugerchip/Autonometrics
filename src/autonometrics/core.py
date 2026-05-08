@@ -49,6 +49,31 @@ _PROFILE_FIELD: dict[str, str] = {
     "coherence": "cba_theil_u",
 }
 
+# Mapping from internal metric identifier to the
+# ``{diagnostic_key_in_returned_dict: AutonomyProfile_field_name}``
+# translation table used when a metric supports
+# ``return_diagnostics=True``. Metrics absent from this mapping (for
+# example ``albantakis`` and ``constraint_closure`` in the current
+# release) are dispatched without the flag and produce no diagnostic
+# fields. Adding an entry here is the single change required to expose
+# additional diagnostics on :class:`autonometrics.AutonomyProfile`.
+_METRIC_DIAGNOSTIC_FIELDS: dict[str, dict[str, str]] = {
+    "coherence": {
+        "match_rate": "cba_match_rate",
+        "H_D": "cba_h_d",
+        "H_E": "cba_h_e",
+        "MI": "cba_mi",
+    },
+    "memory": {
+        "e_states": "memory_e_states",
+        "e_env": "memory_e_env",
+    },
+    "persistence": {
+        "mean_hamming": "persistence_mean_hamming",
+        "d_ref": "persistence_d_ref",
+    },
+}
+
 # Canonical public axis names exposed in README and user-facing API.
 # Internal metric identifiers are kept for backward compatibility and
 # translated transparently through ``_CANONICAL_ALIAS`` below.
@@ -206,7 +231,10 @@ class Autonometer:
         Every metric registered for this instance is evaluated and its
         result written to the matching field of :class:`AutonomyProfile`.
         Fields corresponding to metrics that were not requested stay
-        ``None``.
+        ``None``. When the underlying metric supports
+        ``return_diagnostics=True`` (currently ``coherence``, ``memory``
+        and ``persistence``), the corresponding optional diagnostic
+        fields on :class:`AutonomyProfile` are populated as well.
         """
         if not hasattr(system, "get_state_history") or not hasattr(system, "get_env_history"):
             raise TypeError(
@@ -218,8 +246,17 @@ class Autonometer:
         env = np.asarray(system.get_env_history())
 
         field_values: dict[str, float | None] = {}
+        diagnostic_values: dict[str, float | None] = {}
         for name in self.metrics:
-            field_values[_PROFILE_FIELD[name]] = self._score(name, system, states, env)
+            score, diagnostics = self._score(name, system, states, env)
+            field_values[_PROFILE_FIELD[name]] = score
+            if diagnostics is None:
+                continue
+            for diag_key, profile_field in _METRIC_DIAGNOSTIC_FIELDS.get(name, {}).items():
+                value = diagnostics.get(diag_key)
+                if value is None:
+                    continue
+                diagnostic_values[profile_field] = float(value)
 
         canonical_axes = [_INTERNAL_TO_CANONICAL[name] for name in self.metrics]
         metadata: dict[str, Any] = {
@@ -236,6 +273,14 @@ class Autonometer:
             constraint_closure=field_values.get("constraint_closure"),
             rai_proxy_persistence=field_values.get("rai_proxy_persistence"),
             cba_theil_u=field_values.get("cba_theil_u"),
+            cba_match_rate=diagnostic_values.get("cba_match_rate"),
+            cba_h_d=diagnostic_values.get("cba_h_d"),
+            cba_h_e=diagnostic_values.get("cba_h_e"),
+            cba_mi=diagnostic_values.get("cba_mi"),
+            memory_e_states=diagnostic_values.get("memory_e_states"),
+            memory_e_env=diagnostic_values.get("memory_e_env"),
+            persistence_mean_hamming=diagnostic_values.get("persistence_mean_hamming"),
+            persistence_d_ref=diagnostic_values.get("persistence_d_ref"),
             metadata=metadata,
         )
 
@@ -245,41 +290,71 @@ class Autonometer:
         system: AutonomySystem,
         states: np.ndarray,
         env: np.ndarray,
-    ) -> float | None:
-        """Dispatch ``name`` to its registered metric with the right inputs."""
+    ) -> tuple[float | None, dict[str, float] | None]:
+        """Dispatch ``name`` to its registered metric with the right inputs.
+
+        Returns
+        -------
+        tuple[float | None, dict[str, float] | None]
+            The headline score and an optional dictionary of
+            intermediate diagnostic quantities. Diagnostics are
+            ``None`` when the underlying metric does not yet support
+            the ``return_diagnostics`` path or when the measurement
+            was skipped (adapter does not provide the input).
+        """
         fn = _METRIC_REGISTRY[name]
         kind = _METRIC_INPUT[name]
+        wants_diagnostics = name in _METRIC_DIAGNOSTIC_FIELDS
+
         if kind == _INPUT_TRAJECTORY:
-            return float(fn(states, env))
+            if wants_diagnostics:
+                score, diagnostics = fn(states, env, return_diagnostics=True)
+                return float(score), diagnostics
+            return float(fn(states, env)), None
         if kind == _INPUT_GRAPH:
             graph_fn = getattr(system, "get_causal_graph", None)
             if graph_fn is None:
-                return None
+                return None, None
             try:
                 graph = graph_fn()
             except NotImplementedError:
-                return None
-            return float(fn(np.asarray(graph)))
+                return None, None
+            return float(fn(np.asarray(graph))), None
         if kind == _INPUT_REPLAY:
             replay_fn = getattr(system, "replay_from_perturbation", None)
             if replay_fn is None:
-                return None
+                return None, None
             try:
-                return float(fn(states, env, replay_fn))
+                if wants_diagnostics:
+                    score, diagnostics = fn(
+                        states, env, replay_fn, return_diagnostics=True
+                    )
+                    return float(score), diagnostics
+                return float(fn(states, env, replay_fn)), None
             except NotImplementedError:
-                return None
+                return None, None
         if kind == _INPUT_DECLARED_EXECUTED:
             de_fn = getattr(system, "get_declared_executed", None)
             if de_fn is None:
-                return None
+                return None, None
             try:
                 pair = de_fn()
             except NotImplementedError:
-                return None
+                return None, None
             if pair is None:
-                return None
+                return None, None
             declared, executed = pair
-            return float(fn(np.asarray(declared), np.asarray(executed)))
+            if wants_diagnostics:
+                score, diagnostics = fn(
+                    np.asarray(declared),
+                    np.asarray(executed),
+                    return_diagnostics=True,
+                )
+                return float(score), diagnostics
+            return (
+                float(fn(np.asarray(declared), np.asarray(executed))),
+                None,
+            )
         raise RuntimeError(f"Unknown metric input kind for {name!r}: {kind!r}")
 
 
