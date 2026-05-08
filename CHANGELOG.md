@@ -7,6 +7,81 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [0.9.0a1] - 2026-05-08
+
+> Diagnostic propagation. Strictly additive; nothing in `v0.9.0a0`
+> changes. The five headline axis fields keep their existing meaning
+> and population semantics; the public API of every metric function
+> stays backwards-compatible. The release exposes intermediate
+> magnitudes that the underlying metrics already compute internally,
+> so consumers can read a profile without re-running the metric to
+> recover its component quantities.
+
+### Added
+
+- **`AutonomyProfile`: optional diagnostic fields.** Eight new
+  `Optional[float]` attributes default to `None` and are populated
+  when the corresponding metric was requested and supports the
+  `return_diagnostics=True` path:
+
+  | Axis          | Field                       | Meaning                                                                             |
+  | ------------- | --------------------------- | ----------------------------------------------------------------------------------- |
+  | `coherence`   | `cba_match_rate`            | Fraction of timesteps with `D_t == E_t`.                                            |
+  | `coherence`   | `cba_h_d`                   | Miller-Madow Shannon entropy of declared marginal (bits).                           |
+  | `coherence`   | `cba_h_e`                   | Miller-Madow Shannon entropy of executed marginal (bits).                           |
+  | `coherence`   | `cba_mi`                    | Mutual information `I(D; E)` (bits).                                                |
+  | `memory`      | `memory_e_states`           | Crutchfield excess entropy of the system trajectory (bits).                         |
+  | `memory`      | `memory_e_env`              | Crutchfield excess entropy of the environment trajectory (bits).                    |
+  | `persistence` | `persistence_mean_hamming`  | Mean post-perturbation Hamming mismatch over `n_perturbations` trials.              |
+  | `persistence` | `persistence_d_ref`         | Empirical chance-baseline Hamming distance from the focal marginal.                 |
+
+  The headline axis fields (`ratio_endo_total`, `memory_endo_ratio`,
+  `constraint_closure`, `rai_proxy_persistence`, `cba_theil_u`) are
+  unchanged.
+- **`compute_memory_endo_ratio`: keyword-only `return_diagnostics=False`.**
+  When `True`, returns `(score, {"e_states": ..., "e_env": ...})`.
+- **`compute_rai_proxy_persistence`: keyword-only
+  `return_diagnostics=False`.** When `True`, returns
+  `(score, {"mean_hamming": ..., "d_ref": ...})`.
+- **12 new tests** covering: per-metric diagnostic dictionaries; the
+  `Autonometer` plumbing that copies diagnostics into the matching
+  profile fields; the negative-space guarantees (diagnostic fields
+  stay `None` when the axis was not requested or when the adapter
+  does not provide the input); and that the existing
+  `AutonomyProfile(...)` construction signature still works without
+  passing any diagnostic argument.
+
+### Changed
+
+- **`Autonometer.measure`** now requests diagnostics for the three
+  metrics that support it (`coherence`, `memory`, `persistence`)
+  and copies the returned magnitudes into the new profile fields
+  via the internal `_METRIC_DIAGNOSTIC_FIELDS` translation table.
+  The existing return type, headline-field population semantics
+  and mosaic-dropout behaviour are unchanged.
+- **`compute_cba_theil_u`** already shipped its
+  `return_diagnostics=True` path in `v0.9.0a0`; it is now consumed
+  by `Autonometer.measure` rather than only available to direct
+  callers.
+
+### Notes for downstream users
+
+- **No existing call site needs to change.** Code written against
+  `v0.9.0a0` continues to work without modification; the new
+  fields are read-only `Optional[float]`s that simply expose
+  values previously discarded after each metric call.
+- **Mosaic dropout still applies axis-by-axis.** A diagnostic field
+  is `None` whenever its parent axis is `None` (for example, an
+  adapter without `get_declared_executed` reports
+  `cba_theil_u = None` and every `cba_*` diagnostic field as
+  `None`).
+- **No metric definition changes; no benchmark reruns; no
+  hypothesis updates.** The behaviour of the five headline axes
+  on the existing zoo and the mosaic-atlas verdict from
+  `v0.8.0a0` (`n_valid_full = 0/645`) are unchanged.
+- **366 tests passing** (was 354): 12 new tests in
+  `tests/test_profile_diagnostics.py`.
+
 ## [0.9.0a0] - 2026-05-04
 
 > Off-line LLM transcript support. Strictly additive; nothing in

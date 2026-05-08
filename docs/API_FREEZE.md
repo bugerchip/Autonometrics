@@ -124,6 +124,17 @@ yet and may change without notice up to `v1.0`:
 * Metadata dictionary contents (`profile.metadata`). The keys
   `metric`, `metrics`, `axes`, `n_timesteps`, `adapter` are stable;
   additional keys may be added freely.
+* Optional diagnostic fields on `AutonomyProfile` (added in
+  `v0.9.0a1`): `cba_match_rate`, `cba_h_d`, `cba_h_e`, `cba_mi`,
+  `memory_e_states`, `memory_e_env`, `persistence_mean_hamming`,
+  `persistence_d_ref`. These expose intermediate magnitudes the
+  underlying metrics already compute internally and follow the
+  same mosaic-dropout rule as their parent axis. Their names and
+  the dictionary keys returned by `return_diagnostics=True`
+  (`match_rate`, `H_D`, `H_E`, `MI`, `e_states`, `e_env`,
+  `mean_hamming`, `d_ref`) may be refined before `v1.0`. The
+  five headline axis fields listed above remain the stable freeze
+  target and are not affected.
 * Internal modules: `autonometrics.core._*`, `autonometrics.metrics._*`
   and similar private members.
 

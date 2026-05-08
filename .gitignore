@@ -11,6 +11,11 @@ __pycache__/
 # (Windows / NTFS, macOS default APFS).
 /notes/
 
+# Internal agent briefs and scaffolding prompts (never ship in
+# source distribution and never check into version control).
+AGENT_BRIEF.md
+AGENT_BRIEF*.md
+
 # Distribution / packaging
 .Python
 build/
