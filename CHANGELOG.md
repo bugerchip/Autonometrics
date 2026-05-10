@@ -7,6 +7,23 @@ and this project adheres to [PEP 440](https://peps.python.org/pep-0440/)
 version numbering. Until the first non-alpha release every minor
 version may introduce breaking changes.
 
+## [Unreleased]
+
+### Added
+
+- **`docs/FAILURE_MODES.md`.** Technical reference cataloguing
+  four families of conditions under which one or more axes of an
+  `AutonomyProfile` respond non-monotonically, saturate by
+  construction, or drop out honestly — for reasons that reflect
+  properties of the input rather than the structural autonomy of
+  the underlying system. Descriptive, not prescriptive: the
+  document teaches the reader how to interpret a profile near
+  these regions and points to the optional diagnostic fields
+  surfaced on `AutonomyProfile` since `v0.9.0a1` that disambiguate
+  each regime when consulted alongside the headline. Cross-
+  references the per-axis design documents (`CBA.md`,
+  `CONSTRAINT_CLOSURE.md`, `RAI.md`, `PBA.md`).
+
 ## [0.9.0a1] - 2026-05-08
 
 > Diagnostic propagation. Strictly additive; nothing in `v0.9.0a0`
