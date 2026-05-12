@@ -146,12 +146,16 @@ def iter_configs(
     """Yield ``(coupling, seed, system)`` tuples for the sweep."""
     for coupling in couplings:
         for seed in range(n_seeds):
-            yield coupling, seed, KauffmanNetwork(
-                n_nodes=n_nodes,
-                k=k,
-                n_steps=n_steps,
-                coupling=coupling,
-                seed=seed,
+            yield (
+                coupling,
+                seed,
+                KauffmanNetwork(
+                    n_nodes=n_nodes,
+                    k=k,
+                    n_steps=n_steps,
+                    coupling=coupling,
+                    seed=seed,
+                ),
             )
 
 
@@ -218,9 +222,7 @@ def write_csv(points: list[PersistencePoint], path: Path) -> None:
         for p in points:
             row = asdict(p)
             row["coupling"] = f"{row['coupling']:.4f}"
-            row["persistence"] = (
-                "" if row["persistence"] is None else f"{row['persistence']:.6f}"
-            )
+            row["persistence"] = "" if row["persistence"] is None else f"{row['persistence']:.6f}"
             writer.writerow(row)
 
 
@@ -324,17 +326,12 @@ def diagnosis_line(stats: dict[float, dict[str, Any]]) -> str:
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "persistence_v0.7.0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "persistence_v0.7.0.csv"
 )
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Run the autonometrics persistence diagnostic."
-    )
+    parser = argparse.ArgumentParser(description="Run the autonometrics persistence diagnostic.")
     default_rel = _DEFAULT_OUTPUT.relative_to(_DEFAULT_OUTPUT.parents[2])
     parser.add_argument(
         "--output",

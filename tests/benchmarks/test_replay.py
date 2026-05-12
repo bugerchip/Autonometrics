@@ -62,9 +62,7 @@ def test_kauffman_replay_diverges_when_focal_self_couples() -> None:
     without error.
     """
     for seed in range(3):
-        net = KauffmanNetwork(
-            n_nodes=10, k=3, n_steps=300, coupling=0.0, seed=seed
-        )
+        net = KauffmanNetwork(n_nodes=10, k=3, n_steps=300, coupling=0.0, seed=seed)
         perturbed = net.replay_from_perturbation(t_star=20, n_steps=64)
         assert perturbed.shape == (64,)
 
@@ -77,9 +75,7 @@ def test_kauffman_replay_invisible_to_focal_at_full_external_coupling() -> None:
     other nodes, which are unchanged. So the perturbed and the
     unperturbed focal trajectories must agree at the first step.
     """
-    net = KauffmanNetwork(
-        n_nodes=10, k=3, n_steps=300, coupling=1.0, seed=0
-    )
+    net = KauffmanNetwork(n_nodes=10, k=3, n_steps=300, coupling=1.0, seed=0)
     baseline = net.get_state_history()
     perturbed = net.replay_from_perturbation(t_star=20, n_steps=1)
     assert perturbed[0] == baseline[21]

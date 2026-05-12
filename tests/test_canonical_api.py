@@ -17,8 +17,7 @@ import numpy as np
 import pytest
 
 import autonometrics as anm
-from autonometrics import AXES, ALL_AXES, AutonomyProfile, PromisedCycle
-
+from autonometrics import ALL_AXES, AXES, AutonomyProfile, PromisedCycle
 
 # --------------------------------------------------------------------- #
 # Module-level constants

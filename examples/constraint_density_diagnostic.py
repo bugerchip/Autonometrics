@@ -126,12 +126,17 @@ def iter_configs(
     """Yield ``(n_nodes, k, seed, system)`` tuples for the sweep."""
     for k in k_values:
         for seed in range(n_seeds):
-            yield n_nodes, k, seed, KauffmanNetwork(
-                n_nodes=n_nodes,
-                k=k,
-                n_steps=n_steps,
-                coupling=1.0,
-                seed=seed,
+            yield (
+                n_nodes,
+                k,
+                seed,
+                KauffmanNetwork(
+                    n_nodes=n_nodes,
+                    k=k,
+                    n_steps=n_steps,
+                    coupling=1.0,
+                    seed=seed,
+                ),
             )
 
 
@@ -190,9 +195,7 @@ def write_csv(points: list[ConstraintDensityPoint], path: Path) -> None:
         writer.writeheader()
         for p in points:
             row = asdict(p)
-            row["constraint"] = (
-                "" if row["constraint"] is None else f"{row['constraint']:.6f}"
-            )
+            row["constraint"] = "" if row["constraint"] is None else f"{row['constraint']:.6f}"
             writer.writerow(row)
 
 
@@ -242,9 +245,7 @@ def diagnosis_line(stats: dict[int, dict[str, Any]]) -> str:
     """Return a single-line verdict on whether the curve walks the boundary theorems."""
     k_values = sorted(stats.keys())
     means = [stats[k]["constraint_mean"] for k in k_values]
-    valid = [
-        (k, m) for k, m in zip(k_values, means, strict=True) if not np.isnan(m)
-    ]
+    valid = [(k, m) for k, m in zip(k_values, means, strict=True) if not np.isnan(m)]
     if len(valid) < 2:
         return "[N/A] not enough valid K levels to assess the curve."
 
@@ -252,9 +253,7 @@ def diagnosis_line(stats: dict[int, dict[str, Any]]) -> str:
     last_k, last_c = valid[-1]
     rise = last_c - first_c
 
-    monotonic = all(
-        valid[i][1] <= valid[i + 1][1] + 1e-3 for i in range(len(valid) - 1)
-    )
+    monotonic = all(valid[i][1] <= valid[i + 1][1] + 1e-3 for i in range(len(valid) - 1))
 
     low_ok = first_c < 0.4
     high_ok = last_c > 0.7
@@ -282,10 +281,7 @@ def diagnosis_line(stats: dict[int, dict[str, Any]]) -> str:
 
 
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "constraint_density_v0.6.1.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "constraint_density_v0.6.1.csv"
 )
 
 

@@ -97,9 +97,7 @@ class LLMTranscriptAdapter:
                 f"{len(executed_list)} vs {len(env_list)}"
             )
         if len(executed_list) < 2:
-            raise ValueError(
-                f"transcript must contain at least 2 turns; got {len(executed_list)}"
-            )
+            raise ValueError(f"transcript must contain at least 2 turns; got {len(executed_list)}")
 
         if declared is not None:
             declared_list: list[Any] | None = list(declared)
@@ -115,9 +113,7 @@ class LLMTranscriptAdapter:
             self._executed = np.asarray(
                 [int(to_state_id(x)) for x in executed_list], dtype=np.int64
             )
-            self._env = np.asarray(
-                [int(to_state_id(x)) for x in env_list], dtype=np.int64
-            )
+            self._env = np.asarray([int(to_state_id(x)) for x in env_list], dtype=np.int64)
             self.executed_encoder_: dict[Any, int] | None = None
             self.env_encoder_: dict[Any, int] | None = None
             if declared_list is not None:
@@ -171,9 +167,7 @@ class LLMTranscriptAdapter:
         v0.9.0 contract in ``docs/LLM_TRANSCRIPT.md``.
         """
         if not isinstance(messages, list):
-            raise TypeError(
-                f"messages must be a list of dicts; got {type(messages).__name__}"
-            )
+            raise TypeError(f"messages must be a list of dicts; got {type(messages).__name__}")
         if messages and isinstance(messages[0], list):
             raise NotImplementedError(
                 "multi-session corpora (list-of-lists) are not yet supported "
@@ -188,9 +182,7 @@ class LLMTranscriptAdapter:
 
         for msg in messages:
             if not isinstance(msg, dict):
-                raise ValueError(
-                    f"every message must be a dict; got {type(msg).__name__}"
-                )
+                raise ValueError(f"every message must be a dict; got {type(msg).__name__}")
             role = msg.get("role")
             if role in ("user", "tool", "system"):
                 content = msg.get("content")
@@ -253,13 +245,9 @@ class LLMTranscriptAdapter:
                 try:
                     msg = json.loads(line)
                 except json.JSONDecodeError as exc:
-                    raise ValueError(
-                        f"invalid JSON at line {line_num} of {p}: {exc.msg}"
-                    ) from exc
+                    raise ValueError(f"invalid JSON at line {line_num} of {p}: {exc.msg}") from exc
                 if not isinstance(msg, dict):
-                    raise ValueError(
-                        f"line {line_num} of {p} is not a JSON object: {msg!r}"
-                    )
+                    raise ValueError(f"line {line_num} of {p} is not a JSON object: {msg!r}")
                 messages.append(msg)
 
         if not messages:
@@ -300,10 +288,7 @@ def _is_empty(value: Any) -> bool:
 
 
 def _is_int_iterable(values: list[Any]) -> bool:
-    return all(
-        isinstance(v, (int, np.integer)) and not isinstance(v, bool)
-        for v in values
-    )
+    return all(isinstance(v, (int, np.integer)) and not isinstance(v, bool) for v in values)
 
 
 def _encode_or_passthrough(values: list[Any]) -> tuple[np.ndarray, dict[Any, int] | None]:

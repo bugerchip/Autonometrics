@@ -150,12 +150,8 @@ def test_from_file_and_from_path_yield_equal_trajectories(tmp_path: Path) -> Non
     )
     via_file = CSVTrajectory.from_file(csv_path)
     via_path = CSVTrajectory.from_path(csv_path)
-    np.testing.assert_array_equal(
-        via_file.get_state_history(), via_path.get_state_history()
-    )
-    np.testing.assert_array_equal(
-        via_file.get_env_history(), via_path.get_env_history()
-    )
+    np.testing.assert_array_equal(via_file.get_state_history(), via_path.get_state_history())
+    np.testing.assert_array_equal(via_file.get_env_history(), via_path.get_env_history())
 
 
 def test_from_path_still_works_unchanged(tmp_path: Path) -> None:

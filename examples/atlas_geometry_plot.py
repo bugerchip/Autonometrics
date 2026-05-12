@@ -50,7 +50,6 @@ from typing import Any
 
 import numpy as np
 
-
 _AXES: tuple[str, ...] = ("closure", "memory", "constraint", "persistence")
 
 
@@ -100,9 +99,7 @@ def _project_for_biplot(
     pca = atlas.pca_via_svd(scaled)
     k_star = int(report["kmeans"]["k_star"])
     rng = np.random.default_rng(rng_seed)
-    labels, _centroids, _inertia = atlas.kmeans(
-        pca["whitened"], k_star, rng=rng
-    )
+    labels, _centroids, _inertia = atlas.kmeans(pca["whitened"], k_star, rng=rng)
     classes = np.array([r.klass for r in valid])
     return {
         "scores_pc": pca["scores"][:, :2],
@@ -138,18 +135,14 @@ def render(
             "Install with: pip install autonometrics[viz]"
         ) from exc
 
-    fig, (ax_scree, ax_biplot) = plt.subplots(
-        1, 2, figsize=(13.0, 6.0), dpi=150
-    )
+    fig, (ax_scree, ax_biplot) = plt.subplots(1, 2, figsize=(13.0, 6.0), dpi=150)
 
     ratios = np.asarray(report["pca"]["explained_variance_ratio"], dtype=float)
     cumul = np.asarray(report["pca"]["cumulative_ratio"], dtype=float)
     components = np.array([f"PC{i + 1}" for i in range(ratios.size)])
 
-    bars = ax_scree.bar(
-        components, ratios, color="#4a7fb8", edgecolor="black", alpha=0.85
-    )
-    for bar, r in zip(bars, ratios):
+    bars = ax_scree.bar(components, ratios, color="#4a7fb8", edgecolor="black", alpha=0.85)
+    for bar, r in zip(bars, ratios, strict=False):
         ax_scree.text(
             bar.get_x() + bar.get_width() / 2,
             r + 0.01,
@@ -167,7 +160,7 @@ def render(
         linewidth=2.0,
         label="cumulative",
     )
-    for x, c in zip(components, cumul):
+    for x, c in zip(components, cumul, strict=False):
         ax_cumul.text(x, c + 0.02, f"{c:.3f}", ha="center", color="#c4541d", fontsize=8)
     ax_scree.set_ylim(0.0, 1.05)
     ax_cumul.set_ylim(0.0, 1.05)
@@ -285,8 +278,7 @@ def render(
     ax_biplot.legend(handles=legend_handles, loc="lower right", fontsize=7, ncol=1)
 
     fig.suptitle(
-        "Atlas geometry (autonometrics v0.7.2a0). PCA + k-means biplot. "
-        "Loadings on PC1/PC2 axes.",
+        "Atlas geometry (autonometrics v0.7.2a0). PCA + k-means biplot. Loadings on PC1/PC2 axes.",
         fontsize=10,
     )
     fig.tight_layout(rect=(0, 0, 1, 0.96))
@@ -296,26 +288,16 @@ def render(
 
 
 _DEFAULT_JSON = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "atlas_geometry_v0.7.2a0.json"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "atlas_geometry_v0.7.2a0.json"
 )
-_DEFAULT_CSV = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
-)
+_DEFAULT_CSV = Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "atlas_geometry_v0.7.2a0.png"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "atlas_geometry_v0.7.2a0.png"
 )
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Render the atlas geometry biplot + scree plot."
-    )
+    parser = argparse.ArgumentParser(description="Render the atlas geometry biplot + scree plot.")
     parser.add_argument(
         "--json",
         type=Path,

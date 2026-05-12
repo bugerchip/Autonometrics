@@ -105,9 +105,7 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
     aggregated = aggregate(rows)
     valid = [a for a in aggregated if a["n_valid"] > 0]
     if not valid:
-        raise ValueError(
-            "CSV contains no valid persistence measurements to plot."
-        )
+        raise ValueError("CSV contains no valid persistence measurements to plot.")
 
     couplings = np.array([a["coupling"] for a in valid], dtype=float)
     persistence_mean = np.array([a["persistence_mean"] for a in valid], dtype=float)
@@ -147,23 +145,15 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
 
 
 _DEFAULT_CSV = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "persistence_v0.7.0.csv"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "persistence_v0.7.0.csv"
 )
 _DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent
-    / "docs"
-    / "benchmarks"
-    / "persistence_v0.7.0.png"
+    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "persistence_v0.7.0.png"
 )
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Render the persistence diagnostic curve."
-    )
+    parser = argparse.ArgumentParser(description="Render the persistence diagnostic curve.")
     csv_rel = _DEFAULT_CSV.relative_to(_DEFAULT_CSV.parents[2])
     out_rel = _DEFAULT_OUTPUT.relative_to(_DEFAULT_OUTPUT.parents[2])
     parser.add_argument(

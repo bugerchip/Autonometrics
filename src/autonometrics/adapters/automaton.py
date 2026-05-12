@@ -163,9 +163,7 @@ class SimpleAutomaton:
         >>> profile = anm.measure(sys)  # doctest: +SKIP
         """
         if mode not in (_MODE_SELF, _MODE_EXTERNAL):
-            raise ValueError(
-                f"Unknown mode {mode!r}; expected 'self_generated' or 'external'"
-            )
+            raise ValueError(f"Unknown mode {mode!r}; expected 'self_generated' or 'external'")
         rng = np.random.default_rng(seed)
         env = rng.integers(0, n_states, size=n_steps).astype(np.int64)
         return cls(mode=mode, n_states=n_states, env=env, seed=seed)
@@ -244,9 +242,7 @@ class SimpleAutomaton:
         if n_steps < 1:
             raise ValueError(f"n_steps must be positive, got {n_steps}")
         if t_star + n_steps >= n:
-            raise ValueError(
-                f"t_star + n_steps must be < {n}, got {t_star + n_steps}"
-            )
+            raise ValueError(f"t_star + n_steps must be < {n}, got {t_star + n_steps}")
 
         baseline = int(self._state_history[t_star])
         perturbed = (baseline + 1) % self._n_states

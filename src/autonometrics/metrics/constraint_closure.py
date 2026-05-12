@@ -119,13 +119,9 @@ def compute_constraint_closure(causal_graph: np.ndarray) -> float:
     """
     matrix = np.asarray(causal_graph, dtype=bool)
     if matrix.ndim != 2:
-        raise ValueError(
-            f"causal_graph must be a 2D array, got shape {matrix.shape}"
-        )
+        raise ValueError(f"causal_graph must be a 2D array, got shape {matrix.shape}")
     if matrix.shape[0] != matrix.shape[1]:
-        raise ValueError(
-            f"causal_graph must be square, got shape {matrix.shape}"
-        )
+        raise ValueError(f"causal_graph must be square, got shape {matrix.shape}")
 
     n = matrix.shape[0]
     if n == 0:

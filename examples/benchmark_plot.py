@@ -51,9 +51,7 @@ def load_csv(path: Path) -> list[dict[str, Any]]:
                 row[key] = float(value) if value not in ("", None) else None
             if "constraint" in row:
                 value = row.get("constraint", "")
-                row["constraint"] = (
-                    float(value) if value not in ("", None) else None
-                )
+                row["constraint"] = float(value) if value not in ("", None) else None
             else:
                 row["constraint"] = None
             row["seed"] = int(row["seed"])
@@ -130,9 +128,9 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
 
     fig, ax = plt.subplots(figsize=(7.0, 6.5), dpi=150)
 
-    by_group: dict[
-        tuple[str, str | None], list[tuple[float, float, float | None]]
-    ] = defaultdict(list)
+    by_group: dict[tuple[str, str | None], list[tuple[float, float, float | None]]] = defaultdict(
+        list
+    )
     for r in rows:
         if r["closure"] is None or r["memory"] is None:
             continue
@@ -152,9 +150,7 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
         xs = [p[0] for p in points]
         ys = [p[1] for p in points]
         cs = [p[2] for p in points]
-        sizes = [
-            base_size + constraint_scale * c if c is not None else base_size for c in cs
-        ]
+        sizes = [base_size + constraint_scale * c if c is not None else base_size for c in cs]
         marker = _marker_for(sub)
         ax.scatter(
             xs,
@@ -206,12 +202,8 @@ def render(rows: list[dict[str, Any]], output: Path, title: str | None = None) -
     plt.close(fig)
 
 
-_DEFAULT_CSV = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
-)
-_DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.png"
-)
+_DEFAULT_CSV = Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.csv"
+_DEFAULT_OUTPUT = Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.7.2a0.png"
 
 
 def main(argv: list[str] | None = None) -> int:

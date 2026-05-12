@@ -222,7 +222,8 @@ def test_constructor_with_pre_encoded_int_arrays_passes_through() -> None:
 
 
 def test_constructor_callable_overrides_built_in_encoder() -> None:
-    custom = lambda s: hash(str(s)) % 7
+    def custom(s: object) -> int:
+        return hash(str(s)) % 7
 
     adapter = LLMTranscriptAdapter(
         executed=["read", "write", "read", "respond"],

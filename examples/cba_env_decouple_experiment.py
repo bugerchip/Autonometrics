@@ -58,7 +58,6 @@ import numpy as np
 from autonometrics.adapters import PromisedCycle
 from autonometrics.core import Autonometer
 
-
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _DEFAULT_JSON = _REPO_ROOT / "docs" / "benchmarks" / "cba_env_decouple_v0.8.0a0.json"
 _DEFAULT_PNG = _REPO_ROOT / "docs" / "benchmarks" / "cba_env_decouple_v0.8.0a0.png"
@@ -139,14 +138,8 @@ def pearson(x: np.ndarray, y: np.ndarray) -> float:
 
 
 def _valid_pair(cells: list[Cell]) -> tuple[np.ndarray, np.ndarray]:
-    xs = [
-        c.closure for c in cells
-        if c.closure is not None and c.coherence is not None
-    ]
-    ys = [
-        c.coherence for c in cells
-        if c.closure is not None and c.coherence is not None
-    ]
+    xs = [c.closure for c in cells if c.closure is not None and c.coherence is not None]
+    ys = [c.coherence for c in cells if c.closure is not None and c.coherence is not None]
     return np.asarray(xs, dtype=float), np.asarray(ys, dtype=float)
 
 
@@ -225,10 +218,19 @@ def print_report(result: dict[str, Any]) -> None:
     print(f"Total measurements: {result['n_total']}")
     print()
     print(f"  global r(closure, coherence)             = {_fmt(result['global_pearson'])}")
-    print(f"  r(closure, p_noise)                      = {_fmt(result['closure_vs_p_noise_pearson'])}")
-    print(f"  r(closure, p_env)                        = {_fmt(result['closure_vs_p_env_pearson'])}")
-    print(f"  r(coherence, p_noise)                    = {_fmt(result['coherence_vs_p_noise_pearson'])}")
-    print(f"  r(coherence, p_env)                      = {_fmt(result['coherence_vs_p_env_pearson'])}")
+    print(
+        f"  r(closure, p_noise)                      = {_fmt(result['closure_vs_p_noise_pearson'])}"
+    )
+    print(
+        f"  r(closure, p_env)                        = {_fmt(result['closure_vs_p_env_pearson'])}"
+    )
+    print(
+        f"  r(coherence, p_noise)                    = "
+        f"{_fmt(result['coherence_vs_p_noise_pearson'])}"
+    )
+    print(
+        f"  r(coherence, p_env)                      = {_fmt(result['coherence_vs_p_env_pearson'])}"
+    )
     print()
     print("--- r(closure, coherence) at fixed p_env ---")
     print(f"  {'p_env':>8} {'n':>5} {'pearson':>10}")
@@ -243,10 +245,7 @@ def print_report(result: dict[str, Any]) -> None:
         print(f"  {float(k):>8.3f} {stats['n']:>5} {_fmt(stats['pearson']):>10}")
     print()
     print("--- per-cell mean(closure) and mean(coherence) ---")
-    print(
-        f"  {'p_noise':>8} {'p_env':>6} {'n':>4} "
-        f"{'mean_clos':>10} {'mean_coh':>10} {'r':>9}"
-    )
+    print(f"  {'p_noise':>8} {'p_env':>6} {'n':>4} {'mean_clos':>10} {'mean_coh':>10} {'r':>9}")
     print(f"  {'-' * 8} {'-' * 6} {'-' * 4} {'-' * 10} {'-' * 10} {'-' * 9}")
     for cell in result["cell_correlations"]:
         print(
@@ -316,10 +315,9 @@ def write_scatter(cells: list[Cell], path: Path) -> bool:
     sc = None
     for i, p_noise in enumerate(p_noise_values):
         sub = [
-            c for c in cells
-            if c.p_noise == p_noise
-            and c.closure is not None
-            and c.coherence is not None
+            c
+            for c in cells
+            if c.p_noise == p_noise and c.closure is not None and c.coherence is not None
         ]
         if not sub:
             continue
@@ -328,9 +326,18 @@ def write_scatter(cells: list[Cell], path: Path) -> bool:
         z = np.array([c.p_env for c in sub], dtype=float)
         marker = _NOISE_MARKERS[i % len(_NOISE_MARKERS)]
         sc = ax.scatter(
-            x, y, c=z, cmap="plasma", marker=marker, s=44,
-            label=f"p_noise={p_noise:.2f}", edgecolors="black", linewidths=0.3,
-            alpha=0.85, vmin=0.0, vmax=1.0,
+            x,
+            y,
+            c=z,
+            cmap="plasma",
+            marker=marker,
+            s=44,
+            label=f"p_noise={p_noise:.2f}",
+            edgecolors="black",
+            linewidths=0.3,
+            alpha=0.85,
+            vmin=0.0,
+            vmax=1.0,
         )
 
     if sc is not None:
@@ -367,12 +374,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json-output", type=Path, default=_DEFAULT_JSON)
     parser.add_argument("--png-output", type=Path, default=_DEFAULT_PNG)
     parser.add_argument(
-        "--quick", action="store_true",
+        "--quick",
+        action="store_true",
         help="Run a 3 × 3 grid with 3 seeds (smoke-fast).",
     )
-    parser.add_argument(
-        "--no-plot", action="store_true", help="Skip the scatter PNG output."
-    )
+    parser.add_argument("--no-plot", action="store_true", help="Skip the scatter PNG output.")
     args = parser.parse_args(argv)
 
     if args.quick:

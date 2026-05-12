@@ -28,7 +28,7 @@ def _independent_replay(rng_seed: int, alphabet: int, length: int):
     the baseline trajectory, so ``d_bar`` approaches ``d_ref`` and
     the score collapses toward ``0``.
     """
-    rng = np.random.default_rng(rng_seed)
+    del rng_seed  # reserved for future re-seeding; inner replay uses its own rng
 
     def replay(t_star: int, n_steps: int, rng=None) -> np.ndarray:
         del t_star
@@ -87,9 +87,7 @@ def test_short_trajectory_raises() -> None:
     states = np.array([0, 1, 0, 1], dtype=np.int64)
     env = np.zeros_like(states)
     with pytest.raises(ValueError, match="too short"):
-        compute_rai_proxy_persistence(
-            states, env, _identity_replay(states), horizon=64
-        )
+        compute_rai_proxy_persistence(states, env, _identity_replay(states), horizon=64)
 
 
 def test_mismatched_lengths_raises() -> None:

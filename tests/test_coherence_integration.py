@@ -19,9 +19,7 @@ from autonometrics import (
 
 
 def test_autonometer_measures_cba_on_promised_cycle_zero_noise() -> None:
-    sys = PromisedCycle(
-        length=512, period=4, alphabet=4, p_noise=0.0, seed=0
-    )
+    sys = PromisedCycle(length=512, period=4, alphabet=4, p_noise=0.0, seed=0)
     profile = Autonometer(metrics=["coherence"]).measure(sys)
     assert isinstance(profile, AutonomyProfile)
     assert profile.cba_theil_u is not None
@@ -29,9 +27,7 @@ def test_autonometer_measures_cba_on_promised_cycle_zero_noise() -> None:
 
 
 def test_autonometer_measures_cba_on_promised_cycle_full_noise() -> None:
-    sys = PromisedCycle(
-        length=2000, period=4, alphabet=4, p_noise=1.0, seed=0
-    )
+    sys = PromisedCycle(length=2000, period=4, alphabet=4, p_noise=1.0, seed=0)
     profile = Autonometer(metrics=["coherence"]).measure(sys)
     assert profile.cba_theil_u is not None
     assert profile.cba_theil_u <= 0.10
@@ -61,9 +57,7 @@ def test_autonometer_returns_none_cba_on_simple_automaton() -> None:
 
 def test_five_axis_profile_on_promised_cycle() -> None:
     """Running all five axes on PromisedCycle returns five floats (no crashes)."""
-    sys = PromisedCycle(
-        length=512, period=4, alphabet=4, p_noise=0.2, seed=0
-    )
+    sys = PromisedCycle(length=512, period=4, alphabet=4, p_noise=0.2, seed=0)
     meter = Autonometer(
         metrics=["albantakis", "memory", "constraint_closure", "persistence", "coherence"]
     )

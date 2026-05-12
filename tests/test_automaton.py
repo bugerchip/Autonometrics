@@ -120,9 +120,7 @@ def test_demo_factory_seed_is_reproducible() -> None:
     sys_a = SimpleAutomaton.demo(seed=7)
     sys_b = SimpleAutomaton.demo(seed=7)
     np.testing.assert_array_equal(sys_a.get_env_history(), sys_b.get_env_history())
-    np.testing.assert_array_equal(
-        sys_a.get_state_history(), sys_b.get_state_history()
-    )
+    np.testing.assert_array_equal(sys_a.get_state_history(), sys_b.get_state_history())
 
 
 def test_demo_factory_different_seeds_diverge() -> None:

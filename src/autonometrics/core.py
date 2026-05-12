@@ -326,9 +326,7 @@ class Autonometer:
                 return None, None
             try:
                 if wants_diagnostics:
-                    score, diagnostics = fn(
-                        states, env, replay_fn, return_diagnostics=True
-                    )
+                    score, diagnostics = fn(states, env, replay_fn, return_diagnostics=True)
                     return float(score), diagnostics
                 return float(fn(states, env, replay_fn)), None
             except NotImplementedError:

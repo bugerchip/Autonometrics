@@ -65,9 +65,9 @@ class KauffmanNetwork:
         self._env_node = self._choose_env_node()
 
         self._inputs = self._build_inputs()
-        self._truth_tables = self._rng.integers(
-            0, 2, size=(self._n_nodes, 1 << self._k)
-        ).astype(np.int64)
+        self._truth_tables = self._rng.integers(0, 2, size=(self._n_nodes, 1 << self._k)).astype(
+            np.int64
+        )
 
         self._state_history: np.ndarray | None = None
         self._env_history: np.ndarray | None = None
@@ -161,16 +161,11 @@ class KauffmanNetwork:
         assert self._full_state_history is not None
 
         if t_star < 0 or t_star >= self._n_steps - 1:
-            raise ValueError(
-                f"t_star must be in [0, {self._n_steps - 2}], got {t_star}"
-            )
+            raise ValueError(f"t_star must be in [0, {self._n_steps - 2}], got {t_star}")
         if n_steps < 1:
             raise ValueError(f"n_steps must be positive, got {n_steps}")
         if t_star + n_steps >= self._n_steps:
-            raise ValueError(
-                f"t_star + n_steps must be < {self._n_steps}, got "
-                f"{t_star + n_steps}"
-            )
+            raise ValueError(f"t_star + n_steps must be < {self._n_steps}, got {t_star + n_steps}")
 
         state = self._full_state_history[t_star].copy()
         state[self._focal] = 1 - int(state[self._focal])

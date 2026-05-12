@@ -110,9 +110,7 @@ class PromisedCycle:
         if alphabet < 2:
             raise ValueError(f"alphabet must be at least 2; got {alphabet}")
         if not 1 <= period <= alphabet:
-            raise ValueError(
-                f"period must lie in [1, alphabet={alphabet}]; got {period}"
-            )
+            raise ValueError(f"period must lie in [1, alphabet={alphabet}]; got {period}")
         if not 0.0 <= p_noise <= 1.0:
             raise ValueError(f"p_noise must lie in [0.0, 1.0]; got {p_noise}")
         if not 0.0 <= p_env <= 1.0:
@@ -197,9 +195,7 @@ class PromisedCycle:
 
         if self._p_env > 0.0:
             env_mask = rng.random(self._length) < self._p_env
-            env_alts = rng.integers(0, self._alphabet, size=self._length).astype(
-                np.int64
-            )
+            env_alts = rng.integers(0, self._alphabet, size=self._length).astype(np.int64)
             declared = np.where(env_mask, env_alts, base_declared).astype(np.int64)
         else:
             declared = base_declared
@@ -208,9 +204,7 @@ class PromisedCycle:
             executed = ((declared + 1) % self._alphabet).astype(np.int64)
         else:
             mask = rng.random(self._length) < self._p_noise
-            random_alts = rng.integers(0, self._alphabet, size=self._length).astype(
-                np.int64
-            )
+            random_alts = rng.integers(0, self._alphabet, size=self._length).astype(np.int64)
             executed = np.where(mask, random_alts, declared).astype(np.int64)
 
         self._declared = declared
@@ -272,16 +266,11 @@ class PromisedCycle:
         self._ensure_built()
         assert self._executed is not None
         if t_star < 0 or t_star >= self._length - 1:
-            raise ValueError(
-                f"t_star must be in [0, {self._length - 2}]; got {t_star}"
-            )
+            raise ValueError(f"t_star must be in [0, {self._length - 2}]; got {t_star}")
         if n_steps < 1:
             raise ValueError(f"n_steps must be positive; got {n_steps}")
         if t_star + n_steps >= self._length:
-            raise ValueError(
-                f"t_star + n_steps must be < {self._length}; "
-                f"got {t_star + n_steps}"
-            )
+            raise ValueError(f"t_star + n_steps must be < {self._length}; got {t_star + n_steps}")
         return self._executed[t_star + 1 : t_star + 1 + n_steps].copy()
 
     @property

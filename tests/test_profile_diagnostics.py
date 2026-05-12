@@ -68,9 +68,7 @@ def test_coherence_metric_returns_diagnostics_dict() -> None:
     declared = np.tile(np.array([0, 1], dtype=np.int64), 128)
     executed = declared.copy()
 
-    score, diagnostics = compute_cba_theil_u(
-        declared, executed, return_diagnostics=True
-    )
+    score, diagnostics = compute_cba_theil_u(declared, executed, return_diagnostics=True)
 
     assert score == pytest.approx(1.0)
     assert set(diagnostics) >= {"match_rate", "H_D", "H_E", "MI", "T"}
@@ -84,9 +82,7 @@ def test_coherence_metric_bijection_loophole_diagnostic() -> None:
     declared = np.tile(np.array([0, 1], dtype=np.int64), 64)
     executed = 1 - declared
 
-    score, diagnostics = compute_cba_theil_u(
-        declared, executed, return_diagnostics=True
-    )
+    score, diagnostics = compute_cba_theil_u(declared, executed, return_diagnostics=True)
 
     assert score == pytest.approx(1.0, abs=1e-6)
     assert diagnostics["match_rate"] == pytest.approx(0.0)
@@ -97,9 +93,7 @@ def test_memory_metric_returns_diagnostics_dict() -> None:
     states = rng.integers(0, 4, size=1024).astype(np.int64)
     env = rng.integers(0, 4, size=1024).astype(np.int64)
 
-    score, diagnostics = compute_memory_endo_ratio(
-        states, env, return_diagnostics=True
-    )
+    score, diagnostics = compute_memory_endo_ratio(states, env, return_diagnostics=True)
 
     assert 0.0 <= score <= 1.0
     assert set(diagnostics) == {"e_states", "e_env"}

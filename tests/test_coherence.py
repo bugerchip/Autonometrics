@@ -155,7 +155,7 @@ def test_coherence_does_not_import_other_metrics() -> None:
     assert "import dit" not in src
 
 
-class warnings_as_errors:
+class warnings_as_errors:  # noqa: N801 - intentionally snake_case to read as a context-manager call
     """Context manager that promotes any warning to an error for the body."""
 
     def __enter__(self) -> None:

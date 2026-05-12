@@ -77,23 +77,70 @@ def test_partial_pearson_preserves_real_coupling(audit: ModuleType) -> None:
 def test_load_promised_rows_and_analyse(audit: ModuleType, tmp_path: Path) -> None:
     csv_path = tmp_path / "mini.csv"
     fields = [
-        "class", "params", "seed", "closure", "memory",
-        "constraint", "persistence", "coherence", "quadrant", "notes",
+        "class",
+        "params",
+        "seed",
+        "closure",
+        "memory",
+        "constraint",
+        "persistence",
+        "coherence",
+        "quadrant",
+        "notes",
     ]
     rows_data = [
         # PromisedCycle random_noise sweep
-        ("PromisedCycle", "period=4,alphabet=4,p_noise=0.0", 0,
-         "1.0", "1.0", "", "1.0", "1.0", "autopoietic", ""),
-        ("PromisedCycle", "period=4,alphabet=4,p_noise=0.5", 0,
-         "0.5", "1.0", "", "1.0", "0.5", "autopoietic", ""),
-        ("PromisedCycle", "period=4,alphabet=4,p_noise=1.0", 0,
-         "0.05", "1.0", "", "1.0", "0.0", "turbulence", ""),
+        (
+            "PromisedCycle",
+            "period=4,alphabet=4,p_noise=0.0",
+            0,
+            "1.0",
+            "1.0",
+            "",
+            "1.0",
+            "1.0",
+            "autopoietic",
+            "",
+        ),
+        (
+            "PromisedCycle",
+            "period=4,alphabet=4,p_noise=0.5",
+            0,
+            "0.5",
+            "1.0",
+            "",
+            "1.0",
+            "0.5",
+            "autopoietic",
+            "",
+        ),
+        (
+            "PromisedCycle",
+            "period=4,alphabet=4,p_noise=1.0",
+            0,
+            "0.05",
+            "1.0",
+            "",
+            "1.0",
+            "0.0",
+            "turbulence",
+            "",
+        ),
         # adversarial
-        ("PromisedCycle", "adversarial,period=4", 0,
-         "1.0", "1.0", "", "1.0", "1.0", "autopoietic", ""),
+        (
+            "PromisedCycle",
+            "adversarial,period=4",
+            0,
+            "1.0",
+            "1.0",
+            "",
+            "1.0",
+            "1.0",
+            "autopoietic",
+            "",
+        ),
         # ECA must be filtered out
-        ("ECASystem", "rule=110", 0,
-         "0.7", "0.6", "1.0", "0.3", "", "autopoietic", ""),
+        ("ECASystem", "rule=110", 0, "0.7", "0.6", "1.0", "0.3", "", "autopoietic", ""),
     ]
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.writer(fh)
@@ -115,14 +162,26 @@ def test_load_promised_rows_and_analyse(audit: ModuleType, tmp_path: Path) -> No
 def test_write_json_round_trip(audit: ModuleType, tmp_path: Path) -> None:
     rows = [
         audit.PromisedRow(
-            period=4, alphabet=4, p_noise=0.0, seed=0,
-            closure=1.0, memory=1.0, persistence=1.0,
-            coherence=1.0, mode="random_noise",
+            period=4,
+            alphabet=4,
+            p_noise=0.0,
+            seed=0,
+            closure=1.0,
+            memory=1.0,
+            persistence=1.0,
+            coherence=1.0,
+            mode="random_noise",
         ),
         audit.PromisedRow(
-            period=4, alphabet=4, p_noise=1.0, seed=0,
-            closure=0.0, memory=1.0, persistence=1.0,
-            coherence=0.0, mode="random_noise",
+            period=4,
+            alphabet=4,
+            p_noise=1.0,
+            seed=0,
+            closure=0.0,
+            memory=1.0,
+            persistence=1.0,
+            coherence=0.0,
+            mode="random_noise",
         ),
     ]
     result = audit.analyse(rows)
@@ -133,14 +192,18 @@ def test_write_json_round_trip(audit: ModuleType, tmp_path: Path) -> None:
     assert "global_correlations" in parsed
 
 
-def test_write_scatter_runs_or_skips_cleanly(
-    audit: ModuleType, tmp_path: Path
-) -> None:
+def test_write_scatter_runs_or_skips_cleanly(audit: ModuleType, tmp_path: Path) -> None:
     rows = [
         audit.PromisedRow(
-            period=4, alphabet=4, p_noise=p, seed=0,
-            closure=1.0 - p, memory=1.0, persistence=1.0,
-            coherence=1.0 - p, mode="random_noise",
+            period=4,
+            alphabet=4,
+            p_noise=p,
+            seed=0,
+            closure=1.0 - p,
+            memory=1.0,
+            persistence=1.0,
+            coherence=1.0 - p,
+            mode="random_noise",
         )
         for p in (0.0, 0.25, 0.5, 0.75, 1.0)
     ]

@@ -249,10 +249,7 @@ class AutonomyProfile:
         # Tolerate the internal metric identifier "albantakis" too.
         if name == "albantakis":
             return self.ratio_endo_total
-        raise KeyError(
-            f"Unknown axis {name!r}. "
-            f"Canonical axes: {_CANONICAL_AXES}."
-        )
+        raise KeyError(f"Unknown axis {name!r}. Canonical axes: {_CANONICAL_AXES}.")
 
     def to_dict(self) -> dict[str, float | None]:
         """Return a flat ``{canonical_axis: value_or_None}`` dictionary.
@@ -284,9 +281,7 @@ class AutonomyProfile:
         n_steps = self.metadata.get("n_timesteps")
         defined = self.to_dict()
         defined_lines = [
-            f"  {axis:<12s} = {value:.4f}"
-            for axis, value in defined.items()
-            if value is not None
+            f"  {axis:<12s} = {value:.4f}" for axis, value in defined.items() if value is not None
         ]
         missing = [axis for axis, value in defined.items() if value is None]
 
