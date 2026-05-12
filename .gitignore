@@ -175,7 +175,7 @@ cython_debug/
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+.idea/
 
 # Ruff stuff:
 .ruff_cache/
@@ -195,3 +195,36 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 .cursor/
+
+# Claude Code
+#  Per-user permissions, slash commands, and chat-scope state.
+#  `settings.local.json` is explicitly per-developer; the
+#  whole `.claude/` tree is local-only by convention. Share
+#  project-wide rules via CLAUDE.md (committed) instead.
+.claude/
+
+# VSCode
+#  Workspace files reference sibling-repo paths and per-user
+#  folder layout; `settings.json` and `launch.json` often
+#  carry developer-specific paths or debug configs. Commit
+#  shared editor config explicitly with `git add -f` if ever
+#  needed.
+.vscode/
+*.code-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backup / swap files (Vim, Emacs, nano)
+*.swp
+*.swo
+*~
+
+# Local-only scratch / private experiments
+#  Per-user experiment scaffolding referenced from
+#  `.claude/settings.local.json` and similar tooling.
+#  Promote anything publishable into `examples/` or
+#  `benchmarks/` explicitly via `git add -f`.
+/experiments/
