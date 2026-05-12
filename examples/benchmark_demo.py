@@ -352,9 +352,7 @@ def _aggregate_flag(flags: dict[str, str]) -> str:
     return max(valid)[1]
 
 
-def run_benchmark(
-    quick: bool = False, n_seeds: int = _DEFAULT_N_SEEDS
-) -> list[BenchmarkPoint]:
+def run_benchmark(quick: bool = False, n_seeds: int = _DEFAULT_N_SEEDS) -> list[BenchmarkPoint]:
     """Generate every system, measure it, and return the list of points.
 
     ``n_seeds`` is forwarded to :func:`iter_systems` and ignored when
@@ -371,9 +369,7 @@ def run_benchmark(
     )
     points: list[BenchmarkPoint] = []
     for system_class, params, seed, system in iter_systems(quick=quick, n_seeds=n_seeds):
-        closure, memory, constraint, persistence, coherence, notes = measure_safe(
-            meter, system
-        )
+        closure, memory, constraint, persistence, coherence, notes = measure_safe(meter, system)
         points.append(
             BenchmarkPoint(
                 system_class=system_class,
@@ -476,9 +472,7 @@ def _column(points: list[BenchmarkPoint], name: str) -> list[float | None]:
     return [getattr(p, name) for p in points]
 
 
-def _pair_array(
-    points: list[BenchmarkPoint], a: str, b: str
-) -> tuple[np.ndarray, np.ndarray]:
+def _pair_array(points: list[BenchmarkPoint], a: str, b: str) -> tuple[np.ndarray, np.ndarray]:
     """Return paired arrays of axis ``a`` and ``b`` for points where both are not ``None``."""
     xs: list[float] = []
     ys: list[float] = []
@@ -496,9 +490,7 @@ def summarise(points: list[BenchmarkPoint]) -> dict[str, Any]:
     """Compute aggregate stats over the (valid) measurements."""
     n_total = len(points)
     n_valid_full = sum(
-        1
-        for p in points
-        if all(getattr(p, axis) is not None for axis in _AXIS_FIELDS)
+        1 for p in points if all(getattr(p, axis) is not None for axis in _AXIS_FIELDS)
     )
 
     correlations: dict[str, dict[str, float | str | int]] = {}
@@ -582,9 +574,7 @@ def print_summary(summary: dict[str, Any]) -> None:
         print("[N/A] Not enough valid points to compute correlations.")
 
 
-_DEFAULT_OUTPUT = (
-    Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.8.0a0.csv"
-)
+_DEFAULT_OUTPUT = Path(__file__).resolve().parent.parent / "docs" / "benchmarks" / "v0.8.0a0.csv"
 
 
 def main(argv: list[str] | None = None) -> int:

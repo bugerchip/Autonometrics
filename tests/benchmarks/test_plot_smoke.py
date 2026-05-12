@@ -102,9 +102,7 @@ def test_load_csv_coerces_floats_and_handles_empty(plot: ModuleType, mini_csv: P
     assert rows[-1]["constraint"] is None
 
 
-def test_load_csv_handles_legacy_without_constraint(
-    plot: ModuleType, legacy_csv: Path
-) -> None:
+def test_load_csv_handles_legacy_without_constraint(plot: ModuleType, legacy_csv: Path) -> None:
     rows = plot.load_csv(legacy_csv)
     assert len(rows) == 2
     assert all(r["constraint"] is None for r in rows)

@@ -57,9 +57,7 @@ def test_kmeans_separates_two_gaussian_blobs(atlas: ModuleType) -> None:
     a = rng.normal(loc=-3.0, scale=0.3, size=(60, 4))
     b = rng.normal(loc=+3.0, scale=0.3, size=(60, 4))
     data = np.vstack([a, b])
-    labels, centroids, inertia = atlas.kmeans(
-        data, k=2, n_restarts=5, rng=np.random.default_rng(0)
-    )
+    labels, centroids, inertia = atlas.kmeans(data, k=2, n_restarts=5, rng=np.random.default_rng(0))
     cluster_a = set(labels[:60].tolist())
     cluster_b = set(labels[60:].tolist())
     assert len(cluster_a) == 1

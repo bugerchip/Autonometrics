@@ -135,16 +135,11 @@ class ECASystem:
         assert self._row_history is not None
 
         if t_star < 0 or t_star >= self._n_steps - 1:
-            raise ValueError(
-                f"t_star must be in [0, {self._n_steps - 2}], got {t_star}"
-            )
+            raise ValueError(f"t_star must be in [0, {self._n_steps - 2}], got {t_star}")
         if n_steps < 1:
             raise ValueError(f"n_steps must be positive, got {n_steps}")
         if t_star + n_steps >= self._n_steps:
-            raise ValueError(
-                f"t_star + n_steps must be < {self._n_steps}, got "
-                f"{t_star + n_steps}"
-            )
+            raise ValueError(f"t_star + n_steps must be < {self._n_steps}, got {t_star + n_steps}")
 
         centre = self._width // 2
         row = self._row_history[t_star].copy()

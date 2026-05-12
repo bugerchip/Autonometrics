@@ -94,9 +94,7 @@ class PeriodicCycle:
         if n_steps < 1:
             raise ValueError(f"n_steps must be positive, got {n_steps}")
         if t_star + n_steps >= n:
-            raise ValueError(
-                f"t_star + n_steps must be < {n}, got {t_star + n_steps}"
-            )
+            raise ValueError(f"t_star + n_steps must be < {n}, got {t_star + n_steps}")
 
         offsets = np.arange(t_star + 1, t_star + 1 + n_steps, dtype=np.int64)
         return ((offsets + 1) % self._period).astype(np.int64)

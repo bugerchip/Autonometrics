@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import importlib.util
 import sys
 from pathlib import Path
@@ -55,9 +54,7 @@ def test_full_coupling_one_saturates_to_one(diag: ModuleType) -> None:
     assert max(valid) >= 0.9
 
 
-def test_write_csv_produces_well_formed_file(
-    diag: ModuleType, tmp_path: Path
-) -> None:
+def test_write_csv_produces_well_formed_file(diag: ModuleType, tmp_path: Path) -> None:
     points = diag.run_sweep(
         couplings=diag._QUICK_COUPLINGS,
         n_seeds=diag._QUICK_N_SEEDS,

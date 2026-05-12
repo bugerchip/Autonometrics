@@ -62,7 +62,6 @@ from typing import Any
 
 import numpy as np
 
-
 _PROMISED_PATTERN = re.compile(
     r"period=(?P<period>\d+),alphabet=(?P<alphabet>\d+),p_noise=(?P<p_noise>[\d.]+)"
 )
@@ -157,9 +156,7 @@ def spearman(x: np.ndarray, y: np.ndarray) -> float:
     return pearson(rx, ry)
 
 
-def partial_pearson(
-    x: np.ndarray, y: np.ndarray, z: np.ndarray
-) -> float:
+def partial_pearson(x: np.ndarray, y: np.ndarray, z: np.ndarray) -> float:
     """Partial Pearson correlation of x and y controlling for z.
 
     Returns ``nan`` when the sample is too small or when one of the
@@ -198,9 +195,7 @@ def _valid_pair(
     return np.asarray(xs, dtype=float), np.asarray(ys, dtype=float), selected
 
 
-def stratified_correlations(
-    rows: list[PromisedRow], a: str, b: str
-) -> list[dict[str, Any]]:
+def stratified_correlations(rows: list[PromisedRow], a: str, b: str) -> list[dict[str, Any]]:
     """Per-cell ``r(a, b)`` for each (period, alphabet, p_noise) cell.
 
     Adversarial rows are reported under their own dedicated cell.
@@ -241,16 +236,12 @@ def _cell_sort_key(item: tuple[Any, list[PromisedRow]]) -> tuple[int, int, int, 
     return (mode_rank, int(key[1]), int(key[2]), float(p))
 
 
-def global_pair_summary(
-    rows: list[PromisedRow], a: str, b: str
-) -> dict[str, Any]:
+def global_pair_summary(rows: list[PromisedRow], a: str, b: str) -> dict[str, Any]:
     """Return overall and partial-controlled correlations for one pair."""
     x, y, selected = _valid_pair(rows, a, b)
     n = int(x.size)
 
-    p_noise = np.array(
-        [r.p_noise for r in selected if not np.isnan(r.p_noise)], dtype=float
-    )
+    p_noise = np.array([r.p_noise for r in selected if not np.isnan(r.p_noise)], dtype=float)
     has_p_noise = p_noise.size == n  # only valid for random_noise rows
 
     return {
@@ -278,16 +269,10 @@ def analyse(rows: list[PromisedRow]) -> dict[str, Any]:
         ("memory", "persistence"),
     )
 
-    pair_globals = {
-        f"{a}-{b}": global_pair_summary(rows, a, b) for a, b in pairs
-    }
-    pair_random = {
-        f"{a}-{b}": global_pair_summary(random_noise_rows, a, b) for a, b in pairs
-    }
+    pair_globals = {f"{a}-{b}": global_pair_summary(rows, a, b) for a, b in pairs}
+    pair_random = {f"{a}-{b}": global_pair_summary(random_noise_rows, a, b) for a, b in pairs}
 
-    stratified = {
-        f"{a}-{b}": stratified_correlations(rows, a, b) for a, b in pairs
-    }
+    stratified = {f"{a}-{b}": stratified_correlations(rows, a, b) for a, b in pairs}
 
     return {
         "n_total": len(rows),
@@ -346,10 +331,7 @@ def print_report(result: dict[str, Any]) -> None:
             f"    {'mode':<16} {'period':>6} {'alpha':>5} {'p_noise':>8} "
             f"{'n':>4} {'pearson':>10} {'spearman':>10}"
         )
-        print(
-            f"    {'-' * 16} {'-' * 6} {'-' * 5} {'-' * 8} "
-            f"{'-' * 4} {'-' * 10} {'-' * 10}"
-        )
+        print(f"    {'-' * 16} {'-' * 6} {'-' * 5} {'-' * 8} {'-' * 4} {'-' * 10} {'-' * 10}")
         for cell in cells:
             p_noise_str = "  n/a" if cell["p_noise"] is None else f"{cell['p_noise']:.2f}"
             print(
@@ -386,9 +368,7 @@ def write_json(result: dict[str, Any], path: Path) -> None:
         json.dump(_convert(result), fh, indent=2, ensure_ascii=False)
 
 
-def write_scatter(
-    rows: list[PromisedRow], path: Path
-) -> bool:
+def write_scatter(rows: list[PromisedRow], path: Path) -> bool:
     """Save a (closure, coherence) scatter coloured by p_noise.
 
     Returns ``True`` on success, ``False`` if matplotlib is not
@@ -403,16 +383,14 @@ def write_scatter(
         return False
 
     random_rows = [
-        r for r in rows
-        if r.mode == "random_noise"
-        and r.closure is not None
-        and r.coherence is not None
+        r
+        for r in rows
+        if r.mode == "random_noise" and r.closure is not None and r.coherence is not None
     ]
     adversarial_rows = [
-        r for r in rows
-        if r.mode == "adversarial_shift"
-        and r.closure is not None
-        and r.coherence is not None
+        r
+        for r in rows
+        if r.mode == "adversarial_shift" and r.closure is not None and r.coherence is not None
     ]
 
     fig, ax = plt.subplots(figsize=(7.5, 6.5))
@@ -429,7 +407,8 @@ def write_scatter(
         x = np.array([r.closure for r in adversarial_rows], dtype=float)
         y = np.array([r.coherence for r in adversarial_rows], dtype=float)
         ax.scatter(
-            x, y,
+            x,
+            y,
             facecolors="none",
             edgecolors="red",
             s=80,
@@ -470,9 +449,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--csv", type=Path, default=_DEFAULT_CSV)
     parser.add_argument("--json-output", type=Path, default=_DEFAULT_JSON)
     parser.add_argument("--png-output", type=Path, default=_DEFAULT_PNG)
-    parser.add_argument(
-        "--no-plot", action="store_true", help="Skip the scatter PNG output."
-    )
+    parser.add_argument("--no-plot", action="store_true", help="Skip the scatter PNG output.")
     args = parser.parse_args(argv)
 
     if not args.csv.is_file():
@@ -480,9 +457,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rows = load_promised_rows(args.csv)
     if not rows:
-        parser.error(
-            f"No PromisedCycle rows in {args.csv}; nothing to audit."
-        )
+        parser.error(f"No PromisedCycle rows in {args.csv}; nothing to audit.")
     result = analyse(rows)
     print_report(result)
     write_json(result, args.json_output)

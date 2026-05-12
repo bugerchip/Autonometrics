@@ -157,9 +157,7 @@ def _truncate(text: str, length: int = 80) -> str:
     return cleaned[: length - 3] + "..."
 
 
-def measure_safe(
-    meter: Autonometer, system: NoisyECA
-) -> tuple[float | None, float | None, str]:
+def measure_safe(meter: Autonometer, system: NoisyECA) -> tuple[float | None, float | None, str]:
     """Run ``meter.measure`` and turn ``ValueError`` into a recorded note."""
     try:
         profile = meter.measure(system)
@@ -178,12 +176,17 @@ def iter_configs(
     """Yield ``(rule, p_noise, seed, system)`` tuples for the sweep."""
     for p in noise_levels:
         for seed in range(n_seeds):
-            yield rule, p, seed, NoisyECA(
-                rule=rule,
-                n_steps=n_steps,
-                p_noise=p,
-                width=width,
-                seed=seed,
+            yield (
+                rule,
+                p,
+                seed,
+                NoisyECA(
+                    rule=rule,
+                    n_steps=n_steps,
+                    p_noise=p,
+                    width=width,
+                    seed=seed,
+                ),
             )
 
 
@@ -301,9 +304,7 @@ def diagnosis_line(stats: dict[float, dict[str, Any]]) -> str:
     last_p, last_c = valid[-1]
     drop = first_c - last_c
 
-    monotonic = all(
-        valid[i][1] >= valid[i + 1][1] - 1e-3 for i in range(len(valid) - 1)
-    )
+    monotonic = all(valid[i][1] >= valid[i + 1][1] - 1e-3 for i in range(len(valid) - 1))
 
     if drop > 0.5 and monotonic:
         return (
@@ -332,9 +333,7 @@ _DEFAULT_OUTPUT = (
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Run the autonometrics saturation diagnostic."
-    )
+    parser = argparse.ArgumentParser(description="Run the autonometrics saturation diagnostic.")
     default_rel = _DEFAULT_OUTPUT.relative_to(_DEFAULT_OUTPUT.parents[2])
     parser.add_argument(
         "--output",

@@ -51,9 +51,7 @@ def test_noisy_eca_nonzero_noise_diverges(diag: ModuleType) -> None:
     base_states = base.get_state_history()
     noisy_states = wrapped.get_state_history()
     diff_fraction = float(np.mean(base_states != noisy_states))
-    assert 0.10 < diff_fraction < 0.30, (
-        f"expected ~20% bit flips, got {diff_fraction:.3f}"
-    )
+    assert 0.10 < diff_fraction < 0.30, f"expected ~20% bit flips, got {diff_fraction:.3f}"
     np.testing.assert_array_equal(base.get_env_history(), wrapped.get_env_history())
 
 

@@ -227,9 +227,7 @@ def compute_rai_proxy_persistence(
             f"{states_arr.shape[0]} and {env_arr.shape[0]}"
         )
     if not np.issubdtype(states_arr.dtype, np.integer):
-        raise ValueError(
-            f"states must be integer-valued; got dtype {states_arr.dtype}"
-        )
+        raise ValueError(f"states must be integer-valued; got dtype {states_arr.dtype}")
 
     n = states_arr.size
     if n_perturbations <= 0:
@@ -244,19 +242,17 @@ def compute_rai_proxy_persistence(
 
     counts = np.bincount(states_arr.astype(np.int64))
     p = counts / counts.sum()
-    d_ref = 1.0 - float(np.sum(p ** 2))
+    d_ref = 1.0 - float(np.sum(p**2))
     if d_ref <= _MIN_DREF:
         raise ValueError(
-            "focal marginal is (near-)constant; persistence is undefined "
-            f"(d_ref = {d_ref:.2e})"
+            f"focal marginal is (near-)constant; persistence is undefined (d_ref = {d_ref:.2e})"
         )
 
     rng = rng if rng is not None else np.random.default_rng(_DEFAULT_SEED)
     last_t_star = n - horizon - 1
     if last_t_star < 1:
         raise ValueError(
-            f"trajectory leaves no room for perturbation; need at least "
-            f"horizon + 2 samples"
+            "trajectory leaves no room for perturbation; need at least horizon + 2 samples"
         )
 
     distances = np.empty(n_perturbations, dtype=float)
@@ -264,16 +260,10 @@ def compute_rai_proxy_persistence(
         t_star = int(rng.integers(0, last_t_star))
         perturbed = np.asarray(replay_fn(t_star, horizon, rng=rng)).ravel()
         if perturbed.shape[0] != horizon:
-            raise ValueError(
-                f"replay_fn returned {perturbed.shape[0]} samples, "
-                f"expected {horizon}"
-            )
+            raise ValueError(f"replay_fn returned {perturbed.shape[0]} samples, expected {horizon}")
         baseline = states_arr[t_star + 1 : t_star + 1 + horizon]
         if baseline.shape[0] != horizon:
-            raise ValueError(
-                f"baseline slice has {baseline.shape[0]} samples, "
-                f"expected {horizon}"
-            )
+            raise ValueError(f"baseline slice has {baseline.shape[0]} samples, expected {horizon}")
         distances[trial] = float(np.mean(perturbed != baseline))
 
     d_bar = float(np.mean(distances))

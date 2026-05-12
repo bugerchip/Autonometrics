@@ -13,16 +13,13 @@ import sys
 from pathlib import Path
 from types import ModuleType
 
-import numpy as np
 import pytest
 
 
 def _load_experiment() -> ModuleType:
     repo_root = Path(__file__).resolve().parents[2]
     src_path = repo_root / "examples" / "cba_env_decouple_experiment.py"
-    spec = importlib.util.spec_from_file_location(
-        "cba_env_decouple_experiment", src_path
-    )
+    spec = importlib.util.spec_from_file_location("cba_env_decouple_experiment", src_path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Could not load experiment script at {src_path}")
     module = importlib.util.module_from_spec(spec)
@@ -38,8 +35,12 @@ def experiment() -> ModuleType:
 
 def test_measure_cell_returns_two_axes(experiment: ModuleType) -> None:
     cell = experiment.measure_cell(
-        period=4, alphabet=4, length=400,
-        p_noise=0.5, p_env=0.0, seed=0,
+        period=4,
+        alphabet=4,
+        length=400,
+        p_noise=0.5,
+        p_env=0.0,
+        seed=0,
     )
     assert cell.closure is not None
     assert cell.coherence is not None
@@ -49,7 +50,9 @@ def test_measure_cell_returns_two_axes(experiment: ModuleType) -> None:
 
 def test_run_sweep_size(experiment: ModuleType) -> None:
     cells = experiment.run_sweep(
-        period=4, alphabet=4, length=400,
+        period=4,
+        alphabet=4,
+        length=400,
         p_noise_values=(0.2, 0.6),
         p_env_values=(0.0, 0.5),
         n_seeds=2,
@@ -61,7 +64,9 @@ def test_run_sweep_size(experiment: ModuleType) -> None:
 
 def test_analyse_emits_expected_keys(experiment: ModuleType) -> None:
     cells = experiment.run_sweep(
-        period=4, alphabet=4, length=400,
+        period=4,
+        alphabet=4,
+        length=400,
         p_noise_values=(0.2, 0.6),
         p_env_values=(0.0, 0.5),
         n_seeds=2,
@@ -84,7 +89,9 @@ def test_analyse_emits_expected_keys(experiment: ModuleType) -> None:
 
 def test_write_json_round_trip(experiment: ModuleType, tmp_path: Path) -> None:
     cells = experiment.run_sweep(
-        period=4, alphabet=4, length=400,
+        period=4,
+        alphabet=4,
+        length=400,
         p_noise_values=(0.5,),
         p_env_values=(0.0, 0.5, 1.0),
         n_seeds=2,
@@ -98,11 +105,11 @@ def test_write_json_round_trip(experiment: ModuleType, tmp_path: Path) -> None:
     assert len(parsed["raw_cells"]) == 6
 
 
-def test_write_scatter_runs_or_skips_cleanly(
-    experiment: ModuleType, tmp_path: Path
-) -> None:
+def test_write_scatter_runs_or_skips_cleanly(experiment: ModuleType, tmp_path: Path) -> None:
     cells = experiment.run_sweep(
-        period=4, alphabet=4, length=400,
+        period=4,
+        alphabet=4,
+        length=400,
         p_noise_values=(0.3, 0.7),
         p_env_values=(0.0, 0.5, 1.0),
         n_seeds=2,
@@ -123,9 +130,12 @@ def test_quick_main_run(experiment: ModuleType, tmp_path: Path) -> None:
     rc = experiment.main(
         [
             "--quick",
-            "--length", "400",
-            "--json-output", str(json_path),
-            "--png-output", str(png_path),
+            "--length",
+            "400",
+            "--json-output",
+            str(json_path),
+            "--png-output",
+            str(png_path),
             "--no-plot",
         ]
     )
@@ -142,7 +152,9 @@ def test_p_env_zero_recovers_high_correlation(experiment: ModuleType) -> None:
     Sweep only along p_noise (single driver) → r should be high.
     """
     cells = experiment.run_sweep(
-        period=4, alphabet=4, length=2000,
+        period=4,
+        alphabet=4,
+        length=2000,
         p_noise_values=(0.1, 0.3, 0.5, 0.7, 0.9),
         p_env_values=(0.0,),
         n_seeds=4,

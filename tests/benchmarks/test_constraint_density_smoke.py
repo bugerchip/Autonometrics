@@ -80,9 +80,7 @@ def test_low_k_walks_lower_boundary(diag: ModuleType) -> None:
     scores = [p.constraint for p in points if p.constraint is not None]
     assert scores, "expected at least one valid constraint measurement at K=1"
     mean_low = float(np.mean(scores))
-    assert mean_low < 0.4, (
-        f"expected K=1 mean to walk lower boundary, got {mean_low:.3f}"
-    )
+    assert mean_low < 0.4, f"expected K=1 mean to walk lower boundary, got {mean_low:.3f}"
 
 
 def test_high_k_saturates_upper_boundary(diag: ModuleType) -> None:
@@ -96,9 +94,7 @@ def test_high_k_saturates_upper_boundary(diag: ModuleType) -> None:
     scores = [p.constraint for p in points if p.constraint is not None]
     assert scores, "expected at least one valid constraint measurement at K=9"
     for score in scores:
-        assert score >= 0.99, (
-            f"expected K=9 to saturate the upper boundary, got {score:.4f}"
-        )
+        assert score >= 0.99, f"expected K=9 to saturate the upper boundary, got {score:.4f}"
 
 
 def test_curve_walks_from_low_to_high(diag: ModuleType) -> None:

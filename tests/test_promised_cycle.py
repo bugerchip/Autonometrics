@@ -160,9 +160,7 @@ def test_p_env_zero_explicit_matches_default() -> None:
 
 def test_p_env_one_yields_uniform_declared() -> None:
     """With p_env=1 every step is replaced; declared ≈ uniform on alphabet."""
-    sys = PromisedCycle(
-        length=4000, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=0
-    )
+    sys = PromisedCycle(length=4000, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=0)
     declared, _ = sys.get_declared_executed()
     counts = np.bincount(declared, minlength=4)
     freqs = counts / counts.sum()
@@ -172,9 +170,7 @@ def test_p_env_one_yields_uniform_declared() -> None:
 def test_p_env_one_p_noise_zero_executed_tracks_declared() -> None:
     """With p_noise=0 the executed channel still equals declared
     even when declared has been fully randomised by p_env=1."""
-    sys = PromisedCycle(
-        length=500, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=3
-    )
+    sys = PromisedCycle(length=500, period=2, alphabet=4, p_noise=0.0, p_env=1.0, seed=3)
     declared, executed = sys.get_declared_executed()
     np.testing.assert_array_equal(declared, executed)
 
@@ -187,9 +183,7 @@ def test_p_env_and_p_noise_are_independent_streams() -> None:
     """
     rng_seed = 11
     base = (np.arange(2000) % 4).astype(np.int64)
-    sys = PromisedCycle(
-        length=2000, period=4, alphabet=4, p_noise=0.0, p_env=0.5, seed=rng_seed
-    )
+    sys = PromisedCycle(length=2000, period=4, alphabet=4, p_noise=0.0, p_env=0.5, seed=rng_seed)
     declared, _ = sys.get_declared_executed()
     diff_rate = float(np.mean(declared != base))
     # Half the positions touched by env_mask, of which 1 - 1/alphabet differ

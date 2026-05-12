@@ -238,21 +238,16 @@ def compute_cba_theil_u(
     e = np.asarray(executed)
     if d.shape != e.shape:
         raise ValueError(
-            "declared and executed must have the same shape; got "
-            f"{d.shape} and {e.shape}"
+            f"declared and executed must have the same shape; got {d.shape} and {e.shape}"
         )
     if d.ndim != 1:
         raise ValueError(f"declared must be 1-D; got shape {d.shape}")
     if d.size == 0:
         raise ValueError("declared and executed must be non-empty")
     if not np.issubdtype(d.dtype, np.integer):
-        raise ValueError(
-            f"declared must be integer-valued; got dtype {d.dtype}"
-        )
+        raise ValueError(f"declared must be integer-valued; got dtype {d.dtype}")
     if not np.issubdtype(e.dtype, np.integer):
-        raise ValueError(
-            f"executed must be integer-valued; got dtype {e.dtype}"
-        )
+        raise ValueError(f"executed must be integer-valued; got dtype {e.dtype}")
 
     n = int(d.size)
     if n < low_n_threshold:

@@ -155,9 +155,7 @@ def test_does_not_depend_on_information_theory_imports() -> None:
     import importlib.util
     from pathlib import Path
 
-    module_path = Path(
-        importlib.util.find_spec("autonometrics.metrics.constraint_closure").origin
-    )
+    module_path = Path(importlib.util.find_spec("autonometrics.metrics.constraint_closure").origin)
     source = module_path.read_text(encoding="utf-8")
 
     forbidden = [
